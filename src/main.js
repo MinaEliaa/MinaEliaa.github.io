@@ -128,6 +128,25 @@
     sw.addEventListener('click', () => { noCode = !noCode; sw.setAttribute('aria-checked', String(noCode)); render(); });
   }
 
+  /* ---------- Case studies rail (desktop/tablet): buttons scroll one card; disabled at the ends ---------- */
+  const rail = d.getElementById('cases-rail');
+  if (rail) {
+    const prevB = d.querySelector('.rail-btn.prev'), nextB = d.querySelector('.rail-btn.next');
+    const step = () => { const c = rail.querySelector('.case'); return c ? c.getBoundingClientRect().width + 24 : rail.clientWidth; };
+    const upd = () => { const max = rail.scrollWidth - rail.clientWidth - 2; prevB.disabled = rail.scrollLeft <= 2; nextB.disabled = rail.scrollLeft >= max; };
+    prevB.addEventListener('click', () => rail.scrollBy({ left: -step(), behavior: rm.matches ? 'auto' : 'smooth' }));
+    nextB.addEventListener('click', () => rail.scrollBy({ left: step(), behavior: rm.matches ? 'auto' : 'smooth' }));
+    let t = 0; rail.addEventListener('scroll', () => { cancelAnimationFrame(t); t = requestAnimationFrame(upd); }, { passive: true });
+    addEventListener('resize', upd, { passive: true }); upd();
+    // Mouse drag to scroll (touch already swipes natively); snapping resumes on release
+    let sx = 0, sl = 0, down = false, moved = false;
+    rail.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse' || e.button !== 0 || getComputedStyle(rail).overflowX === 'visible') return; down = true; moved = false; sx = e.clientX; sl = rail.scrollLeft; });
+    addEventListener('pointermove', e => { if (!down) return; const dx = e.clientX - sx; if (!moved && Math.abs(dx) > 4) { moved = true; rail.classList.add('dragging'); } if (moved) { rail.scrollLeft = sl - dx; e.preventDefault(); } });
+    const end = () => { if (!down) return; down = false; if (moved) { const x = rail.scrollLeft; rail.classList.remove('dragging'); rail.scrollLeft = x; rail.scrollBy({ left: 0, behavior: rm.matches ? 'auto' : 'smooth' }); } };
+    addEventListener('pointerup', end); addEventListener('pointercancel', end);
+    rail.addEventListener('dragstart', e => e.preventDefault());
+  }
+
   /* ---------- FAQ accordion ---------- */
   d.querySelectorAll('.qa-q').forEach(q => q.addEventListener('click', () => {
     const open = q.getAttribute('aria-expanded') !== 'true';

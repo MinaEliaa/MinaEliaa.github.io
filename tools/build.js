@@ -78,7 +78,7 @@ const screens = [
 ];
 const screenSet = (dup) => `<div class="set"${dup ? ' aria-hidden="true"' : ''}>${screens.map(([n, alt, cls], i) => {
   const wide = !!cls; const w = wide ? (cls === 'wide' ? 457 : 456) : 218;
-  return `<div class="frame${cls ? ' ' + cls : ''}">${pic(n, { alt: dup ? '' : alt, w, h: 470, sizes: `${w}px`, eager: !dup && i < 3, high: !dup && i < 2 })}</div>`;
+  return `<div class="frame${cls ? ' ' + cls : ''}">${pic(n, { alt: dup ? '' : alt, w, h: 470, sizes: `${w}px`, eager: !dup && i < 5, high: !dup && i < 2 })}</div>`;
 }).join('')}</div>`;
 
 const words = (s, brAfter = [], extra = {}) => { const a = s.split(' '); return a.map((x, i) => `<span class="w${extra[x] ? ' ' + extra[x] : ''}">${x}</span>` + (i === a.length - 1 ? '' : (brAfter.includes(x) ? '&#32;<br class="m-br">' : ' '))).join(''); };
@@ -99,6 +99,16 @@ const projects = [
   ['Douq', 'live', 'Douq Website', 1], ['Dentinnova', 'live', 'Denntinova Website', 1],
 ];
 const statusText = { live: 'Live', soon: 'Soon', ws: 'Workshop' };
+const cases = [
+  ['d360', 'D360 Bank', 'Mobile banking app', 'D360 Bank case study: Saudi digital bank cards, mobile app screens, website and brand visuals'],
+  ['wish', 'Wish', 'Social wishlist app', 'Wish case study: social wishlist app profile, wish reservation alerts and App Store page'],
+  ['finora', 'FINORA', 'Fintech app', 'FINORA case study: personal finance app on iPhone, split view and foldable layouts'],
+  ['qatar', 'Qatar Airways', 'Airline app', 'Qatar Airways case study: flight booking app, boarding pass, seat map and Privilege Club cards'],
+  ['scouty', 'Scouty', 'Community app', 'Scouty case study: scout group app with member profiles, rankings and ScoutPay card'],
+  ['douq', 'DOUQ', 'Website', 'DOUQ case study: men’s grooming club website, membership cards and pricing'],
+];
+const casesHtml = `<section class="cases" id="case-studies" aria-labelledby="cases-title"><div class="cases-head"><div class="head cases-title"><p class="label rv">Case studies</p><h2 class="h2 rv" id="cases-title">A Closer Look at<br>Each Product</h2></div><div class="rail-btns" aria-hidden="false"><button class="rail-btn prev" type="button" aria-label="Previous case study" aria-controls="cases-rail" disabled><svg viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false"><path d="M16 10H4m0 0 5-5m-5 5 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="rail-btn next" type="button" aria-label="Next case study" aria-controls="cases-rail"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false"><path d="M4 10h12m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div><ul class="rail" id="cases-rail" tabindex="0" aria-label="Case studies, scroll sideways">${cases.map(([k, n, kind, alt]) => `<li class="case"><figure><div class="case-frame">${pic('bento-' + k, { alt, w: 2048, h: 1622, sizes: '(max-width: 809px) calc(100vw - 32px), (max-width: 1199px) 82vw, 760px' })}</div><figcaption class="case-meta"><h3>${n}</h3><span>${kind}</span></figcaption></figure></li>`).join('')}</ul></section>`;
+
 const projHtml = projects.map(([n, s, label, k]) => {
   const key = n.toLowerCase();
   const imgs = k === 3
@@ -127,6 +137,7 @@ const ld = {
       sameAs: ['https://www.linkedin.com/in/mina-elia-1223421a4/', 'https://www.behance.net/MinaElia29', 'https://dribbble.com/Mina_Elia'],
       knowsAbout: ['AI product building', 'UI design', 'UX design', 'Mobile app design', 'Website design', 'Framer', 'Webflow', 'Design systems', 'Prototyping'] },
     { '@type': 'WebSite', '@id': ORIGIN + '#website', url: ORIGIN, name: 'Mina Elia — Portfolio', inLanguage: 'en', publisher: { '@id': ORIGIN + '#mina' } },
+    { '@type': 'ItemList', name: 'Case studies', itemListElement: cases.map(([k, n, kind, alt], i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'CreativeWork', name: n + ' — case study', genre: kind, description: alt, creator: { '@id': ORIGIN + '#mina' }, url: ORIGIN + '#case-studies', image: ORIGIN + 'img/bento-' + k + '-1280.jpg' } })) },
     { '@type': 'ItemList', name: 'Work That Speaks for Itself', itemListElement: projects.map(([n, s, label], i) => ({ '@type': 'ListItem', position: i + 1,
       item: { '@type': 'CreativeWork', name: n, description: `${label.replace('Denntinova', 'Dentinnova')} designed by Mina Elia — status: ${statusText[s]}.`, creator: { '@id': ORIGIN + '#mina' }, url: ORIGIN + '#projects',
         image: ORIGIN + (projects[i][3] === 3 ? `img/p-${n.toLowerCase()}-1-390.webp` : `img/p-${n.toLowerCase()}-840.webp`) } })) },
@@ -168,6 +179,7 @@ const html = `${head(title, desc, ORIGIN, `<script type="application/ld+json">${
 <section class="quote" id="quote" aria-label="About Mina"><div class="dark"><div class="aurora">${pic('aurora', { alt: '', w: 1536, h: 1024, sizes: '(max-width: 809px) 600px, (max-width: 1199px) 1152px, 1536px' })}</div><div class="q-content rv"><h2 class="reveal-h">${words('I’m a Senior UI/UX Designer with 4+ years of experience crafting apps, websites and digital products')}</h2><div class="glass"><div class="glass-in">${pic('glass-card', { alt: 'Card reading UI/UX Designer, Framer Expert', w: 360, h: 212, sizes: '(max-width: 809px) 240px, (max-width: 1199px) 320px, 360px' })}</div></div><h2 class="reveal-h">${words('My portfolio spans fintech, mobility and health, blending UX strategy, design systems and AI-powered building')}</h2></div></div></section>
 <section class="services" id="services" aria-labelledby="services-title"><div class="head"><p class="label rv">Services</p><h2 class="h2 rv" id="services-title">Expertise in What<br>I Build and Design</h2></div><ul class="svc-grid">${svcCards.map(c => `<li class="svc rv${c.cls}"><div class="svc-in"><h3>${c.t}</h3>${c.ill.replace(/<i class="b" style="([^"]*?top:(\d+)px;[^"]*?height:(\d+)px[^"]*)"/g, (m, st, t, h) => +t + +h >= 124 ? `<i class="b bb" style="${st}"` : m).replace(/border-radius:17px/g, 'border-radius:17px 17px 0 0')}</div></li>`).join('')}</ul></section>
 <section class="projects" id="projects" aria-labelledby="projects-title"><div class="white"><div class="head"><p class="label rv">Projects</p><h2 class="h2 rv" id="projects-title">Work That Speaks&#32;<br>for Itself</h2></div><ul class="proj-grid">${projHtml}</ul></div></section>
+${casesHtml}
 ${SHOW_PLANS ? plansHtml : ''}<section class="tools" id="tools" aria-labelledby="tools-title"><div class="white"><div class="head"><p class="label rv">Tools</p><h2 class="h2 rv" id="tools-title">Each Tool Shape<br>My Process</h2></div><p class="tools-desc rv">I used <span>+12 specialized tools</span> to produce the final product</p><div class="tool-frame rv"><div class="tool-in" role="img" aria-label="Tools: ${toolNames.join(', ')}">${pic('aurora', { alt: '', w: 608, h: 216, sizes: '(max-width: 809px) 380px, 768px', style: 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1' })}<div class="tool-row r1"><div class="tool-track">${toolRow([1, 2, 3, 4, 5, 6])}</div></div><div class="tool-row r2"><div class="tool-track">${toolRow([7, 8, 9, 10, 11, 12])}</div></div></div></div></div></section>
 <section class="faq" aria-labelledby="faq-title"><div class="head"><p class="label rv">FAQ's</p><h2 class="h2 rv" id="faq-title">Questions You&#32;<br>Might Have</h2></div><div class="faq-grid"><div class="faq-col">${[1, 2, 3].map(faqItem).join('')}</div><div class="faq-col">${[4, 5, 6].map(faqItem).join('')}</div></div></section>
 <section class="cta" aria-labelledby="cta-title"><div class="dark"><div class="aurora">${pic('aurora', { alt: '', w: 1536, h: 1024, sizes: '(max-width: 809px) 600px, (max-width: 1199px) 1152px, 1536px' })}</div><h2 class="reveal-h cta-h" id="cta-title">${words('Start your Project with')}&#32;<br>${words('360° Design Expertise')}</h2><p class="cta-sub">Visual + Graphic - UI/UX - Product - Framer &amp; Webflow</p><a class="btn btn-white" href="${MAIL}" target="_blank" rel="noopener">Start your Project</a><div class="rule" aria-hidden="true"></div><footer>${footHtml}</footer></div></section>
