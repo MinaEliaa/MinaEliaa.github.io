@@ -3,29 +3,23 @@
   const rm = matchMedia('(prefers-reduced-motion: reduce)');
   if (rm.matches) root.classList.add('rm');
 
-  /* ---------- Mobile menu ---------- */
-  const nav = d.querySelector('.nav'), burger = d.querySelector('.burger');
-  if (nav && burger) {
-    const sheetLinks = () => nav.querySelectorAll('.nav-sheet a, .logo, .burger');
-    const close = (focus) => { nav.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); burger.setAttribute('aria-label', 'Open menu'); if (focus) burger.focus(); };
-    burger.addEventListener('click', () => {
-      const open = !nav.classList.contains('open');
-      nav.classList.toggle('open', open);
-      burger.setAttribute('aria-expanded', String(open));
-      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    });
-    nav.querySelectorAll('.nav-sheet a').forEach(a => a.addEventListener('click', () => close(false)));
-    d.addEventListener('keydown', e => {
-      if (!nav.classList.contains('open')) return;
-      if (e.key === 'Escape') close(true);
-      if (e.key === 'Tab') { // keep focus inside the open sheet
-        const f = [...sheetLinks()].filter(el => el.offsetParent !== null);
-        const first = f[0], last = f[f.length - 1];
-        if (e.shiftKey && d.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && d.activeElement === last) { e.preventDefault(); first.focus(); }
-      }
-    });
-    matchMedia('(min-width: 810px)').addEventListener('change', e => e.matches && close(false));
+  /* ---------- Navbar: full row at top, compact pill after 180px, expands on hover / focus / arrow ---------- */
+  const nav = d.querySelector('.nav'), bar = nav && nav.querySelector('.nav-bar'), arrow = nav && nav.querySelector('.nav-arrow');
+  if (nav && bar && arrow) {
+    let pinned = false;
+    const setOpen = o => { nav.classList.toggle('open', o); arrow.setAttribute('aria-expanded', String(o)); arrow.setAttribute('aria-label', o ? 'Hide links' : 'Show links'); };
+    const onScroll = () => {
+      const c = scrollY > 180;
+      if (c !== nav.classList.contains('compact')) { nav.classList.toggle('compact', c); if (!c) { pinned = false; setOpen(false); } }
+    };
+    addEventListener('scroll', onScroll, { passive: true }); onScroll();
+    arrow.addEventListener('click', () => { pinned = !pinned; setOpen(pinned); });
+    bar.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' && nav.classList.contains('compact')) setOpen(true); });
+    bar.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse' && !pinned && !bar.contains(d.activeElement)) setOpen(false); });
+    bar.addEventListener('focusin', () => nav.classList.contains('compact') && setOpen(true));
+    bar.addEventListener('focusout', e => { if (!bar.contains(e.relatedTarget) && !pinned) setOpen(false); });
+    d.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('open')) { pinned = false; setOpen(false); arrow.focus(); } });
+    d.addEventListener('pointerdown', e => { if (pinned && !bar.contains(e.target)) { pinned = false; setOpen(false); } });
   }
 
   /* ---------- Scroll reveal (fade up once on entering viewport) ---------- */
