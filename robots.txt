@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://minaeliaa.github.io/sitemap.xml
