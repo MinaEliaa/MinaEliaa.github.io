@@ -308,8 +308,14 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 /* ===== Mobile <810 ===== */
 @media (max-width:809.98px){
   :root{--side:16px}
-  .nav{top:8px;--w-open:208px}
-  .nav.compact.open .nav-cta-wrap{max-width:0;padding:0;opacity:0;visibility:hidden}
+  .nav{top:8px;--w-open:min(331px,calc(100vw - 16px))}
+}
+@media (max-width:359.98px){
+  .nav-in{padding:8px 6px}
+  .nav-bar{padding:6px}
+  .nav .ni{padding:2px}
+  .nav.compact.open .ni:not(.nav-cta-wrap),.nav.compact.open .nav-cta-wrap,.nav.compact .nav-arrow{padding:2px}
+  .nav-cta{padding:0 10px;font-size:13px}
   .hero{padding:128px 16px 32px}
   .hero h1{max-width:328px;font-size:44px;line-height:55px}
   .h2{font-size:34px;line-height:44.2px}
