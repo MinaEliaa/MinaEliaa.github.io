@@ -45,10 +45,10 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 
 /* ===== Nav ===== */
 .nav{position:fixed;z-index:50;top:16px;left:0;right:0;display:flex;justify-content:center;pointer-events:none;--w-top:min(648px,calc(100vw - 32px));--w-compact:118px;--w-open:331px}
-.nav-bar{position:relative;pointer-events:auto;width:var(--w-top);padding:8px;border-radius:20px;background:transparent;transition:width .6s cubic-bezier(.22,1,.36,1),background-color .35s ease,box-shadow .35s ease;-webkit-backdrop-filter:blur(20px) saturate(1.4);backdrop-filter:blur(20px) saturate(1.4)}
+.nav-bar{position:relative;pointer-events:auto;width:var(--w-top);padding:8px;border-radius:20px;background:transparent;transition:width .6s cubic-bezier(.22,1,.36,1),background-color .35s ease,box-shadow .35s ease;}
 .nav-bar::after{content:"";position:absolute;inset:0;border:.8px solid var(--line);border-radius:20px;pointer-events:none;opacity:0;transition:opacity .35s ease}
 .nav-in{height:53px;padding:8px;border-radius:16px;display:flex;align-items:center;overflow:hidden;background:transparent;transition:background-color .35s ease}
-.nav.compact .nav-bar{width:var(--w-compact);background:rgba(255,255,255,.6);box-shadow:0 1px 3px rgba(19,32,43,.04),0 10px 30px rgba(19,32,43,.08)}
+.nav.compact .nav-bar{width:var(--w-compact);background:transparent;box-shadow:none}
 .nav.compact .nav-bar::after{opacity:1}
 .nav.compact .nav-in{background:#fff}
 .nav.compact.open .nav-bar{width:var(--w-open)}
@@ -178,7 +178,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .rail-btn:hover:not(:disabled){box-shadow:0 0 0 2px var(--ring)}
 .rail-btn:disabled{opacity:.35;cursor:default}
 .rail-btn svg{width:20px;height:20px}
-.rail{--card:min(760px,82vw);--pad:max(20px,calc((100vw - 1040px) / 2 + 20px));margin-top:56px;display:flex;gap:24px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:var(--pad);padding:4px var(--pad) 8px;scrollbar-width:none}
+.rail{--card:min(508px,calc((100vw - 64px) / 2));--pad:max(20px,calc((100vw - 1040px) / 2 + 20px));margin-top:56px;display:flex;gap:24px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:var(--pad);padding:4px var(--pad) 8px;scrollbar-width:none}
 .rail::-webkit-scrollbar{display:none}
 .rail:focus-visible{outline:2px solid var(--ring);outline-offset:-2px;border-radius:8px}
 .case{flex:none;width:var(--card);scroll-snap-align:start}
@@ -340,7 +340,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 @media (max-width:809.98px){
   :root{--side:16px}
   .nav{top:8px}
-  .nav .nav-bar,.nav.compact .nav-bar,.nav.compact.open .nav-bar{width:calc(100vw - 32px);background:rgba(255,255,255,.6);box-shadow:0 1px 3px rgba(19,32,43,.04),0 10px 30px rgba(19,32,43,.08);transition:none}
+  .nav .nav-bar,.nav.compact .nav-bar,.nav.compact.open .nav-bar{width:calc(100vw - 32px);background:transparent;box-shadow:none;transition:none}
   .nav .nav-bar::after{opacity:1}
   .nav .nav-in{background:#fff}
   .nav .ni,.nav.compact .ni:not(.nav-arrow){max-width:200px;padding:0;opacity:1;pointer-events:auto;visibility:visible;transition:none}
