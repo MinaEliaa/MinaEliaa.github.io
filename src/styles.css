@@ -45,12 +45,12 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 
 /* ===== Nav ===== */
 .nav{position:fixed;z-index:50;top:16px;left:0;right:0;display:flex;justify-content:center;pointer-events:none;--w-top:min(648px,calc(100vw - 32px));--w-compact:118px;--w-open:331px}
-.nav-bar{position:relative;pointer-events:auto;width:var(--w-top);padding:8px;border-radius:20px;background:transparent;transition:width .6s cubic-bezier(.22,1,.36,1),background-color .35s ease,box-shadow .35s ease;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.nav-bar{position:relative;pointer-events:auto;width:var(--w-top);padding:8px;border-radius:20px;background:transparent;transition:width .6s cubic-bezier(.22,1,.36,1),background-color .35s ease,box-shadow .35s ease;-webkit-backdrop-filter:blur(20px) saturate(1.4);backdrop-filter:blur(20px) saturate(1.4)}
 .nav-bar::after{content:"";position:absolute;inset:0;border:.8px solid var(--line);border-radius:20px;pointer-events:none;opacity:0;transition:opacity .35s ease}
 .nav-in{height:53px;padding:8px;border-radius:16px;display:flex;align-items:center;overflow:hidden;background:transparent;transition:background-color .35s ease}
-.nav.compact .nav-bar{width:var(--w-compact);background:rgba(255,255,255,.6);box-shadow:0 1px 3px rgba(19,32,43,.04),0 10px 30px rgba(19,32,43,.08)}
+.nav.compact .nav-bar{width:var(--w-compact);background:rgba(255,255,255,.4);box-shadow:0 1px 3px rgba(19,32,43,.04),0 10px 30px rgba(19,32,43,.08)}
 .nav.compact .nav-bar::after{opacity:1}
-.nav.compact .nav-in{background:#fff}
+.nav.compact .nav-in{background:rgba(255,255,255,.72)}
 .nav.compact.open .nav-bar{width:var(--w-open)}
 .logo{position:relative;z-index:1;width:37px;height:37px;flex:none;border-radius:8px;background:var(--ink);box-shadow:0 0 0 2px var(--ring);display:flex;align-items:center;justify-content:center}
 .logo svg{width:24px;height:15px}
@@ -99,7 +99,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .js .sub-in{animation-delay:.55s}
 @keyframes blurIn{to{opacity:1;filter:blur(0);transform:none}}
 .js .hero .btn-white{opacity:.001;transform:translateY(24px);animation:fadeUp 1.5s cubic-bezier(.12,.23,.17,.99) .4s forwards}
-.js .nav{opacity:.001;transform:translateY(-100px);animation:fadeUp .5s cubic-bezier(.22,1,.36,1) 1s forwards;will-change:transform,opacity}
+.js .nav{transform:translateY(-100px);animation:navIn .5s cubic-bezier(.22,1,.36,1) 1s forwards}
+@keyframes navIn{to{transform:none}}
 .js .screens .track-wrap{opacity:.001;transform:translateY(40px);animation:fadeUp .7s cubic-bezier(.22,1,.36,1) var(--mq-delay,1s) forwards}
 @keyframes fadeUp{to{opacity:1;transform:none}}
 
@@ -310,9 +311,9 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 @media (max-width:809.98px){
   :root{--side:16px}
   .nav{top:8px}
-  .nav .nav-bar,.nav.compact .nav-bar,.nav.compact.open .nav-bar{width:calc(100vw - 32px);background:rgba(255,255,255,.6);box-shadow:0 1px 3px rgba(19,32,43,.04),0 10px 30px rgba(19,32,43,.08);transition:none}
+  .nav .nav-bar,.nav.compact .nav-bar,.nav.compact.open .nav-bar{width:calc(100vw - 32px);background:rgba(255,255,255,.4);box-shadow:0 1px 3px rgba(19,32,43,.04),0 10px 30px rgba(19,32,43,.08);transition:none}
   .nav .nav-bar::after{opacity:1}
-  .nav .nav-in{background:#fff}
+  .nav .nav-in{background:rgba(255,255,255,.72)}
   .nav .ni,.nav.compact .ni:not(.nav-arrow){max-width:200px;padding:0;opacity:1;pointer-events:auto;visibility:visible;transition:none}
   .nav .ni.nav-arrow,.nav.compact .nav-arrow,.nav .nav-cta-wrap,.nav.compact .nav-cta-wrap,.nav.compact.open .nav-cta-wrap{display:none}
   .nav .nav-sp{flex:1}
@@ -327,7 +328,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
   .nav-sheet{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.22,1,.36,1)}
   .nav.menu .nav-sheet{grid-template-rows:1fr}
   .nav-sheet-in{overflow:hidden;min-height:0}
-  .nav-sheet ul{display:flex;flex-direction:column;gap:4px;padding:12px 8px 8px;margin-top:8px;background:#fff;border-radius:16px}
+  .nav-sheet ul{display:flex;flex-direction:column;gap:4px;padding:12px 8px 8px;margin-top:8px;background:rgba(255,255,255,.72);border-radius:16px}
   .nav-sheet a:not(.btn){display:flex;align-items:center;gap:12px;height:48px;padding:0 12px;border-radius:10px;font-size:16px;line-height:24px;font-weight:500;color:var(--ink);transition:background-color .2s ease}
   .nav-sheet a:not(.btn):hover{background:var(--bg)}
   .nav-sheet a svg{width:22px;height:22px}
