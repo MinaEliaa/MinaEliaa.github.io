@@ -94,7 +94,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .wrd{display:inline-block;white-space:nowrap}
 .ch,.wd{display:inline-block;white-space:pre}
 .sub-in{display:inline-block}
-.js .sub-in,.js .wd{opacity:.001;filter:blur(10px);transform:translateY(20px);animation:blurIn .65s cubic-bezier(.22,1,.36,1) forwards;will-change:transform,opacity,filter}
+/* hero text is painted from the first frame (keeps LCP measurable); only blur + lift animate */
+.js .sub-in,.js .wd{opacity:.35;filter:blur(10px);transform:translateY(20px);animation:blurIn .65s cubic-bezier(.22,1,.36,1) forwards;will-change:transform,opacity,filter}
 .js .wd{filter:blur(4px);transform:translateY(12px);animation-duration:.68s}
 .js .sub-in{animation-delay:.55s}
 @keyframes blurIn{to{opacity:1;filter:blur(0);transform:none}}
