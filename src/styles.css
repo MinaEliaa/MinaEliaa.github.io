@@ -44,7 +44,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .btn-dark{background:var(--ink);color:#fff;height:49px;padding:0 24px;width:100%;font-size:18px;line-height:25.2px;font-weight:600}
 
 /* ===== Nav ===== */
-.nav{position:fixed;z-index:50;top:16px;left:0;right:0;display:flex;justify-content:center;pointer-events:none;--w-top:min(648px,calc(100vw - 32px));--w-compact:118px;--w-open:419px}
+.nav{position:fixed;z-index:50;top:16px;left:0;right:0;display:flex;justify-content:center;pointer-events:none;--w-top:min(648px,calc(100vw - 32px));--w-compact:118px;--w-open:331px}
 .nav-bar{position:relative;pointer-events:auto;width:var(--w-top);padding:8px;border-radius:20px;background:transparent;transition:width .6s cubic-bezier(.22,1,.36,1),background-color .35s ease,box-shadow .35s ease;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
 .nav-bar::after{content:"";position:absolute;inset:0;border:.8px solid var(--line);border-radius:20px;pointer-events:none;opacity:0;transition:opacity .35s ease}
 .nav-in{height:53px;padding:8px;border-radius:16px;display:flex;align-items:center;overflow:hidden;background:transparent;transition:background-color .35s ease}
@@ -68,10 +68,11 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .nav.compact .nav-ic:hover{background:var(--bg)}
 .nav-ic svg{width:22px;height:22px}
 .nav-cta{height:37px;border-radius:8px;padding:0 16px;background:var(--ink);color:#fff;font-size:14px;line-height:21px;font-weight:500}
-.nav-arrow i{width:37px;height:37px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;background:linear-gradient(180deg,#2f3f4c 0%,var(--ink) 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 1px 2px rgba(19,32,43,.25);transition:box-shadow .2s ease}
+.nav-arrow i{width:37px;height:37px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--ring);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),0 1px 2px rgba(19,32,43,.2);transition:box-shadow .2s ease,background-color .2s ease}
 .nav-arrow svg{width:20px;height:20px;transition:transform .45s cubic-bezier(.22,1,.36,1)}
-.nav-arrow:hover i{box-shadow:0 0 0 2px var(--ring)}
+.nav-arrow:hover i{background:#02a653;box-shadow:0 0 0 2px rgba(3,187,94,.35)}
 .nav-arrow:focus-visible{outline:0}.nav-arrow:focus-visible i{outline:2px solid var(--ring);outline-offset:1px}
+.nav-arrow svg{transform:rotate(0)}
 .nav.open .nav-arrow svg{transform:rotate(180deg)}
 
 /* ===== Hero ===== */
@@ -112,16 +113,16 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 /* ===== Quote (dark aurora card) ===== */
 .quote{padding:0 var(--side)}
 .dark{position:relative;background:var(--ink);border-radius:40px;overflow:hidden;isolation:isolate}
-.aurora{position:absolute;inset:0;z-index:1;opacity:.8;mix-blend-mode:color-dodge;pointer-events:none}
+.aurora{position:absolute;inset:0;z-index:5;opacity:.8;mix-blend-mode:color-dodge;pointer-events:none}
 .aurora img{width:100%;height:100%;object-fit:cover}
 .quote .dark{padding:80px 20px 81px}
-.q-content{display:flex;flex-direction:column;align-items:center;position:relative;z-index:2}
+.q-content{display:flex;flex-direction:column;align-items:center;position:relative;z-index:5}
 .cta .dark>:not(.aurora){position:relative;z-index:2}
 .reveal-h{max-width:800px;font-family:var(--display);font-weight:600;font-size:56px;line-height:70px;color:#fff;text-align:center}
 .reveal-h .w{display:inline-block;opacity:.1}
 .no-js .reveal-h .w,.rm .reveal-h .w{opacity:1}
 .glass{margin:60px 0 59px;width:360px;height:212px;perspective:600px}
-.glass-in{position:relative;width:100%;height:100%;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.15);transition:transform .35s cubic-bezier(.22,1,.36,1);transform-style:preserve-3d}
+.glass-in{position:relative;width:100%;height:100%;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.15);transition:transform .9s cubic-bezier(.2,1.25,.35,1);will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .glass-in img{width:100%;height:100%;object-fit:cover}
 
 /* ===== Services ===== */
@@ -302,7 +303,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 /* ===== Mobile <810 ===== */
 @media (max-width:809.98px){
   :root{--side:16px}
-  .nav{top:8px;--w-open:296px}
+  .nav{top:8px;--w-open:208px}
   .nav.compact.open .nav-cta-wrap{max-width:0;padding:0;opacity:0;visibility:hidden}
   .hero{padding:128px 16px 32px}
   .hero h1{max-width:328px;font-size:44px;line-height:55px}
@@ -312,6 +313,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
   .reveal-h .pr{margin-right:.26em}
   .reveal-h .pl{margin-left:.26em}
   .track-wrap{padding-left:16px}
+  .track .set{gap:30px;padding-right:30px}
+  .track{animation-duration:38.04s}
   .dark{border-radius:20px}
   .quote .dark{padding:40px 20px}
   .glass{width:240px;height:141px;margin:59px 0}

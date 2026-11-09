@@ -3,23 +3,15 @@
   const rm = matchMedia('(prefers-reduced-motion: reduce)');
   if (rm.matches) root.classList.add('rm');
 
-  /* ---------- Navbar: full row at top, compact pill after 180px, expands on hover / focus / arrow ---------- */
-  const nav = d.querySelector('.nav'), bar = nav && nav.querySelector('.nav-bar'), arrow = nav && nav.querySelector('.nav-arrow');
-  if (nav && bar && arrow) {
-    let pinned = false;
-    const setOpen = o => { nav.classList.toggle('open', o); arrow.setAttribute('aria-expanded', String(o)); arrow.setAttribute('aria-label', o ? 'Hide links' : 'Show links'); };
-    const onScroll = () => {
-      const c = scrollY > 180;
-      if (c !== nav.classList.contains('compact')) { nav.classList.toggle('compact', c); if (!c) { pinned = false; setOpen(false); } }
-    };
+  /* ---------- Navbar: full row at top; after 180px a pill that is expanded by default.
+     Left arrow collapses it to logo + right arrow; right arrow expands it again. ---------- */
+  const nav = d.querySelector('.nav'), arrow = nav && nav.querySelector('.nav-arrow');
+  if (nav && arrow) {
+    let collapsed = false;
+    const sync = () => { const open = nav.classList.contains('compact') && !collapsed; nav.classList.toggle('open', open); arrow.setAttribute('aria-expanded', String(open)); arrow.setAttribute('aria-label', open ? 'Collapse menu' : 'Expand menu'); };
+    const onScroll = () => { const c = scrollY > 180; if (c !== nav.classList.contains('compact')) { nav.classList.toggle('compact', c); if (!c) collapsed = false; sync(); } };
     addEventListener('scroll', onScroll, { passive: true }); onScroll();
-    arrow.addEventListener('click', () => { pinned = !pinned; setOpen(pinned); });
-    bar.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' && nav.classList.contains('compact')) setOpen(true); });
-    bar.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse' && !pinned && !bar.contains(d.activeElement)) setOpen(false); });
-    bar.addEventListener('focusin', () => nav.classList.contains('compact') && setOpen(true));
-    bar.addEventListener('focusout', e => { if (!bar.contains(e.relatedTarget) && !pinned) setOpen(false); });
-    d.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('open')) { pinned = false; setOpen(false); arrow.focus(); } });
-    d.addEventListener('pointerdown', e => { if (pinned && !bar.contains(e.target)) { pinned = false; setOpen(false); } });
+    arrow.addEventListener('click', () => { collapsed = !collapsed; sync(); });
   }
 
   /* ---------- Scroll reveal (fade up once on entering viewport) ---------- */
@@ -65,9 +57,10 @@
 
   /* ---------- Glass card tilt ---------- */
   const glass = d.querySelector('.glass');
-  if (glass && matchMedia('(hover: hover) and (pointer: fine)').matches && !rm.matches) {
+  if (glass && !rm.matches) {
     const inner = glass.querySelector('.glass-in');
     glass.addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse') return;
       const r = glass.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
       inner.style.transform = `scale(1.05) rotateX(${((0.5 - y) * 15.5).toFixed(2)}deg) rotateY(${((x - 0.5) * 15).toFixed(2)}deg)`;
