@@ -128,7 +128,10 @@
   /* ---------- FAQ accordion ---------- */
   d.querySelectorAll('.qa-q').forEach(q => q.addEventListener('click', () => {
     const open = q.getAttribute('aria-expanded') !== 'true';
+    const box = q.closest('.qa-in'), ans = d.getElementById(q.getAttribute('aria-controls'));
+    const from = box.offsetHeight;
     q.setAttribute('aria-expanded', String(open));
-    d.getElementById(q.getAttribute('aria-controls')).hidden = !open;
+    ans.hidden = !open;
+    if (!rm.matches && box.animate) box.animate([{ height: from + 'px' }, { height: box.offsetHeight + 'px' }], { duration: 200, easing: 'ease-out' });
   }));
 })();
