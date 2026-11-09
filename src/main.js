@@ -1,0 +1,134 @@
+(() => {
+  const d = document, root = d.documentElement;
+  const rm = matchMedia('(prefers-reduced-motion: reduce)');
+  if (rm.matches) root.classList.add('rm');
+
+  /* ---------- Mobile menu ---------- */
+  const nav = d.querySelector('.nav'), burger = d.querySelector('.burger');
+  if (nav && burger) {
+    const sheetLinks = () => nav.querySelectorAll('.nav-sheet a, .logo, .burger');
+    const close = (focus) => { nav.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); burger.setAttribute('aria-label', 'Open menu'); if (focus) burger.focus(); };
+    burger.addEventListener('click', () => {
+      const open = !nav.classList.contains('open');
+      nav.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', String(open));
+      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    });
+    nav.querySelectorAll('.nav-sheet a').forEach(a => a.addEventListener('click', () => close(false)));
+    d.addEventListener('keydown', e => {
+      if (!nav.classList.contains('open')) return;
+      if (e.key === 'Escape') close(true);
+      if (e.key === 'Tab') { // keep focus inside the open sheet
+        const f = [...sheetLinks()].filter(el => el.offsetParent !== null);
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && d.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && d.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    matchMedia('(min-width: 810px)').addEventListener('change', e => e.matches && close(false));
+  }
+
+  /* ---------- Scroll reveal (fade up once on entering viewport) ---------- */
+  const rv = d.querySelectorAll('.rv');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0 });
+    rv.forEach(el => io.observe(el));
+    // tickers only run while visible (as on the original)
+    const tio = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('inview', e.isIntersecting)));
+    d.querySelectorAll('.tool-in').forEach(el => tio.observe(el));
+  } else { rv.forEach(el => el.classList.add('in')); d.querySelectorAll('.tool-in').forEach(el => el.classList.add('inview')); }
+
+  /* ---------- Pause animations button (WCAG 2.2.2) ---------- */
+  d.querySelectorAll('.pause-btn').forEach(b => b.addEventListener('click', () => {
+    const p = root.classList.toggle('paused');
+    d.querySelectorAll('.pause-btn').forEach(x => { x.setAttribute('aria-pressed', String(p)); x.textContent = p ? 'Play animations' : 'Pause animations'; });
+  }));
+
+  /* ---------- Scroll-linked word reveal ---------- */
+  const heads = [...d.querySelectorAll('.reveal-h')].map(h => ({ h, w: [...h.querySelectorAll('.w')] }));
+  if (heads.length && !rm.matches) {
+    let ticking = false;
+    const ease = t => t * t * (3 - 2 * t);
+    const update = () => {
+      ticking = false;
+      const vh = innerHeight;
+      heads.forEach(({ h, w }) => {
+        const top = h.getBoundingClientRect().top;
+        if (top > vh * 1.2 || top < -h.offsetHeight - vh) return;
+        const s = (vh * 0.8 - top) / vh, n = w.length - 1 || 1;
+        w.forEach((el, i) => {
+          const start = 0.02 + (i / n) * 0.47;
+          const t = Math.min(1, Math.max(0, (s - start) / 0.33));
+          el.style.opacity = (0.1 + 0.9 * ease(t)).toFixed(3);
+        });
+      });
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll, { passive: true });
+    update();
+  }
+
+  /* ---------- Glass card tilt ---------- */
+  const glass = d.querySelector('.glass');
+  if (glass && matchMedia('(hover: hover) and (pointer: fine)').matches && !rm.matches) {
+    const inner = glass.querySelector('.glass-in');
+    glass.addEventListener('pointermove', e => {
+      const r = glass.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      inner.style.transform = `scale(1.05) rotateX(${((0.5 - y) * 15.5).toFixed(2)}deg) rotateY(${((x - 0.5) * 15).toFixed(2)}deg)`;
+      glass.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
+      glass.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+    });
+    glass.addEventListener('pointerleave', () => { inner.style.transform = ''; });
+  }
+
+  /* ---------- Website plan: page dropdown + no-code toggle ---------- */
+  const card = d.querySelector('[data-plan]');
+  if (card) {
+    const prices = { 'Landing Page': ['$350', '$550'], '4–6 Pages': ['$600', '$1.2k'], 'More than 6 Pages': ['$800', '+$1.6k'] };
+    const priceEl = card.querySelector('.price'), unitEl = card.querySelector('.dd-label');
+    const btn = card.querySelector('.dd-btn'), menu = card.querySelector('.dd-menu'), sw = card.querySelector('.switch');
+    const opts = [...menu.querySelectorAll('button')];
+    let sel = 'Landing Page', noCode = false, shown = '$350', raf = 0;
+    const plus = (txt, s) => s === 'More than 6 Pages' && /\d+/.test(txt) && parseInt(txt.match(/\d+/)[0], 10) >= 800 && !txt.trim().startsWith('+') ? '+' + txt : txt;
+    const live = card.querySelector('#price-live');
+    const render = () => {
+      const target = prices[sel][noCode ? 1 : 0];
+      if (live) live.textContent = `Price ${plus(target, sel)}${noCode ? ' with no-code development' : ''}`;
+      cancelAnimationFrame(raf);
+      const a = shown.match(/\d+/), b = target.match(/\d+/);
+      if (rm.matches || !a || !b || a[0] === b[0]) { shown = target; priceEl.textContent = plus(target, sel); return; }
+      const from = parseInt(a[0], 10), delta = parseInt(b[0], 10) - from, t0 = performance.now();
+      const step = now => {
+        const t = Math.min((now - t0) / 500, 1), e = t * (2 - t);
+        shown = target.replace(/\d+/, String(Math.round(from + delta * e)));
+        priceEl.textContent = plus(shown, sel);
+        if (t < 1) raf = requestAnimationFrame(step); else shown = target;
+      };
+      raf = requestAnimationFrame(step);
+    };
+    const setOpen = o => { menu.hidden = !o; btn.setAttribute('aria-expanded', String(o)); if (o) (opts.find(x => x.getAttribute('aria-checked') === 'true') || opts[0]).focus(); };
+    btn.addEventListener('click', () => setOpen(menu.hidden));
+    opts.forEach(o => o.addEventListener('click', () => {
+      sel = o.dataset.v; opts.forEach(x => x.setAttribute('aria-checked', String(x === o)));
+      unitEl.textContent = o.textContent; btn.setAttribute('aria-label', 'Website size: ' + o.textContent); setOpen(false); btn.focus(); render();
+    }));
+    menu.addEventListener('keydown', e => {
+      const i = opts.indexOf(d.activeElement);
+      if (e.key === 'ArrowDown') { e.preventDefault(); opts[(i + 1) % opts.length].focus(); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); opts[(i - 1 + opts.length) % opts.length].focus(); }
+      if (e.key === 'Escape') { setOpen(false); btn.focus(); }
+    });
+    d.addEventListener('mousedown', e => { if (!menu.hidden && !card.querySelector('.dd').contains(e.target)) setOpen(false); });
+    d.addEventListener('focusin', e => { if (!menu.hidden && !card.querySelector('.dd').contains(e.target)) setOpen(false); });
+    sw.addEventListener('click', () => { noCode = !noCode; sw.setAttribute('aria-checked', String(noCode)); render(); });
+  }
+
+  /* ---------- FAQ accordion ---------- */
+  d.querySelectorAll('.qa-q').forEach(q => q.addEventListener('click', () => {
+    const open = q.getAttribute('aria-expanded') !== 'true';
+    q.setAttribute('aria-expanded', String(open));
+    d.getElementById(q.getAttribute('aria-controls')).hidden = !open;
+  }));
+})();
