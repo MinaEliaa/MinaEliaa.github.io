@@ -13,6 +13,22 @@
     addEventListener('scroll', onScroll, { passive: true }); onScroll();
     arrow.addEventListener('click', () => { collapsed = !collapsed; sync(); });
   }
+  /* ---------- Mobile menu (<810px): hamburger opens a sheet with LinkedIn, Behance, Start Project ---------- */
+  const burger = nav && nav.querySelector('.burger'), sheet = d.getElementById('nav-sheet');
+  if (burger && sheet) {
+    const links = () => [...sheet.querySelectorAll('a')];
+    const setMenu = (o, focus) => {
+      nav.classList.toggle('menu', o); burger.setAttribute('aria-expanded', String(o)); burger.setAttribute('aria-label', o ? 'Close menu' : 'Open menu');
+      links().forEach(a => o ? a.removeAttribute('tabindex') : a.setAttribute('tabindex', '-1'));
+      if (focus) (o ? links()[0] : burger).focus();
+    };
+    setMenu(false);
+    burger.addEventListener('click', () => setMenu(!nav.classList.contains('menu')));
+    links().forEach(a => a.addEventListener('click', () => setMenu(false)));
+    d.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('menu')) setMenu(false, true); });
+    d.addEventListener('pointerdown', e => { if (nav.classList.contains('menu') && !nav.contains(e.target)) setMenu(false); });
+    matchMedia('(min-width: 810px)').addEventListener('change', e => e.matches && setMenu(false));
+  }
 
   /* ---------- Scroll reveal (fade up once on entering viewport) ---------- */
   const rv = d.querySelectorAll('.rv');

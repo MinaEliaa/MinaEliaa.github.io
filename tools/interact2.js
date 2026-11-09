@@ -8,7 +8,7 @@ const ok = (c, m) => console.log((c ? 'PASS ' : 'FAIL ') + m);
   const p = await b.newPage(); await p.setViewport({ width: 1440, height: 900 });
   const errors = []; p.on('pageerror', e => errors.push(e.message));
   await p.goto(URL, { waitUntil: 'networkidle0' }); await wait(2000);
-  const nav = await p.$$eval('header a', a => a.map(x => x.getAttribute('href')));
+  const nav = await p.$$eval('.nav-in a', a => a.map(x => x.getAttribute('href')));
   ok(JSON.stringify(nav) === JSON.stringify(['./', 'https://www.linkedin.com/in/mina-elia-1223421a4/', 'https://www.behance.net/MinaElia29', 'mailto:minaelia.designer@gmail.com']), 'nav: logo, LinkedIn, Behance, Start Project');
   ok(await p.$$eval('a[href*="#plans"], #plans', e => e.length) === 0, 'no Plans section or links');
   ok((await p.$eval('.hero-sub', e => e.textContent)) === 'Hi, I’m Mina Elia | Senior UI/UX Designer & AI Product Builder', 'hero line updated');
