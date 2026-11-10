@@ -57,6 +57,13 @@ const toolNames = ['Lovable', 'Figma', 'Framer', 'Webflow', 'Linear', 'Notion', 
 const toolIcon = i => `<svg viewBox="0 0 82 82" preserveAspectRatio="none" width="82" height="80" aria-hidden="true" focusable="false"><use href="#t${i}"/></svg>`;
 
 /* ---------- Picture helper ---------- */
+// tiny deterministic star field as one box-shadow list (2000 x 1400 tile)
+function starField(n, seed, size) {
+  let s = seed; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const out = [];
+  for (let i = 0; i < n; i++) out.push(`${Math.round(r() * 2000)}px ${Math.round(r() * 1400)}px 0 ${size > 1 ? (size - 1) / 2 : 0}px rgba(255,255,255,${(0.3 + r() * 0.5).toFixed(2)})`);
+  return out.join(',');
+}
 function pic(name, { alt = '', w, h, sizes, eager = false, high = false, cls = '', style = '' }) {
   const m = M[name]; if (!m) throw new Error('no image ' + name);
   const set = ext => m.widths.map(x => `img/${name}-${x}.${ext} ${x}w`).join(', ');
@@ -66,7 +73,10 @@ function pic(name, { alt = '', w, h, sizes, eager = false, high = false, cls = '
 
 /* ---------- Content ---------- */
 const subtitle = 'Hi, I’m Mina Elia | Senior UI/UX Designer & AI Product Builder';
-const h1Words = ['My', 'Latest', 'Project', 'Always', 'my', 'Best'];
+// hero heading: letter-by-letter reveal (Avero / Framer "appear" text effect, character tokens)
+// line 1: 0.05 s stagger, line 2: 0.1 s stagger, both start together
+const h1Lines = [['My', 'Latest', 'Project'], ['Always', 'my', 'Best']];
+const h1Html = h1Lines.map((words, li) => { let n = 0; return words.map(w => `<span class="wrd">${[...w].map(c => `<span class="ch l${li + 1}" style="--d:${(0.1 + (n++) * (li ? 0.1 : 0.05)).toFixed(2)}s">${c}</span>`).join('')}</span>`).join(' '); }).join('&#32;<br class="t-br">');
 const charSpans = subtitle.split(' ').map(word => `<span class="wrd">${[...word].map(c => `<span class="ch">${c.replace('&', '&amp;')}</span>`).join('')}</span>`).join(' ');
 
 const screens = [
@@ -149,7 +159,7 @@ const desc = 'Mina Elia — Senior UI/UX Designer and AI product builder with 4+
 const css = fs.readFileSync(`${SRC}/styles.css`, 'utf8');
 
 const head = (t, d, canonical, extra = '') => `<!doctype html><html lang="en" class="no-js"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${t}</title><meta name="description" content="${d}"><link rel="canonical" href="${canonical}"><meta name="theme-color" content="#f1f1f1"><meta name="robots" content="max-image-preview:large">
-<link rel="preload" href="/fonts/hanken-600.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/dmsans-400.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/dmsans-500-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/onest.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png"><link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
 <meta property="og:type" content="website"><meta property="og:url" content="${canonical}"><meta property="og:title" content="${t}"><meta property="og:description" content="${d}"><meta property="og:image" content="${ORIGIN}og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Mina Elia — UI/UX Designer portfolio"><meta property="og:site_name" content="Mina Elia"><meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${t}"><meta name="twitter:description" content="${d}"><meta name="twitter:image" content="${ORIGIN}og.jpg"><meta name="twitter:image:alt" content="Mina Elia — UI/UX Designer portfolio">
@@ -174,8 +184,9 @@ const plansHtml = `<section class="plans" id="plans" aria-labelledby="plans-titl
 
 const html = `${head(title, desc, ORIGIN, `<script type="application/ld+json">${JSON.stringify(ld)}</script>`)}<body><a class="skip" href="#main">Skip to content</a>${sprite}${navHtml}
 <main id="main">
-<section class="hero" id="hero-1" aria-labelledby="hero-title"><div class="avatar">${pic('avatar', { alt: 'Portrait of Mina Elia', w: 68, h: 68, eager: true, high: true })}</div><p class="hero-sub"><span class="sub-in">${subtitle.replace('&', '&amp;')}</span></p><h1 id="hero-title"><span class="sr-only">My Latest Project Always my Best</span><span aria-hidden="true">${h1Words.map((w, i) => `<span class="wd" style="animation-delay:${(0.3 + i * 0.05).toFixed(2)}s">${w}</span>`).join(' ').replace('Project</span> ', 'Project</span>&#32;<br class="t-br">')}</span></h1><a class="btn btn-white" href="${MAIL}" target="_blank" rel="noopener">Start your Project</a></section>
-<section class="screens" id="screens-1" aria-label="Recent project screens"><button class="pause-btn" type="button" aria-pressed="false">Pause animations</button><div class="track-wrap"><div class="track">${screenSet(false)}${screenSet(true)}</div></div></section>
+<div class="sky"><div class="sky-bg" aria-hidden="true"><div class="stars s1" style="--st:${starField(110, 7, 1)}"></div><div class="stars s2" style="--st:${starField(45, 19, 1.6)}"></div><div class="stars s3" style="--st:${starField(14, 31, 2)}"></div><div class="sky-beam"></div><canvas class="sky-fx" width="2" height="2"></canvas><div class="sky-shade"></div></div>
+<section class="hero" id="hero-1" aria-labelledby="hero-title"><div class="avatar">${pic('avatar', { alt: 'Portrait of Mina Elia', w: 68, h: 68, eager: true, high: true })}</div><p class="hero-sub"><span class="sub-in">${subtitle.replace('&', '&amp;')}</span></p><h1 id="hero-title"><span class="sr-only">My Latest Project Always my Best</span><span aria-hidden="true">${h1Html}</span></h1><a class="btn btn-white" href="${MAIL}" target="_blank" rel="noopener">Start your Project</a></section>
+<section class="screens" id="screens-1" aria-label="Recent project screens"><button class="pause-btn" type="button" aria-pressed="false">Pause animations</button><div class="track-wrap"><div class="track">${screenSet(false)}${screenSet(true)}</div></div></section></div>
 <section class="quote" id="quote" aria-label="About Mina"><div class="dark"><div class="aurora">${pic('aurora', { alt: '', w: 1536, h: 1024, sizes: '(max-width: 809px) 600px, (max-width: 1199px) 1152px, 1536px' })}</div><div class="q-content rv"><h2 class="reveal-h">${words('I’m a Senior UI/UX Designer with 4+ years of experience crafting apps, websites and digital products')}</h2><div class="glass"><div class="glass-in">${pic('glass-card', { alt: 'Card reading UI/UX Designer, Framer Expert', w: 360, h: 212, sizes: '(max-width: 809px) 240px, (max-width: 1199px) 320px, 360px' })}</div></div><h2 class="reveal-h">${words('My portfolio spans fintech, mobility and health, blending UX strategy, design systems and AI-powered building')}</h2></div></div></section>
 <section class="services" id="services" aria-labelledby="services-title"><div class="head"><p class="label rv">Services</p><h2 class="h2 rv" id="services-title">Expertise in What<br>I Build and Design</h2></div><ul class="svc-grid">${svcCards.map(c => `<li class="svc rv${c.cls}"><div class="svc-in"><h3>${c.t}</h3>${c.ill.replace(/<i class="b" style="([^"]*?top:(\d+)px;[^"]*?height:(\d+)px[^"]*)"/g, (m, st, t, h) => +t + +h >= 124 ? `<i class="b bb" style="${st}"` : m).replace(/border-radius:17px/g, 'border-radius:17px 17px 0 0')}</div></li>`).join('')}</ul></section>
 <section class="projects" id="projects" aria-labelledby="projects-title"><div class="white"><div class="head"><p class="label rv">Projects</p><h2 class="h2 rv" id="projects-title">Work That Speaks&#32;<br>for Itself</h2></div><ul class="proj-grid">${projHtml}</ul></div></section>
