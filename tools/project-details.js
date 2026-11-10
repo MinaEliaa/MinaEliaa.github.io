@@ -37,6 +37,16 @@ const DETAILS = {
     did: ['Understanding the challenge', 'Product & community research', 'User insights', 'Competitive analysis', 'Feature exploration', 'Sitemap & UX logic', 'Design system', 'UI revamp', 'Prototype', 'Presentation'],
     extra: { title: 'Research insights', stats: [['60–70%', 'of users only receive their salary in AxisPay, then stop using it after payday'], ['4', 'pain points: functional-only experience, inconsistent UI, zero rewards visibility, no gamification'], ['3', 'competitors analysed: Telda, Klivvr and Lucky']] },
     keywords: ['Retention', 'Gamified rewards', 'Daily habits', 'Digital trust', 'Glassmorphism'],
+    sitemap: { note: 'Every reward path starts from Home and ends in one clear confirm step: pay a bill, cash out, pick a voucher or claim a gift.',
+      tree: ['Home', [
+        ['Weekly Challenges'],
+        ['My Points', [['Redeem Points', [
+          ['Bills', [['Add New Bill', [['Payment']]]]],
+          ['Cashback', [['Enter Amount', [['Enter Passcode']]]]],
+          ['Axis Vouchers', [['Partners', [['Select Voucher']]]]],
+        ]]]],
+        ['Rewards', [['Limited Gifts', [['Gift Details']]]]],
+      ]] },
     flows: [
       { name: 'Home & points', kind: 'phone', imgs: ['p-axispay-1', 'p-axispay-2', 'p-axispay-3'] },
       { name: 'Redeem points', kind: 'phone', imgs: ['p-axispay-2', 'p-axispay-3', 'p-axispay-1'] },
@@ -90,6 +100,8 @@ function renderDetail(key, p, pic, cover) {
   const extra = d.extra.stats
     ? `<ul class="pd-stats">${d.extra.stats.map(([n, l]) => `<li><b>${esc(n)}</b><span>${esc(l)}</span></li>`).join('')}</ul>`
     : `<ul class="pd-list">${d.extra.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  const node = ([label, kids], depth) => `<li><span class="sm-n${depth === 0 ? ' root' : ''}${kids ? '' : ' leaf'}">${depth === 0 ? '<i aria-hidden="true"></i>' : ''}${esc(label)}</span>${kids ? `<ul>${kids.map(k => node(k, depth + 1)).join('')}</ul>` : ''}</li>`;
+  const sitemap = d.sitemap ? `<section class="pd-sec pd-map"><h3>Sitemap</h3><p class="pd-hint">${esc(d.sitemap.note)}</p><div class="sm-wrap" tabindex="0" role="region" aria-label="${esc(p.name)} sitemap"><ul class="sm">${node(d.sitemap.tree, 0)}</ul></div></section>` : '';
   const flows = d.flows.map((f, fi) => {
     const sz = f.kind === 'web' ? WEB : PHONE;
     const shots = f.imgs.map((n, i) => `<span class="fs" style="--i:${i}">${pic(n, { alt: `${f.name}, screen ${i + 1}`, w: sz.w, h: sz.h, sizes: `${sz.w}px` })}</span>`).join('');
@@ -105,6 +117,7 @@ ${d.links.length ? `<div class="pd-links">${d.links.map(linkBtn).join('')}</div>
 <section class="pd-sec"><h3>What I did</h3><ul class="pd-chips">${d.did.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
 <section class="pd-sec"><h3>${esc(d.extra.title)}</h3>${extra}</section>
 <section class="pd-sec"><h3>Keywords</h3><ul class="pd-chips soft">${d.keywords.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
+${sitemap}
 <section class="pd-sec pd-flows"><h3>Flows</h3><p class="pd-hint" id="${id}-hint">Tap a flow to spread its screens, tap again to stack them.</p>${flows}</section>
 </article>`;
 }
