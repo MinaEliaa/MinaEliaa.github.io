@@ -136,7 +136,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 @keyframes twinkle{from{opacity:.25}to{opacity:1}}
 .paused .stars{animation-play-state:paused}
 .q-content{display:flex;flex-direction:column;align-items:center;position:relative;z-index:5}
-.cta .dark>:not(.aurora){position:relative;z-index:2}
+.cta .dark>:not(.aurora):not(.stars-wrap){position:relative;z-index:2}
+.cta .dark>.stars-wrap{z-index:1}
 .reveal-h{max-width:800px;font-family:var(--display);font-weight:600;font-size:56px;line-height:70px;color:#fff;text-align:center}
 .reveal-h .w{display:inline-block;opacity:.1}
 .no-js .reveal-h .w,.rm .reveal-h .w{opacity:1}
@@ -174,7 +175,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .s-live{background:var(--live-bg);color:var(--live)}
 .s-soon{background:var(--soon-bg);color:var(--soon)}
 .s-ws{background:var(--ws-bg);color:var(--ws)}
-.s-cat{background:var(--live-bg);color:var(--live);white-space:nowrap}
+.s-cat{background:#fff;color:var(--ink);white-space:nowrap}
 
 /* ===== Case studies (bento boards): 2-column grid like Projects ===== */
 .cases{padding:128px 20px;content-visibility:auto;contain-intrinsic-size:auto 1707px}
@@ -245,10 +246,12 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .tool-row{position:absolute;left:var(--inset);right:var(--inset);height:var(--th);overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 10%,#000 90%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 10%,#000 90%,transparent 100%)}
 .tool-row.r1{top:16px}.tool-row.r2{top:calc(40px + var(--th))}
 .tool-track{display:flex;width:max-content;animation:toolL 14.7s linear infinite;animation-play-state:paused}
+.r1 .tool-track{animation-duration:17.15s}
+.tool-in .stars-wrap{z-index:0}.tool-row{z-index:1}
 .r2 .tool-track{animation-name:toolR;transform:translateX(calc(-6 * var(--pitch)))}
 .tool-track svg{flex:none;width:var(--tw);height:var(--th);margin-right:var(--gap)}
 .inview .tool-track{animation-play-state:running}
-@keyframes toolL{from{transform:translateX(0)}to{transform:translateX(calc(-6 * var(--pitch)))}}
+@keyframes toolL{from{transform:translateX(0)}to{transform:translateX(calc(-1 * var(--n,6) * var(--pitch)))}}
 @keyframes toolR{from{transform:translateX(calc(-6 * var(--pitch)))}to{transform:translateX(0)}}
 
 /* ===== FAQ (sticky) + CTA ===== */
@@ -406,6 +409,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
   .tool-frame{padding:16px;margin-top:24px}
   .tool-in{--inset:16px;--gap:12px;--tw:calc((100cqw - 2 * var(--inset) - 2 * var(--gap)) / 3);--th:var(--tw)}
   .tool-track{animation-duration:12s}
+  .r1 .tool-track{animation-duration:14s}
   .cases{padding:40px 16px;contain-intrinsic-size:auto 2410px}
   .cases .h2{margin-top:38px}
   .case-grid{grid-template-columns:1fr;margin-top:58px;gap:32px}

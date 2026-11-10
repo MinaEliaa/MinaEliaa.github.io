@@ -45,7 +45,7 @@ for (const n of ['plan-mobile', 'plan-website', 'linkedin', 'whatsapp', 'behance
 // sprite: check icon + 12 tool icons, gradient defs hoisted to the top level
 let spriteDefs = '', symbols = '';
 { const c = cleanSvg('check.svg'); symbols += `<symbol id="i-check" viewBox="${viewBoxOf(c)}">${innerOf(c)}</symbol>`; }
-for (let i = 1; i <= 12; i++) {
+for (let i = 1; i <= 13; i++) {
   let c = cleanSvg(`tool${i}.svg`);
   const vb = viewBoxOf(c);
   let body = innerOf(c);
@@ -53,7 +53,7 @@ for (let i = 1; i <= 12; i++) {
   symbols += `<symbol id="t${i}" viewBox="${vb}" preserveAspectRatio="none">${body}</symbol>`;
 }
 const sprite = `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>${spriteDefs}</defs>${symbols}</svg>`;
-const toolNames = ['Lovable', 'Figma', 'Framer', 'Webflow', 'Linear', 'Notion', 'Illustrator', 'Photoshop', 'Bolt', 'Spline', 'Trello', 'Relume'];
+const toolNames = ['Lovable', 'Figma', 'Framer', 'Webflow', 'Linear', 'Notion', 'Claude', 'Illustrator', 'Photoshop', 'Bolt', 'Spline', 'Trello', 'Relume'];
 const toolIcon = i => `<svg viewBox="0 0 82 82" preserveAspectRatio="none" width="82" height="80" aria-hidden="true" focusable="false"><use href="#t${i}"/></svg>`;
 
 /* ---------- Picture helper ---------- */
@@ -88,7 +88,7 @@ const screens = [
 ];
 const screenSet = (dup) => `<div class="set"${dup ? ' aria-hidden="true"' : ''}>${screens.map(([n, alt, cls], i) => {
   const wide = !!cls; const w = wide ? (cls === 'wide' ? 457 : 456) : 218;
-  return `<div class="frame${cls ? ' ' + cls : ''}">${pic(n, { alt: dup ? '' : alt, w, h: 470, sizes: `${w}px`, eager: !dup && i < 5, high: !dup && i < 2 })}</div>`;
+  return `<div class="frame${cls ? ' ' + cls : ''}">${pic(n, { alt: dup ? '' : alt, w, h: 470, sizes: `${w}px`, eager: !dup && i < 2 })}</div>`;
 }).join('')}</div>`;
 
 const words = (s, brAfter = [], extra = {}) => { const a = s.split(' '); return a.map((x, i) => `<span class="w${extra[x] ? ' ' + extra[x] : ''}">${x}</span>` + (i === a.length - 1 ? '' : (brAfter.includes(x) ? '&#32;<br class="m-br">' : ' '))).join(''); };
@@ -132,8 +132,16 @@ const mobileFeats = ['Decide bussiness goals and features', 'Sitemaps and Userfl
 const webFeats = ['Decide end goals and sections', 'Sitemaps and Userflows', 'Building structure and variables for different breakpoints', 'UI design for pages', 'Prototype and Usability testing', 'Prototype and animations'];
 const customFeats = ['Mobile app design (one app or multiple apps: customer + provider)', 'Marketing website or landing pages', 'Saas Products or Web applications', 'Dashboard or internal product tools', 'Prototypes, interactions, and animations', 'Priority support, revisions, and feature iteration'];
 
-const faqAnswer = 'I design mobile apps, websites, design systems, and run usability tests. I also build marketing websites using Webflow and Framer.';
-const faqItem = i => `<div class="qa"><div class="qa-in"><h3><button class="qa-q" type="button" aria-expanded="false" aria-controls="faq-a${i}" id="faq-q${i}"><span>What services do you offer&nbsp;?</span><i class="pm" aria-hidden="true"></i></button></h3><p class="qa-a" id="faq-a${i}" role="region" aria-labelledby="faq-q${i}" hidden>${faqAnswer}</p></div></div>`;
+// FAQ: written only from Mina's own profile text
+const faqs = [
+  ['How much experience do you have?', 'I’m a Senior Product UI/UX Designer with over 4 years of experience, working with teams and clients across Egypt, Saudi Arabia, the UAE, Jordan and the United States.'],
+  ['Which industries have you designed for?', 'Fintech, ride-hailing services, consultation platforms and SaaS. I focus on smooth, scalable, user-centered experiences with high-quality UI.'],
+  ['What services do you offer?', 'Mobile app design, marketing websites, SaaS products from design to launch, dashboards, App Store and Play Store preview screenshots, design systems, and bento and case-study presentations.'],
+  ['Can you build or fix a design system?', 'Yes. I build design systems from scratch and restructure existing ones for consistency, using Figma Variables with primitive, alias and semantic layers, scalable tokens for spacing, sizing, borders and typography, and flexible components and variants.'],
+  ['Do you develop websites too?', 'Yes. I design marketing websites and develop them in Framer, so you get a live, responsive site and not only the design files.'],
+  ['Do you build products with AI tools?', 'Yes. I use vibe coding with Lovable and Claude Code, with Supabase integration, to take products from design to a working launch.'],
+];
+const faqItem = i => `<div class="qa"><div class="qa-in"><h3><button class="qa-q" type="button" aria-expanded="false" aria-controls="faq-a${i}" id="faq-q${i}"><span>${faqs[i - 1][0]}</span><i class="pm" aria-hidden="true"></i></button></h3><p class="qa-a" id="faq-a${i}" role="region" aria-labelledby="faq-q${i}" hidden>${faqs[i - 1][1]}</p></div></div>`;
 
 const toolRow = (ids) => { const one = ids.map(toolIcon).join(''); return one + one + one + one; };
 
@@ -143,9 +151,11 @@ const ext = (href, label, inner, cls = '') => `<a href="${href}" target="_blank"
 const ld = {
   '@context': 'https://schema.org',
   '@graph': [
-    { '@type': 'Person', '@id': ORIGIN + '#mina', name: 'Mina Elia', jobTitle: 'Senior UI/UX Designer & AI Product Builder', url: ORIGIN, image: ORIGIN + 'img/avatar-204.webp', email: 'mailto:minaelia.designer@gmail.com',
+    { '@type': 'Person', '@id': ORIGIN + '#mina', name: 'Mina Elia', jobTitle: 'Senior UI/UX Designer & AI Product Builder', url: ORIGIN, image: ORIGIN + 'img/avatar-204.webp', description: 'Senior Product UI/UX Designer with over 4 years of experience across Egypt, Saudi Arabia, the UAE, Jordan and the United States, designing fintech, ride-hailing, consultation and SaaS products.',
       sameAs: ['https://www.linkedin.com/in/mina-elia-1223421a4/', 'https://www.behance.net/MinaElia29', 'https://dribbble.com/Mina_Elia'],
-      knowsAbout: ['AI product building', 'UI design', 'UX design', 'Mobile app design', 'Website design', 'Framer', 'Webflow', 'Design systems', 'Prototyping'] },
+      knowsAbout: ['Product design', 'UI design', 'UX design', 'Mobile app design', 'Marketing websites', 'Framer development', 'SaaS product design', 'Dashboard design', 'App Store and Play Store screenshots', 'Design systems', 'Figma Variables', 'Design tokens', 'Bento and case study presentations', 'Vibe coding', 'Lovable', 'Claude Code', 'Supabase', 'Fintech', 'Ride-hailing'] },
+    { '@type': 'ProfilePage', '@id': ORIGIN + '#page', url: ORIGIN, name: 'Mina Elia — Senior UI/UX Designer & AI Product Builder', inLanguage: 'en', isPartOf: { '@id': ORIGIN + '#website' }, mainEntity: { '@id': ORIGIN + '#mina' } },
+    { '@type': 'FAQPage', '@id': ORIGIN + '#faq', mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
     { '@type': 'WebSite', '@id': ORIGIN + '#website', url: ORIGIN, name: 'Mina Elia — Portfolio', inLanguage: 'en', publisher: { '@id': ORIGIN + '#mina' } },
     { '@type': 'ItemList', name: 'Case studies', itemListElement: cases.map(([k, n, kind, alt], i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'CreativeWork', name: n + ' — case study', genre: kind, description: alt, creator: { '@id': ORIGIN + '#mina' }, url: ORIGIN + '#case-studies', image: ORIGIN + 'img/bento-' + k + '-1280.jpg' } })) },
     { '@type': 'ItemList', name: 'Work That Speaks for Itself', itemListElement: projects.map(([n, s, label], i) => ({ '@type': 'ListItem', position: i + 1,
@@ -155,10 +165,10 @@ const ld = {
 };
 
 const title = 'Mina Elia — Senior UI/UX Designer & AI Product Builder';
-const desc = 'Mina Elia — Senior UI/UX Designer and AI product builder with 4+ years of experience designing mobile apps, websites and digital products. View projects, services and tools.';
-const css = fs.readFileSync(`${SRC}/styles.css`, 'utf8');
+const desc = 'Mina Elia, Senior Product UI/UX Designer (4+ years: Egypt, KSA, UAE, Jordan, US). Mobile apps, Framer websites, SaaS, dashboards and design systems.';
+const css = fs.readFileSync(`${SRC}/styles.css`, 'utf8') + `:root{--st1:${starField(110, 7, 1)};--st2:${starField(45, 19, 1.6)};--st3:${starField(14, 31, 2)}}.stars.s1{--st:var(--st1)}.stars.s2{--st:var(--st2)}.stars.s3{--st:var(--st3)}`;
 
-const head = (t, d, canonical, extra = '') => `<!doctype html><html lang="en" class="no-js"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${t}</title><meta name="description" content="${d}"><link rel="canonical" href="${canonical}"><meta name="theme-color" content="#f1f1f1"><meta name="robots" content="max-image-preview:large">
+const head = (t, d, canonical, extra = '') => `<!doctype html><html lang="en" class="no-js"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${t}</title><meta name="description" content="${d}"><link rel="canonical" href="${canonical}"><meta name="theme-color" content="#f1f1f1"><meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <link rel="preload" href="/fonts/onest.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png"><link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
 <meta property="og:type" content="website"><meta property="og:url" content="${canonical}"><meta property="og:title" content="${t}"><meta property="og:description" content="${d}"><meta property="og:image" content="${ORIGIN}og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Mina Elia — UI/UX Designer portfolio"><meta property="og:site_name" content="Mina Elia"><meta property="og:locale" content="en_US">
@@ -186,13 +196,13 @@ const html = `${head(title, desc, ORIGIN, `<script type="application/ld+json">${
 <main id="main">
 <section class="hero" id="hero-1" aria-labelledby="hero-title"><div class="avatar">${pic('avatar', { alt: 'Portrait of Mina Elia', w: 68, h: 68, eager: true, high: true })}</div><p class="hero-sub"><span class="sub-in">${subtitle.replace('&', '&amp;')}</span></p><h1 id="hero-title"><span class="sr-only">My Latest Project Always my Best</span><span aria-hidden="true">${h1Html}</span></h1><a class="btn btn-white" href="${MAIL}" target="_blank" rel="noopener">Start your Project</a></section>
 <section class="screens" id="screens-1" aria-label="Recent project screens"><button class="pause-btn" type="button" aria-pressed="false">Pause animations</button><div class="track-wrap"><div class="track">${screenSet(false)}${screenSet(true)}</div></div></section>
-<section class="quote" id="quote" aria-label="About Mina"><div class="dark"><div class="stars-wrap" aria-hidden="true"><div class="stars s1" style="--st:${starField(110, 7, 1)}"></div><div class="stars s2" style="--st:${starField(45, 19, 1.6)}"></div><div class="stars s3" style="--st:${starField(14, 31, 2)}"></div></div><div class="aurora">${pic('aurora', { alt: '', w: 1536, h: 1024, sizes: '(max-width: 809px) 600px, (max-width: 1199px) 1152px, 1536px' })}</div><div class="q-content rv"><h2 class="reveal-h">${words('I’m a Senior UI/UX Designer with 4+ years of experience crafting apps, websites and digital products')}</h2><div class="glass"><div class="glass-in">${pic('glass-card', { alt: 'Card reading UI/UX Designer, Product Builder', w: 360, h: 212, sizes: '(max-width: 809px) 240px, (max-width: 1199px) 320px, 360px' })}</div></div><h2 class="reveal-h">${words('My portfolio spans fintech, mobility and health, blending UX strategy, design systems and AI-powered building')}</h2></div></div></section>
+<section class="quote" id="quote" aria-label="About Mina"><div class="dark"><div class="stars-wrap" aria-hidden="true"><div class="stars s1"></div><div class="stars s2"></div><div class="stars s3"></div></div><div class="aurora">${pic('aurora', { alt: '', w: 1536, h: 1024, sizes: '(max-width: 809px) 600px, (max-width: 1199px) 1152px, 1536px' })}</div><div class="q-content rv"><h2 class="reveal-h">${words('I’m a Senior UI/UX Designer with 4+ years of experience crafting apps, websites and digital products')}</h2><div class="glass"><div class="glass-in">${pic('glass-card', { alt: 'Card reading UI/UX Designer, Product Builder', w: 360, h: 212, sizes: '(max-width: 809px) 240px, (max-width: 1199px) 320px, 360px' })}</div></div><h2 class="reveal-h">${words('My portfolio spans fintech, mobility and health, blending UX strategy, design systems and AI-powered building')}</h2></div></div></section>
 <section class="services" id="services" aria-labelledby="services-title"><div class="head"><p class="label rv">Services</p><h2 class="h2 rv" id="services-title">Expertise in What<br>I Build and Design</h2></div><ul class="svc-grid">${svcCards.map(c => `<li class="svc rv${c.cls}"><div class="svc-in"><h3>${c.t}</h3>${c.ill.replace(/<i class="b" style="([^"]*?top:(\d+)px;[^"]*?height:(\d+)px[^"]*)"/g, (m, st, t, h) => +t + +h >= 124 ? `<i class="b bb" style="${st}"` : m).replace(/border-radius:17px/g, 'border-radius:17px 17px 0 0')}</div></li>`).join('')}</ul></section>
 <section class="projects" id="projects" aria-labelledby="projects-title"><div class="white"><div class="head"><p class="label rv">Projects</p><h2 class="h2 rv" id="projects-title">Work That Speaks&#32;<br>for Itself</h2></div><ul class="proj-grid">${projHtml}</ul></div></section>
 ${casesHtml}
-${SHOW_PLANS ? plansHtml : ''}<section class="tools" id="tools" aria-labelledby="tools-title"><div class="white"><div class="head"><p class="label rv">Tools</p><h2 class="h2 rv" id="tools-title">Each Tool Shape<br>My Process</h2></div><p class="tools-desc rv">I used <span>+12 specialized tools</span> to produce the final product</p><div class="tool-frame rv"><div class="tool-in" role="img" aria-label="Tools: ${toolNames.join(', ')}">${pic('aurora', { alt: '', w: 608, h: 216, sizes: '(max-width: 809px) 380px, 768px', style: 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1' })}<div class="tool-row r1"><div class="tool-track">${toolRow([1, 2, 3, 4, 5, 6])}</div></div><div class="tool-row r2"><div class="tool-track">${toolRow([7, 8, 9, 10, 11, 12])}</div></div></div></div></div></section>
+${SHOW_PLANS ? plansHtml : ''}<section class="tools" id="tools" aria-labelledby="tools-title"><div class="white"><div class="head"><p class="label rv">Tools</p><h2 class="h2 rv" id="tools-title">Each Tool Shape<br>My Process</h2></div><p class="tools-desc rv">I used <span>+13 specialized tools</span> to produce the final product</p><div class="tool-frame rv"><div class="tool-in" role="img" aria-label="Tools: ${toolNames.join(', ')}">${pic('aurora', { alt: '', w: 608, h: 216, sizes: '(max-width: 809px) 380px, 768px', style: 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1' })}<div class="stars-wrap" aria-hidden="true"><div class="stars s1"></div><div class="stars s2"></div><div class="stars s3"></div></div><div class="tool-row r1" style="--n:7"><div class="tool-track">${toolRow([1, 2, 3, 4, 5, 6, 13])}</div></div><div class="tool-row r2"><div class="tool-track">${toolRow([7, 8, 9, 10, 11, 12])}</div></div></div></div></div></section>
 <section class="faq" aria-labelledby="faq-title"><div class="head"><p class="label rv">FAQ's</p><h2 class="h2 rv" id="faq-title">Questions You&#32;<br>Might Have</h2></div><div class="faq-grid"><div class="faq-col">${[1, 2, 3].map(faqItem).join('')}</div><div class="faq-col">${[4, 5, 6].map(faqItem).join('')}</div></div></section>
-<section class="cta" aria-labelledby="cta-title"><div class="dark"><div class="aurora">${pic('aurora', { alt: '', w: 1536, h: 1024, sizes: '(max-width: 809px) 600px, (max-width: 1199px) 1152px, 1536px' })}</div><h2 class="reveal-h cta-h" id="cta-title">${words('Start your Project with')}&#32;<br>${words('360° Design Expertise')}</h2><p class="cta-sub">Visual + Graphic - UI/UX - Product - Framer &amp; Webflow</p><a class="btn btn-white" href="${MAIL}" target="_blank" rel="noopener">Start your Project</a><div class="rule" aria-hidden="true"></div><footer>${footHtml}</footer></div></section>
+<section class="cta" aria-labelledby="cta-title"><div class="dark"><div class="stars-wrap" aria-hidden="true"><div class="stars s1"></div><div class="stars s2"></div><div class="stars s3"></div></div><div class="aurora">${pic('aurora', { alt: '', w: 1536, h: 1024, sizes: '(max-width: 809px) 600px, (max-width: 1199px) 1152px, 1536px' })}</div><h2 class="reveal-h cta-h" id="cta-title">${words('Start your Project with')}&#32;<br>${words('360° Design Expertise')}</h2><p class="cta-sub">Visual + Graphic - UI/UX - Product - Framer &amp; Webflow</p><a class="btn btn-white" href="${MAIL}" target="_blank" rel="noopener">Start your Project</a><div class="rule" aria-hidden="true"></div><footer>${footHtml}</footer></div></section>
 </main><script src="/js/main.js" defer></script></body></html>`;
 
 const notFound = `${head('404 — Mina Elia', 'The path you seek has vanished. Head back to Mina Elia’s portfolio.', ORIGIN + '404.html', '<meta name="robots" content="noindex">')}<body><a class="skip" href="#main">Skip to content</a>${navHtml}<main id="main"><section class="hero" style="min-height:100vh;padding-bottom:80px;justify-content:center"><h1 style="margin-top:0">404 - The path you seek has vanished.</h1><p class="hero-sub">This page drifts in the void, where no words unfold.</p><a class="btn btn-white" style="margin-top:32px;opacity:1;animation:none;transform:none" href="/">Back to home</a></section></main><script src="/js/main.js" defer></script></body></html>`;
@@ -208,12 +218,26 @@ const notFound = `${head('404 — Mina Elia', 'The path you seek has vanished. H
     const vis = lines.map(l => l.split(' ').map(w => `<span class="wrd">${[...w].map(c => `<span class="ch" style="--d:${(n++ * 0.025).toFixed(3)}s">${esc(c)}</span>`).join('')}</span>`).join(' ')).join('<br>');
     return `<h2 class="h2 chx"${id}><span class="sr-only">${lines.map(l => l.split('').map(esc).join('')).join(' ')}</span><span aria-hidden="true">${vis}</span></h2>`;
   });
-  fs.writeFileSync(`${SITE}/index.html`, await minify(htmlOut, opts));
-  fs.writeFileSync(`${SITE}/404.html`, await minify(notFound, opts));
+  // security + bot hygiene, applied after minify so nothing is re-decoded
+  const crypto = require('crypto');
+  const harden = h => {
+    const inl = (h.match(/<script>([^<]*)<\/script>/) || [])[1] || '';
+    const sha = crypto.createHash('sha256').update(inl).digest('base64');
+    const csp = `default-src 'self'; script-src 'self' 'sha256-${sha}'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests`;
+    const enc = s => [...s].map(c => '&#' + c.charCodeAt(0) + ';').join('');
+    return h.replace('<meta charset="utf-8">', `<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="${csp}"><meta name="referrer" content="strict-origin-when-cross-origin">`)
+      .replace(/href="mailto:([^"]+)"/g, (m, a) => `href="${enc('mailto:' + a)}"`);
+  };
+  fs.writeFileSync(`${SITE}/index.html`, harden(await minify(htmlOut, opts)));
+  fs.writeFileSync(`${SITE}/404.html`, harden(await minify(notFound, opts)));
   fs.mkdirSync(`${SITE}/js`, { recursive: true });
   const js = await terser.minify(fs.readFileSync(`${SRC}/main.js`, 'utf8'), { compress: { passes: 2 }, mangle: true, format: { comments: false } });
   fs.writeFileSync(`${SITE}/js/main.js`, js.code);
-  fs.writeFileSync(`${SITE}/robots.txt`, `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}sitemap.xml\n`);
+  // robots: search engines and AI answer engines welcome (GEO); SEO-tool and bulk scraper bots blocked
+  const blocked = ['AhrefsBot', 'SemrushBot', 'MJ12bot', 'DotBot', 'BLEXBot', 'PetalBot', 'Bytespider', 'DataForSeoBot', 'MegaIndex', 'serpstatbot', 'SeekportBot', 'barkrowler', 'ZoominfoBot', 'magpie-crawler', 'Scrapy', 'img2dataset'];
+  fs.writeFileSync(`${SITE}/robots.txt`, `# Search and AI answer engines are welcome\nUser-agent: *\nAllow: /\nDisallow: /404.html\n\n${blocked.map(b => `User-agent: ${b}\nDisallow: /`).join('\n\n')}\n\nSitemap: ${ORIGIN}sitemap.xml\n`);
+  // llms.txt: plain-language summary for AI assistants and answer engines
+  fs.writeFileSync(`${SITE}/llms.txt`, `# Mina Elia\n\n> Senior Product UI/UX Designer and AI product builder with over 4 years of experience across Egypt, Saudi Arabia, the UAE, Jordan and the United States.\n\nMina designs smooth, scalable, user-centered digital products with high-quality UI, across fintech, ride-hailing services, consultation platforms and SaaS.\n\n## Expertise\n\n- Mobile app design\n- Marketing websites, with Framer development\n- SaaS products, from design to launch\n- Dashboard design\n- App Store and Play Store preview screenshots\n- Design systems\n- Bento design and case-study presentations\n- Vibe coding with Lovable, Claude Code and Supabase\n\n## Design systems\n\n- Builds design systems from scratch and restructures existing ones for consistency\n- Figma Variables with primitive, alias and semantic layers\n- Scalable tokens for spacing, sizing, borders and typography\n- Complete typography systems and flexible components with variants\n\n## Case studies\n\n${cases.map(([k, n, kind]) => `- ${n}: ${kind}`).join('\n')}\n\n## FAQ\n\n${faqs.map(([q, a]) => `### ${q}\n\n${a}`).join('\n\n')}\n\n## Links\n\n- Portfolio: ${ORIGIN}\n- LinkedIn: https://www.linkedin.com/in/mina-elia-1223421a4/\n- Behance: https://www.behance.net/MinaElia29\n- Dribbble: https://dribbble.com/Mina_Elia\n`);
   fs.writeFileSync(`${SITE}/sitemap.xml`, `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${ORIGIN}</loc><lastmod>${new Date().toISOString().slice(0, 10)}</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>\n</urlset>\n`);
   fs.writeFileSync(`${SITE}/site.webmanifest`, JSON.stringify({ name: 'Mina Elia — Portfolio', short_name: 'Mina Elia', start_url: '/', display: 'standalone', background_color: '#f1f1f1', theme_color: '#f1f1f1', icons: [{ src: '/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/icon-512.png', sizes: '512x512', type: 'image/png' }] }, null, 1));
   fs.writeFileSync(`${SITE}/.nojekyll`, '');
