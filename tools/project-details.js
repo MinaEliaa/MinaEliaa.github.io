@@ -41,15 +41,18 @@ const DETAILS = {
       tree: ['Home', [
         ['Weekly Challenges'],
         ['My Points', [['Redeem Points', [
-          ['Bills', [['Add New Bill', [['Payment']]]]],
-          ['Cashback', [['Enter Amount', [['Enter Passcode']]]]],
+          ['Bills', [['Add New Bill', [['Pay with points']]]]],
+          ['Cashback', [['Custom amount', [['Enter points']]]]],
           ['Axis Vouchers', [['Partners', [['Select Voucher']]]]],
         ]]]],
         ['Rewards', [['Limited Gifts', [['Gift Details']]]]],
       ]] },
     flows: [
-      { name: 'Home & points', kind: 'phone', imgs: ['p-axispay-1', 'p-axispay-2', 'p-axispay-3'] },
-      { name: 'Redeem points', kind: 'phone', imgs: ['p-axispay-2', 'p-axispay-3', 'p-axispay-1'] },
+      { name: 'Redeem points', kind: 'phone', imgs: ['fa-home', 'fa-mypoints', 'fa-redeem'] },
+      { name: 'Rewards', kind: 'phone', imgs: ['fa-rewards', 'fa-gift'] },
+      { name: 'Cashback', kind: 'phone', imgs: ['fa-cashback', 'fa-cashback-amount'] },
+      { name: 'Axis Vouchers', kind: 'phone', imgs: ['fa-vouchers', 'fa-voucher-select'] },
+      { name: 'Bills', kind: 'phone', imgs: ['fa-bills', 'fa-bills-pay'] },
     ],
   },
   wish: {

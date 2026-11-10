@@ -556,10 +556,10 @@ html.sv-lock{overflow:hidden}
 
 /* detail template */
 .pd{max-width:1072px;margin:0 auto;color:var(--ink)}
-.pd-cover{position:relative;border-radius:20px;overflow:hidden;background:var(--bg);display:grid;place-items:center;padding:48px 24px;aspect-ratio:16/8}
-.pd-cover.app{grid-template-columns:repeat(3,minmax(0,200px));justify-content:center;gap:24px}
-.pd-cover.app img{width:100%;height:auto;border-radius:14px;box-shadow:0 18px 40px -18px rgba(19,32,43,.35)}
-.pd-cover.web img{width:min(420px,80%);height:auto;border-radius:12px;box-shadow:0 18px 40px -18px rgba(19,32,43,.35)}
+.pd-cover{position:relative;border-radius:20px;overflow:hidden;background:var(--bg);display:grid;place-items:center;padding:40px 24px;aspect-ratio:16/9}
+.pd-cover.app{grid-template-columns:repeat(3,auto);grid-template-rows:100%;justify-content:center;gap:24px}
+.pd-cover.app img{width:auto;height:100%;border-radius:14px;box-shadow:0 18px 40px -18px rgba(19,32,43,.35)}
+.pd-cover.web img{width:auto;height:100%;max-width:100%;object-fit:contain;border-radius:12px;box-shadow:0 18px 40px -18px rgba(19,32,43,.35)}
 .pd-head{margin-top:40px;max-width:820px}
 .pd-kicker{display:flex;align-items:center;gap:12px;font-size:16px;line-height:24px;color:var(--ink-2);font-weight:500}
 .pd-kicker .status{font-size:14px;line-height:20px;padding:2px 10px}
@@ -608,7 +608,7 @@ html.sv-lock{overflow:hidden}
 @media (hover:hover) and (pointer:fine){.flow-stage[aria-expanded=false]:hover .fs{transform:translateX(calc(var(--i) * 30px)) scale(calc(.67 - var(--i) * .05))}}
 @media (max-width:1099.98px){.pd-sec{grid-template-columns:minmax(0,1fr);gap:16px}.flow{grid-template-columns:minmax(0,1fr);gap:12px}.pd-meta{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:809.98px){
-  .pd-cover{aspect-ratio:auto;padding:28px 16px}
+  .pd-cover{aspect-ratio:4/3;padding:20px 16px}
   .pd-cover.app{gap:10px}
   .pd-head{margin-top:28px}
   .pd-title{font-size:28px;line-height:36px}
@@ -620,8 +620,8 @@ html.sv-lock{overflow:hidden}
   .flow.web{--w:250px;--h:156px}
 }
 @media (prefers-reduced-motion:reduce){.ps,.ps-panel,.fs,.flow-track,.proj-card .shot,.proj-card .shot img{transition:none}}
-.pd-cover.img{padding:0;aspect-ratio:auto;background:#fff;display:block}
-.pd-cover.img img{display:block;width:100%;height:auto}
+.pd-cover.img{padding:0;background:#fff;display:block}
+.pd-cover.img img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 15%}
 
 /* ===== Sitemap (coded tree on a dark brand panel) ===== */
 .pd-map{grid-template-columns:minmax(0,1fr)}
