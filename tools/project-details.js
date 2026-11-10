@@ -103,7 +103,7 @@ function renderDetail(key, p, pic, cover) {
   const extra = d.extra.stats
     ? `<ul class="pd-stats">${d.extra.stats.map(([n, l]) => `<li><b>${esc(n)}</b><span>${esc(l)}</span></li>`).join('')}</ul>`
     : `<ul class="pd-list">${d.extra.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
-  const node = ([label, kids], depth) => `<li>${depth === 0 && d.sitemap.rootImg ? `<span class="sm-phone">${pic(d.sitemap.rootImg, { alt: `${label} screen`, w: 120, h: 260, sizes: '120px' })}<span class="sm-n root"><i aria-hidden="true"></i>${esc(label)}</span></span>` : `<span class="sm-n${depth === 0 ? ' root' : ''}${kids ? '' : ' leaf'}">${depth === 0 ? '<i aria-hidden="true"></i>' : ''}${esc(label)}</span>`}${kids ? `<ul>${kids.map(k => node(k, depth + 1)).join('')}</ul>` : ''}</li>`;
+  const node = ([label, kids], depth) => `<li>${depth === 0 && d.sitemap.rootImg ? `<span class="sm-phone">${pic(d.sitemap.rootImg, { alt: `${label} screen`, w: 120, h: 260, sizes: '120px' })}<span class="sm-n root">${esc(label)}</span></span>` : `<span class="sm-n${depth === 0 ? ' root' : ''}${kids ? '' : ' leaf'}">${esc(label)}</span>`}${kids ? `<ul>${kids.map(k => node(k, depth + 1)).join('')}</ul>` : ''}</li>`;
   const sitemap = d.sitemap ? `<section class="pd-sec pd-map"><h3>Sitemap</h3><p class="pd-hint">${esc(d.sitemap.note)}</p><div class="sm-wrap" tabindex="0" role="region" aria-label="${esc(p.name)} sitemap"><ul class="sm">${node(d.sitemap.tree, 0)}</ul></div></section>` : '';
   const flows = d.flows.map((f, fi) => {
     const sz = f.kind === 'web' ? WEB : PHONE;
