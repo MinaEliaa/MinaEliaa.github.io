@@ -37,16 +37,16 @@ const DETAILS = {
     did: ['Understanding the challenge', 'Product & community research', 'User insights', 'Competitive analysis', 'Feature exploration', 'Sitemap & UX logic', 'Design system', 'UI revamp', 'Prototype', 'Presentation'],
     extra: { title: 'Research insights', stats: [['60–70%', 'of users only receive their salary in AxisPay, then stop using it after payday'], ['4', 'pain points: functional-only experience, inconsistent UI, zero rewards visibility, no gamification'], ['3', 'competitors analysed: Telda, Klivvr and Lucky']] },
     keywords: ['Retention', 'Gamified rewards', 'Daily habits', 'Digital trust', 'Glassmorphism'],
-    sitemap: { note: 'Every reward path starts from Home and ends in one clear confirm step: pay a bill, cash out, pick a voucher or claim a gift.',
+    sitemap: { note: 'How the rewards ecosystem branches out from the Home screen: weekly challenges, points redemption and limited-time rewards.',
       tree: ['Home', [
         ['Weekly Challenges'],
         ['My Points', [['Redeem Points', [
-          ['Bills', [['Add New Bill', [['Pay with points']]]]],
-          ['Cashback', [['Custom amount', [['Enter points']]]]],
+          ['Bills', [['My Bills', [['Payment']]], ['Add New Bill']]],
+          ['Cashback', [['Enter Amount']]],
           ['Axis Vouchers', [['Partners', [['Select Voucher']]]]],
         ]]]],
         ['Rewards', [['Limited Gifts', [['Gift Details']]]]],
-      ]] },
+      ]], rootImg: 'fa-home' },
     flows: [
       { name: 'Redeem points', kind: 'phone', imgs: ['fa-home', 'fa-mypoints', 'fa-redeem'] },
       { name: 'Rewards', kind: 'phone', imgs: ['fa-rewards', 'fa-gift'] },
@@ -103,7 +103,7 @@ function renderDetail(key, p, pic, cover) {
   const extra = d.extra.stats
     ? `<ul class="pd-stats">${d.extra.stats.map(([n, l]) => `<li><b>${esc(n)}</b><span>${esc(l)}</span></li>`).join('')}</ul>`
     : `<ul class="pd-list">${d.extra.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
-  const node = ([label, kids], depth) => `<li><span class="sm-n${depth === 0 ? ' root' : ''}${kids ? '' : ' leaf'}">${depth === 0 ? '<i aria-hidden="true"></i>' : ''}${esc(label)}</span>${kids ? `<ul>${kids.map(k => node(k, depth + 1)).join('')}</ul>` : ''}</li>`;
+  const node = ([label, kids], depth) => `<li>${depth === 0 && d.sitemap.rootImg ? `<span class="sm-phone">${pic(d.sitemap.rootImg, { alt: `${label} screen`, w: 120, h: 260, sizes: '120px' })}<span class="sm-n root"><i aria-hidden="true"></i>${esc(label)}</span></span>` : `<span class="sm-n${depth === 0 ? ' root' : ''}${kids ? '' : ' leaf'}">${depth === 0 ? '<i aria-hidden="true"></i>' : ''}${esc(label)}</span>`}${kids ? `<ul>${kids.map(k => node(k, depth + 1)).join('')}</ul>` : ''}</li>`;
   const sitemap = d.sitemap ? `<section class="pd-sec pd-map"><h3>Sitemap</h3><p class="pd-hint">${esc(d.sitemap.note)}</p><div class="sm-wrap" tabindex="0" role="region" aria-label="${esc(p.name)} sitemap"><ul class="sm">${node(d.sitemap.tree, 0)}</ul></div></section>` : '';
   const flows = d.flows.map((f, fi) => {
     const sz = f.kind === 'web' ? WEB : PHONE;
