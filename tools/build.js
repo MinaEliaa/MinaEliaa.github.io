@@ -115,9 +115,9 @@ const svcCards = [
 ];
 
 const projects = [
+  ['D360 Bank', 'live', 'D360 Bank Website', 1, 'd360'], ['AxisPay', 'ws', 'AxisPay Mobile application', 3, 'axispay'],
   ['Wish', 'live', 'Wish Mobile application', 3], ['Eyas', 'live', 'Eyas Mobile application', 3],
   ['Hozaan', 'soon', 'Hozaan Mobile application', 3], ['Masroofi', 'ws', 'Masroofi Mobile application', 3],
-  ['Scouty', 'soon', 'Scouty Mobile application', 3], ['Instapay', 'ws', 'Instapay Mobile application', 3],
   ['Douq', 'live', 'Douq Website', 1], ['Dentinnova', 'live', 'Denntinova Website', 1],
 ];
 const statusText = { live: 'Live', soon: 'Soon', ws: 'Workshop' };
@@ -131,8 +131,8 @@ const cases = [
 ];
 const casesHtml = `<section class="cases" id="case-studies" aria-labelledby="cases-title"><div class="head"><p class="label rv">Case studies</p><h2 class="h2 rv" id="cases-title">A Closer Look at<br>Each Product</h2></div><ul class="case-grid">${cases.map(([k, n, kind, alt]) => `<li class="case rv"><figure><div class="case-frame">${pic('bento-' + k, { alt, w: 2048, h: 1622, sizes: '(max-width: 809px) calc(100vw - 32px), (max-width: 1199px) calc(50vw - 52px), 500px' })}</div><figcaption class="case-meta"><h3>${n}</h3><span class="status s-cat">${kind}</span></figcaption></figure></li>`).join('')}</ul></section>`;
 
-const projHtml = projects.map(([n, s, label, k]) => {
-  const key = n.toLowerCase();
+const projHtml = projects.map(([n, s, label, k, slug]) => {
+  const key = slug || n.toLowerCase();
   const imgs = k === 3
     ? [1, 2, 3].map(i => pic(`p-${key}-${i}`, { alt: `Screen ${i} for ${label}`, w: 130, h: 282, sizes: '(max-width: 809px) 80px, (max-width: 1199px) 86px, 130px' })).join('')
     : pic(`p-${key}`, { alt: `Screen for ${label}`, w: 280, h: 288, sizes: '(max-width: 809px) 194px, (max-width: 1199px) 225px, 280px' });
@@ -174,7 +174,7 @@ const ld = {
     { '@type': 'ItemList', name: 'Case studies', itemListElement: cases.map(([k, n, kind, alt], i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'CreativeWork', name: n + ' — case study', genre: kind, description: alt, creator: { '@id': ORIGIN + '#mina' }, url: ORIGIN + '#case-studies', image: ORIGIN + 'img/bento-' + k + '-1280.jpg' } })) },
     { '@type': 'ItemList', name: 'Work That Speaks for Itself', itemListElement: projects.map(([n, s, label], i) => ({ '@type': 'ListItem', position: i + 1,
       item: { '@type': 'CreativeWork', name: n, description: `${label.replace('Denntinova', 'Dentinnova')} designed by Mina Elia — status: ${statusText[s]}.`, creator: { '@id': ORIGIN + '#mina' }, url: ORIGIN + '#projects',
-        image: ORIGIN + (projects[i][3] === 3 ? `img/p-${n.toLowerCase()}-1-390.webp` : `img/p-${n.toLowerCase()}-840.webp`) } })) },
+        image: ORIGIN + (projects[i][3] === 3 ? `img/p-${projects[i][4] || n.toLowerCase()}-1-390.webp` : `img/p-${projects[i][4] || n.toLowerCase()}-840.webp`) } })) },
   ],
 };
 
