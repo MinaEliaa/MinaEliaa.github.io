@@ -1,0 +1,65 @@
+# Mina Elia
+
+> Senior Product UI/UX Designer and AI product builder with over 4 years of experience across Egypt, Saudi Arabia, the UAE, Jordan and the United States.
+
+Mina designs smooth, scalable, user-centered digital products with high-quality UI, across fintech, ride-hailing services, consultation platforms and SaaS.
+
+## Expertise
+
+- Mobile app design
+- Marketing websites, with Framer development
+- SaaS products, from design to launch
+- Dashboard design
+- App Store and Play Store preview screenshots
+- Design systems
+- Bento design and case-study presentations
+- Vibe coding with Lovable, Claude Code and Supabase
+
+## Design systems
+
+- Builds design systems from scratch and restructures existing ones for consistency
+- Figma Variables with primitive, alias and semantic layers
+- Scalable tokens for spacing, sizing, borders and typography
+- Complete typography systems and flexible components with variants
+
+## Case studies
+
+- D360 Bank: Mobile banking app
+- Wish: Social wishlist app
+- FINORA: Fintech app
+- Qatar Airways: Airline app
+- Scouty: Community app
+- DOUQ: Website
+
+## FAQ
+
+### How much experience do you have?
+
+I’m a Senior Product UI/UX Designer with over 4 years of experience, working with teams and clients across Egypt, Saudi Arabia, the UAE, Jordan and the United States.
+
+### Which industries have you designed for?
+
+Fintech, ride-hailing services, consultation platforms and SaaS. I focus on smooth, scalable, user-centered experiences with high-quality UI.
+
+### What services do you offer?
+
+Mobile app design, marketing websites, SaaS products from design to launch, dashboards, App Store and Play Store preview screenshots, design systems, and bento and case-study presentations.
+
+### Can you build or fix a design system?
+
+Yes. I build design systems from scratch and restructure existing ones for consistency, using Figma Variables with primitive, alias and semantic layers, scalable tokens for spacing, sizing, borders and typography, and flexible components and variants.
+
+### Do you develop websites too?
+
+Yes. I design marketing websites and develop them in Framer, so you get a live, responsive site and not only the design files.
+
+### Do you build products with AI tools?
+
+Yes. I use vibe coding with Lovable and Claude Code, with Supabase integration, to take products from design to a working launch.
+
+## Links
+
+- Portfolio: https://minaeliaa.github.io/
+- LinkedIn: https://www.linkedin.com/in/mina-elia-1223421a4/
+- Behance: https://www.behance.net/MinaElia29
+- Dribbble: https://dribbble.com/Mina_Elia

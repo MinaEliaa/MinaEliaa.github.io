@@ -1,4 +1,54 @@
+# Search and AI answer engines are welcome
 User-agent: *
 Allow: /
+Disallow: /404.html
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: MegaIndex
+Disallow: /
+
+User-agent: serpstatbot
+Disallow: /
+
+User-agent: SeekportBot
+Disallow: /
+
+User-agent: barkrowler
+Disallow: /
+
+User-agent: ZoominfoBot
+Disallow: /
+
+User-agent: magpie-crawler
+Disallow: /
+
+User-agent: Scrapy
+Disallow: /
+
+User-agent: img2dataset
+Disallow: /
 
 Sitemap: https://minaeliaa.github.io/sitemap.xml
