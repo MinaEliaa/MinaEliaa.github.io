@@ -46,7 +46,7 @@ const DETAILS = {
           ['Axis Vouchers', [['Partners', [['Select Voucher']]]]],
         ]]]],
         ['Rewards', [['Limited Gifts', [['Gift Details']]]]],
-      ]], rootImg: 'fa-home' },
+      ]] },
     flows: [
       { name: 'Redeem points', kind: 'phone', imgs: ['fa-home', 'fa-mypoints', 'fa-redeem'] },
       { name: 'Rewards', kind: 'phone', imgs: ['fa-rewards', 'fa-gift'] },
