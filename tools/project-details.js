@@ -8,6 +8,7 @@ const WEB = { w: 320, h: 200 };     // expanded website section (16:10)
 
 const DETAILS = {
   d360: {
+    cover: 'pc-d360', coverPos: '50% 30%',
     title: 'D360 Bank: turning a slogan-led website into a clear path to the app',
     client: 'D360 Bank', year: '2026', industry: 'Digital banking · Riyadh, Saudi Arabia', platform: 'Marketing website (English & Arabic)',
     links: [
@@ -120,7 +121,7 @@ function renderDetail(key, p, pic, cover) {
     return `<div class="flow ${f.kind}" style="--n:${f.imgs.length}"><h4 id="${id}-f${fi}">${esc(f.name)}<span>${f.imgs.length} screens</span></h4><div class="flow-stage" role="button" tabindex="0" aria-expanded="false" aria-labelledby="${id}-f${fi}" aria-describedby="${id}-hint"><div class="flow-track">${shots}</div></div></div>`;
   }).join('');
   return `<article class="pd" id="${id}" aria-labelledby="${id}-t" hidden>
-${d.cover ? `<div class="pd-cover img">${pic(d.cover, { alt: `${p.name} cover`, w: 1072, h: 804, sizes: '(max-width: 1119px) calc(100vw - 48px), 1072px' })}</div>` : `<div class="pd-cover ${p.k === 1 ? 'web' : 'app'}">${cover}</div>`}
+${d.cover ? `<div class="pd-cover img"${d.coverPos ? ` style="--op:${d.coverPos}"` : ''}>${pic(d.cover, { alt: `${p.name} cover`, w: 1072, h: 804, sizes: '(max-width: 1119px) calc(100vw - 48px), 1072px' })}</div>` : `<div class="pd-cover ${p.k === 1 ? 'web' : 'app'}">${cover}</div>`}
 <header class="pd-head"><p class="pd-kicker">${esc(p.name)} <span class="status s-${p.s}">${p.statusText}</span></p><h2 class="pd-title" id="${id}-t">${esc(d.title)}</h2></header>
 <dl class="pd-meta">${meta}</dl>
 ${d.links.length ? `<div class="pd-links">${d.links.map(linkBtn).join('')}</div>` : ''}
