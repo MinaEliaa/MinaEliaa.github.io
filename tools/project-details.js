@@ -8,14 +8,25 @@ const WEB = { w: 320, h: 200 };     // expanded website section (16:10)
 
 const DETAILS = {
   d360: {
-    title: 'D360 Bank: banking made simple for Saudi Arabia',
-    client: 'D360 Bank', year: '2025', industry: 'Fintech · Digital banking', platform: 'Marketing website (EN / AR)',
-    links: [{ type: 'web', href: 'https://minaeliaa.github.io/d360-bank/', text: 'View website' }],
-    overview: 'D360 is a Shariah-compliant digital bank in Saudi Arabia. The marketing website introduces the bank, its cards and the app, and moves visitors to open an account in a few minutes.',
-    problem: ['Explain a new digital bank clearly to first-time visitors.', 'Show every card and what it is for in one glance.', 'Drive app downloads from every section of the page.'],
-    did: ['UX strategy', 'Information architecture', 'UI design', 'Responsive web design', 'Arabic RTL layout', 'Front-end build'],
-    extra: { title: 'Results', stats: [['100', 'Lighthouse performance'], ['2 min', 'to open an account'], ['EN / AR', 'full RTL support']] },
-    keywords: ['Simple', 'Trustworthy', 'Shariah-compliant', 'Fast', 'Colourful'],
+    title: 'D360 Bank: turning a slogan-led website into a clear path to the app',
+    client: 'D360 Bank', year: '2026', industry: 'Digital banking · Riyadh, Saudi Arabia', platform: 'Marketing website (English & Arabic)',
+    links: [
+      { type: 'web', href: 'https://minaeliaa.github.io/d360-bank/', text: 'View website' },
+      { type: 'web', href: 'https://www.behance.net/gallery/258090105/D360-Bank-Website-Conversion-Rate-UX-Audit-Redesign', text: 'View case study on Behance' },
+    ],
+    overview: 'D360 Bank is a Saudi digital bank that lets people open an account in 2 minutes, then pay, save and send money abroad, all fully Shariah-compliant. This conversion-rate UX audit and redesign turns the website into a simple, trustworthy route to the app: real stats, genuine trust signals and one clear next step.',
+    problem: [
+      'The only sign-up button, “Start your journey”, showed a bare QR code on desktop and jumped straight to Google Play on Android.',
+      'Claims like “best rate” or “no hidden fees” were slogans with no numbers behind them.',
+      'Trust broke early: the customer count literally read 3 trillion, and SAMA regulation was buried in the footer.',
+      'The homepage sold travel only; financing, savings and Musaned never appeared, and “Learn More” sent English visitors to the Arabic site.',
+      'Goal: focus the site on one clear action, add genuine trust signals and showcase every product upfront.',
+    ],
+    did: ['UX audit', 'First-time visitor journey', 'Conversion-rate analysis', 'Problems & solutions mapping', 'Information architecture', 'UI redesign', 'Arabic RTL & English', 'Responsive web', 'Front-end build'],
+    extra: { title: 'Audit & approach',
+      stats: [['10 steps', 'from a TikTok ad to closing the tab, mapped for a first-time visitor'], ['4 exits', 'found: empty mobile scroll, wrong-language links, no exchange rate, broken protection link'], ['6 fixes', 'one problem, one solution, from the sign-up button to the mobile hero']],
+      items: ['Numbers, not slogans: 2 minutes, SAR 0 fees, 4.49% APR and up to 3% profit.', 'Arabic first: built right to left, with a full English version and a one-tap language switch.', 'Personal and playful: a card colour picker and the Pink Card campaign for Saudi women.', 'One clear action: a single “Get the App” button, repeated through the page with store badges.', 'Trust where you decide: the 4.8 rating, 41.5K reviews and 3M+ customers right next to the button.'] },
+    keywords: ['Conversion rate', 'Trust signals', 'Arabic first', 'One clear action', 'Shariah-compliant'],
     flows: [
       { name: 'Home page', kind: 'web', imgs: ['f-d360-1', 'f-d360-2', 'f-d360-3', 'f-d360-4'] },
       { name: 'Cards & sign-up', kind: 'web', imgs: ['f-d360-5', 'f-d360-6', 'f-d360-2'] },
@@ -100,9 +111,7 @@ function renderDetail(key, p, pic, cover) {
   const id = `project-${key}`;
   const meta = [['Client', d.client], ['Year', d.year], ['Industry', d.industry], ['Platform', d.platform]]
     .map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('');
-  const extra = d.extra.stats
-    ? `<ul class="pd-stats">${d.extra.stats.map(([n, l]) => `<li><b>${esc(n)}</b><span>${esc(l)}</span></li>`).join('')}</ul>`
-    : `<ul class="pd-list">${d.extra.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  const extra = `<div class="pd-extra">${d.extra.stats ? `<ul class="pd-stats">${d.extra.stats.map(([n, l]) => `<li><b>${esc(n)}</b><span>${esc(l)}</span></li>`).join('')}</ul>` : ''}${d.extra.items ? `<ul class="pd-list">${d.extra.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}</div>`;
   const node = ([label, kids], depth) => `<li>${depth === 0 && d.sitemap.rootImg ? `<span class="sm-phone">${pic(d.sitemap.rootImg, { alt: `${label} screen`, w: 120, h: 260, sizes: '120px' })}<span class="sm-n root">${esc(label)}</span></span>` : `<span class="sm-n${depth === 0 ? ' root' : ''}${kids ? '' : ' leaf'}">${esc(label)}</span>`}${kids ? `<ul>${kids.map(k => node(k, depth + 1)).join('')}</ul>` : ''}</li>`;
   const sitemap = d.sitemap ? `<section class="pd-sec pd-map"><h3>Sitemap</h3><p class="pd-hint">${esc(d.sitemap.note)}</p><div class="sm-wrap" tabindex="0" role="region" aria-label="${esc(p.name)} sitemap"><ul class="sm">${node(d.sitemap.tree, 0)}</ul></div></section>` : '';
   const flows = d.flows.map((f, fi) => {

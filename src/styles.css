@@ -643,4 +643,4 @@ html.sv-lock{overflow:hidden}
 .sm-n.root{padding:12px 18px;font-size:16px;font-weight:600;color:#fff;background:var(--ink)}
 .sm-n.root i{display:none}
 @media (max-width:809.98px){.sm-wrap{padding:28px 20px;border-radius:24px}.sm ul{padding-left:36px;--g:10px}.sm ul::before{width:18px}.sm ul>li::before,.sm ul>li::after{left:-18px}.sm ul>li::before{width:18px}.sm-n{font-size:13px;padding:8px 12px}}
-@media (max-width:809.98px){
+@media (max-width:809.98px){.pd-extra{display:grid;gap:24px}
