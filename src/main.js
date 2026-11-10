@@ -31,7 +31,7 @@
   }
 
   /* ---------- Scroll reveal (fade up once on entering viewport) ---------- */
-  const rv = d.querySelectorAll('.rv');
+  const rv = d.querySelectorAll('.rv, .chx');
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0 });
     rv.forEach(el => io.observe(el));

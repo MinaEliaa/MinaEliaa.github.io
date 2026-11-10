@@ -94,6 +94,8 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 /* hero text is painted from the first frame (keeps LCP measurable); only blur + lift animate */
 .js .hero h1 .ch{animation:chIn .4s cubic-bezier(.22,1,.36,1) var(--d,0s) both;animation:chIn .4s linear(0,0.0435,0.1411,0.259,0.3782,0.4888,0.5862,0.6691,0.7381,0.7944,0.8397,0.8757,0.9041,0.9264,0.9437,0.9571,0.9674,0.9753,0.9813,0.9859,0.9894,0.992,0.994,0.9955,0.9967,0.9975,0.9981,0.9986,1) var(--d,0s) both;will-change:transform,opacity,filter}
 .js .hero h1 .ch.l2{animation:chIn 1.14s cubic-bezier(.2,.9,.3,1) var(--d,0s) both;animation:chIn 1.14s linear(0,0.0844,0.2381,0.3906,0.5213,0.6272,0.7108,0.7762,0.8269,0.8662,0.8966,0.9201,0.9383,0.9523,0.9632,0.9716,0.978,0.983,0.9869,0.9899,0.9922,0.994,0.9953,0.9964,0.9972,0.9978,0.9983,0.9987,1) var(--d,0s) both}
+.js .chx .ch{opacity:.001;filter:blur(10px);transform:translateY(10px)}
+.js .chx.in .ch{animation:chIn 1.14s cubic-bezier(.2,.9,.3,1) var(--d,0s) both;animation:chIn 1.14s linear(0,0.0844,0.2381,0.3906,0.5213,0.6272,0.7108,0.7762,0.8269,0.8662,0.8966,0.9201,0.9383,0.9523,0.9632,0.9716,0.978,0.983,0.9869,0.9899,0.9922,0.994,0.9953,0.9964,0.9972,0.9978,0.9983,0.9987,1) var(--d,0s) both;will-change:transform,opacity,filter}
 @keyframes chIn{from{opacity:.001;filter:blur(10px);transform:translateY(10px)}to{opacity:1;filter:blur(0);transform:none}}
 .js .sub-in{opacity:1;filter:none;transform:translateY(10px);animation:liftIn .7s cubic-bezier(.22,1,.36,1) .2s forwards;will-change:transform}
 @keyframes liftIn{to{transform:none}}

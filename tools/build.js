@@ -199,7 +199,16 @@ const notFound = `${head('404 — Mina Elia', 'The path you seek has vanished. H
 
 (async () => {
   const opts = { collapseWhitespace: true, conservativeCollapse: false, removeComments: true, minifyCSS: { level: 1 }, minifyJS: true, removeRedundantAttributes: true, removeScriptTypeAttributes: false, sortAttributes: true, sortClassName: false, useShortDoctype: true, decodeEntities: false };
-  fs.writeFileSync(`${SITE}/index.html`, await minify(html, opts));
+  // section headings: Avero "appear on view" text effect, character tokens, 0.025 s stagger
+  const ent = s => s.replace(/&#32;/g, ' ').replace(/&nbsp;/g, '\u00a0').replace(/&amp;/g, '&');
+  const esc = c => c === '&' ? '&amp;' : c === '<' ? '&lt;' : c;
+  const htmlOut = html.replace(/<h2 class="h2 rv"( id="[^"]+")>([\s\S]*?)<\/h2>/g, (m, id, inner) => {
+    const lines = inner.split(/<br[^>]*>/).map(l => ent(l).trim());
+    let n = 0;
+    const vis = lines.map(l => l.split(' ').map(w => `<span class="wrd">${[...w].map(c => `<span class="ch" style="--d:${(n++ * 0.025).toFixed(3)}s">${esc(c)}</span>`).join('')}</span>`).join(' ')).join('<br>');
+    return `<h2 class="h2 chx"${id}><span class="sr-only">${lines.map(l => l.split('').map(esc).join('')).join(' ')}</span><span aria-hidden="true">${vis}</span></h2>`;
+  });
+  fs.writeFileSync(`${SITE}/index.html`, await minify(htmlOut, opts));
   fs.writeFileSync(`${SITE}/404.html`, await minify(notFound, opts));
   fs.mkdirSync(`${SITE}/js`, { recursive: true });
   const js = await terser.minify(fs.readFileSync(`${SRC}/main.js`, 'utf8'), { compress: { passes: 2 }, mangle: true, format: { comments: false } });
