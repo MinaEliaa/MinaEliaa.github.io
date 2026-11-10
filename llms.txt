@@ -51,7 +51,7 @@ Yes. I build design systems from scratch and restructure existing ones for consi
 
 ### Do you develop websites too?
 
-Yes. I design your website and build it for you with no-code tools like Framer, Lovable or Claude, so you get a real, live website, not just pictures of one. I also take care of what happens behind the scenes. SEO helps people find you on Google. GEO helps AI assistants like ChatGPT recommend you. Bot protection keeps spam bots and data scrapers away. Accessibility means everyone can use your site, including people with disabilities. Responsiveness means it looks right on phones, tablets and laptops. Performance means it loads fast. And I’ll get your website to a score of 100 in Performance, SEO and Accessibility on Google’s speed test, on both mobile and desktop.
+Yes. I build your website with no-code tools like Framer, Lovable or Claude. It’s easy to find on Google and AI assistants, protected from spam bots, easy for everyone to use, looks great on any screen and loads fast, with a score of 100 in Performance, SEO and Accessibility on Google’s test, on mobile and desktop.
 
 ### Do you build products with AI tools?
 
