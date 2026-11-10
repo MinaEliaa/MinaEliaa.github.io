@@ -714,9 +714,9 @@ html.sv-lock{overflow:hidden}
 .uf-tag.y{background:var(--ink);color:#fff;box-shadow:none}
 @media (max-width:809.98px){.uf-row{grid-template-columns:minmax(0,1fr);gap:6px}.uf-num{font-size:20px;line-height:24px}.uf-wrap{padding:20px 16px}}
 /* preview screenshots: horizontal row of store screens */
-.shots-row{overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:thin;border-radius:32px;background:var(--bg);padding:24px}
-.shots-row ul{display:flex;gap:16px;width:max-content}
-.shots-row li{flex:none;width:240px;scroll-snap-align:start}
+.shots-row{overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:32px;scrollbar-width:thin;border-radius:32px;background:var(--bg);padding:32px 0}
+.shots-row ul{display:flex;gap:16px;width:max-content;padding:0 32px}
+.shots-row li{flex:none;width:200px;scroll-snap-align:start}
 .shots-row img{display:block;width:100%;height:auto;border-radius:20px;box-shadow:0 12px 28px -14px rgba(19,32,43,.35)}
 .shots-row:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-@media (max-width:809.98px){.shots-row{padding:16px;border-radius:24px}.shots-row li{width:180px}.shots-row ul{gap:12px}}
+@media (max-width:809.98px){.shots-row{padding:20px 0;border-radius:24px;scroll-padding-inline:20px}.shots-row li{width:150px}.shots-row ul{gap:12px;padding:0 20px}}

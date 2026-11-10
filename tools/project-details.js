@@ -111,7 +111,7 @@ const DETAILS = {
     did: ['User interviews', 'Competitive analysis', 'Sitemap & user flows', 'UI screens', 'Design system', 'Prototype', 'Developer handover'],
     extra: { title: 'Research questionnaires', stats: [['60%', 'tell friends what they want directly in conversation'], ['50%', 'choose a gift by asking the friend directly; 30% guess from interests'], ['40%', 'gift friends on birthdays only; 30% on holidays and birthdays']] },
     sections: [
-      { type: 'shots', title: 'Preview Screenshots', imgs: ['ws-wish-1', 'ws-wish-2', 'ws-wish-3', 'ws-wish-4', 'ws-wish-5', 'ws-wish-6'], alts: ['Reserve a wish, surprise a friend', 'Make your personal feed', 'Friends can reserve your wish', 'Dark and light mode', 'Wish reserved notification', 'Earn badge rewards'] },
+      { type: 'shots', at: 'end', title: 'Preview Screenshots', imgs: ['ws-wish-1', 'ws-wish-2', 'ws-wish-3', 'ws-wish-4', 'ws-wish-5', 'ws-wish-6'], alts: ['Reserve a wish, surprise a friend', 'Make your personal feed', 'Friends can reserve your wish', 'Dark and light mode', 'Wish reserved notification', 'Earn badge rewards'] },
       { type: 'userflow', title: 'User flow', heading: 'Register and onboarding.', rows: [
         ['Install app', [['Guest Mode home page', [['Modal bottom sheet', [['Continue with Email'], ['Google'], ['Apple']]]]]]],
         ['Continue with Email', [['Enter OTP code', [['Enter your password', [['?First time', [['Complete profile (onboarding)', [['Home page']], 'Yes'], ['Home page', null, 'No']]]]]]]]],
@@ -164,7 +164,7 @@ function renderSection(s, pic) {
     return `<section class="pd-sec pd-wide">${head}<div class="pd-block"><p class="pd-lead">${esc(s.heading)}</p><p class="jr-persona"><b>${esc(s.persona[0])}</b>${esc(s.persona[1])}</p><ol class="jr-steps">${steps}</ol><div class="jr-mood-bar" aria-hidden="true"><span>Curious</span><i></i><span>Gone</span></div><ol class="jr-exits">${exits}</ol><p class="pd-note">${esc(s.note)}</p></div></section>`;
   }
   if (s.type === 'shots') {
-    const items = s.imgs.map((n, i) => `<li>${pic(n, { alt: s.alts[i], w: 240, h: 520, sizes: '(max-width: 809px) 180px, 240px' })}</li>`).join('');
+    const items = s.imgs.map((n, i) => `<li>${pic(n, { alt: s.alts[i], w: 200, h: 433, sizes: '(max-width: 809px) 150px, 200px' })}</li>`).join('');
     return `<section class="pd-sec pd-wide">${head}<div class="shots-row" tabindex="0" role="region" aria-label="${esc(s.title)}"><ul>${items}</ul></div></section>`;
   }
   if (s.type === 'userflow') {
@@ -204,10 +204,11 @@ ${d.links.length ? `<div class="pd-links">${d.links.map(linkBtn).join('')}</div>
 <section class="pd-sec"><h3>Overview</h3><div class="pd-txt"><p>${esc(d.overview)}</p>${d.mission ? `<p class="pd-mission"><b>Mission</b>${esc(d.mission)}</p>` : ''}</div></section>
 <section class="pd-sec"><h3>Problem / Goal</h3><ul class="pd-list">${d.problem.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
 <section class="pd-sec"><h3>What I did</h3><ul class="pd-chips">${d.did.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
-${d.extra ? `<section class="pd-sec"><h3>${esc(d.extra.title)}</h3>${extra}</section>` : ''}${(d.sections || []).map(x => renderSection(x, pic)).join('')}
+${d.extra ? `<section class="pd-sec"><h3>${esc(d.extra.title)}</h3>${extra}</section>` : ''}${(d.sections || []).filter(x => x.at !== 'end').map(x => renderSection(x, pic)).join('')}
 <section class="pd-sec"><h3>Keywords</h3><ul class="pd-chips soft">${d.keywords.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
 ${sitemap}
 ${d.website ? `<section class="pd-sec pd-wide"><h3>Website</h3><div class="pd-block"><p class="pd-hint">${esc(d.website.name)}. Scroll inside the frame to see the whole page.</p><div class="web-frame"><div class="web-bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(d.website.url)}</span></div><div class="web-scroll" tabindex="0" role="region" aria-label="${esc(p.name)} landing page, scrollable">${pic(d.website.img, { alt: `${p.name} landing page, full length`, w: 1000, h: 7136, sizes: '(max-width: 1119px) calc(100vw - 32px), 1000px' })}</div></div></div></section>` : !(d.flows || []).length ? '' : `<section class="pd-sec pd-flows"><h3>Flows</h3><p class="pd-hint" id="${id}-hint">Tap a flow to spread its screens, tap again to stack them.</p>${flows}</section>`}
+${(d.sections || []).filter(x => x.at === 'end').map(x => renderSection(x, pic)).join('')}
 </article>`;
 }
 
