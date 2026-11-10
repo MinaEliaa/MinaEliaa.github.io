@@ -115,7 +115,7 @@ const cases = [
   ['finora', 'FINORA', 'Fintech app', 'FINORA case study: personal finance app on iPhone, split view and foldable layouts'],
   ['qatar', 'Qatar Airways', 'Airline app', 'Qatar Airways case study: flight booking app, boarding pass, seat map and Privilege Club cards'],
   ['scouty', 'Scouty', 'Community app', 'Scouty case study: scout group app with member profiles, rankings and ScoutPay card'],
-  ['douq', 'DOUQ', 'Website', 'DOUQ case study: men’s grooming club website, membership cards and pricing'],
+  ['douq', 'DOUQ', 'Marketing website', 'DOUQ case study: men’s grooming club website, membership cards and pricing'],
 ];
 const casesHtml = `<section class="cases" id="case-studies" aria-labelledby="cases-title"><div class="head"><p class="label rv">Case studies</p><h2 class="h2 rv" id="cases-title">A Closer Look at<br>Each Product</h2></div><ul class="case-grid">${cases.map(([k, n, kind, alt]) => `<li class="case rv"><figure><div class="case-frame">${pic('bento-' + k, { alt, w: 2048, h: 1622, sizes: '(max-width: 809px) calc(100vw - 32px), (max-width: 1199px) calc(50vw - 52px), 500px' })}</div><figcaption class="case-meta"><h3>${n}</h3><span class="status s-cat">${kind}</span></figcaption></figure></li>`).join('')}</ul></section>`;
 
@@ -138,7 +138,7 @@ const faqs = [
   ['Which industries have you designed for?', 'Fintech, ride-hailing services, consultation platforms and SaaS. I focus on smooth, scalable, user-centered experiences with high-quality UI.'],
   ['What services do you offer?', 'Mobile app design, marketing websites, SaaS products from design to launch, dashboards, App Store and Play Store preview screenshots, design systems, and bento and case-study presentations.'],
   ['Can you build or fix a design system?', 'Yes. I build design systems from scratch and restructure existing ones for consistency, using Figma Variables with primitive, alias and semantic layers, scalable tokens for spacing, sizing, borders and typography, and flexible components and variants.'],
-  ['Do you develop websites too?', 'Yes. I design marketing websites and develop them in Framer, so you get a live, responsive site and not only the design files.'],
+  ['Do you develop websites too?', 'Yes. I design your website and build it for you with no-code tools like Framer, Lovable or Claude, so you get a real, live website, not just pictures of one. I also take care of what happens behind the scenes. SEO helps people find you on Google. GEO helps AI assistants like ChatGPT recommend you. Bot protection keeps spam bots and data scrapers away. Accessibility means everyone can use your site, including people with disabilities. Responsiveness means it looks right on phones, tablets and laptops. Performance means it loads fast. And I’ll get your website to a score of 100 in Performance, SEO and Accessibility on Google’s speed test, on both mobile and desktop.'],
   ['Do you build products with AI tools?', 'Yes. I use vibe coding with Lovable and Claude Code, with Supabase integration, to take products from design to a working launch.'],
 ];
 const faqItem = i => `<div class="qa"><div class="qa-in"><h3><button class="qa-q" type="button" aria-expanded="false" aria-controls="faq-a${i}" id="faq-q${i}"><span>${faqs[i - 1][0]}</span><i class="pm" aria-hidden="true"></i></button></h3><p class="qa-a" id="faq-a${i}" role="region" aria-labelledby="faq-q${i}" hidden>${faqs[i - 1][1]}</p></div></div>`;
