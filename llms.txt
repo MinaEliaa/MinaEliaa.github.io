@@ -51,7 +51,15 @@ Yes. I build design systems from scratch and restructure existing ones for consi
 
 ### Do you develop websites too?
 
-Yes. I build your website with no-code tools like Framer, Lovable or Claude. It’s easy to find on Google and AI assistants, protected from spam bots, easy for everyone to use, looks great on any screen and loads fast, with a score of 100 in Performance, SEO and Accessibility on Google’s test, on mobile and desktop.
+Yes. I build your website with no-code tools like Framer, Lovable or Claude, and it comes with:
+
+- Found on Google (SEO)
+- Recommended by AI assistants like ChatGPT (GEO)
+- Protected from spam bots
+- Easy for everyone to use
+- Looks great on any screen
+- Loads fast
+- A score of 100 in Performance, SEO and Accessibility, on mobile and desktop
 
 ### Do you build products with AI tools?
 
