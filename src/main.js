@@ -137,4 +137,174 @@
     ans.hidden = !open;
     if (!rm.matches && box.animate) box.animate([{ height: from + 'px' }, { height: box.offsetHeight + 'px' }], { duration: 200, easing: 'ease-out' });
   }));
+  /* ---------- Hero story cards: drag anywhere + Instagram-style story viewer ---------- */
+  const hero = d.querySelector('.hero'), cards = [...d.querySelectorAll('.story')], sv = d.getElementById('sv');
+  if (hero && cards.length && sv) {
+    const LIST = [];
+    cards.forEach(c => { const place = c.querySelector('.who span').textContent; [1, 2].forEach(n => LIST.push({ k: c.dataset.k, n, place })); });
+
+    /* muted preview loops: only after load, only on screen, never with reduced motion / data saver */
+    const previews = cards.map(c => c.querySelector('video'));
+    const canPreview = () => !rm.matches && !root.classList.contains('paused') && sv.hidden;
+    const saveData = navigator.connection && navigator.connection.saveData;
+    if (!rm.matches && !saveData && 'IntersectionObserver' in window) {
+      const vis = new Set();
+      const start = () => {
+        const io = new IntersectionObserver(es => es.forEach(e => {
+          const v = e.target.querySelector('video');
+          if (e.isIntersecting) {
+            vis.add(v);
+            if (!v.src) { v.src = v.dataset.src; v.addEventListener('playing', () => v.classList.add('on'), { once: true }); }
+            if (canPreview()) v.play().catch(() => {});
+          } else { vis.delete(v); v.pause(); }
+        }));
+        cards.forEach(c => io.observe(c));
+      };
+      // start on first interaction (keeps the load quiet), with a late fallback
+      let started = false; const evs = ['pointermove', 'pointerdown', 'scroll', 'keydown', 'touchstart', 'wheel'];
+      const kick = () => { if (started) return; started = true; evs.forEach(n => removeEventListener(n, kick)); start(); };
+      evs.forEach(n => addEventListener(n, kick, { passive: true, once: true }));
+      const late = () => setTimeout(kick, 7000);
+      if (d.readyState === 'complete') late(); else addEventListener('load', late, { once: true });
+      previews.forEach(v => v.addEventListener('timeupdate', () => { if (v.duration) v.parentNode.querySelector('.bars i').style.setProperty('--p', (v.currentTime / v.duration).toFixed(3)); }));
+      cards.resume = () => vis.forEach(v => canPreview() && v.play().catch(() => {}));
+      d.querySelectorAll('.pause-btn').forEach(b => b.addEventListener('click', () => root.classList.contains('paused') ? previews.forEach(v => v.pause()) : cards.resume()));
+    }
+
+    /* drag: mouse/pen drag at once; touch drags after a short press so the page still scrolls */
+    cards.forEach(c => {
+      let ox = 0, oy = 0, bx = 0, by = 0, sx = 0, sy = 0, down = false, moved = false, armT = 0, armed = false;
+      const clamp = (nx, ny) => {
+        const hr = hero.getBoundingClientRect(), r = c.getBoundingClientRect(), L = r.left - ox, T = r.top - oy;
+        return [Math.min(Math.max(nx, hr.left + 8 - L), hr.right - 8 - r.width - L), Math.min(Math.max(ny, hr.top + 88 - T), hr.bottom - 8 - r.height - T)];
+      };
+      const moveTo = (nx, ny) => { [ox, oy] = clamp(nx, ny); c.style.translate = `${ox}px ${oy}px`; };
+      const begin = (x, y) => { down = true; moved = false; sx = x; sy = y; bx = ox; by = oy; };
+      const drag = (x, y) => { if (!moved && Math.hypot(x - sx, y - sy) > 6) { moved = true; c.classList.add('dragging'); } if (moved) moveTo(bx + x - sx, by + y - sy); };
+      const finish = () => { down = false; armed = false; c.classList.remove('dragging'); };
+      c.addEventListener('pointerdown', e => { if (e.pointerType === 'touch' || e.button) return; begin(e.clientX, e.clientY); c.setPointerCapture(e.pointerId); });
+      c.addEventListener('pointermove', e => { if (down && e.pointerType !== 'touch') drag(e.clientX, e.clientY); });
+      c.addEventListener('pointerup', e => { if (e.pointerType !== 'touch') finish(); });
+      c.addEventListener('lostpointercapture', e => { if (e.pointerType !== 'touch' && down) finish(); });
+      c.addEventListener('touchstart', e => {
+        if (e.touches.length > 1) return;
+        const t = e.touches[0]; begin(t.clientX, t.clientY);
+        armT = setTimeout(() => { armed = true; moved = true; c.classList.add('dragging'); if (navigator.vibrate) navigator.vibrate(8); }, 220);
+      }, { passive: true });
+      c.addEventListener('touchmove', e => {
+        const t = e.touches[0];
+        if (armed) { e.preventDefault(); moveTo(bx + t.clientX - sx, by + t.clientY - sy); }
+        else if (Math.hypot(t.clientX - sx, t.clientY - sy) > 8) { clearTimeout(armT); down = false; moved = true; }
+      }, { passive: false });
+      const tEnd = () => { clearTimeout(armT); if (armed) finish(); else down = false; };
+      c.addEventListener('touchend', tEnd); c.addEventListener('touchcancel', tEnd);
+      c.addEventListener('contextmenu', e => e.preventDefault());
+      c.addEventListener('click', e => { if (moved) { e.preventDefault(); moved = false; return; } open(LIST.findIndex(s => s.k === c.dataset.k), c); });
+      c.addEventListener('keydown', e => {
+        const m = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
+        if (!m) return; e.preventDefault(); const s = e.shiftKey ? 48 : 16; moveTo(ox + m[0] * s, oy + m[1] * s);
+      });
+    });
+
+    /* viewer */
+    const card = d.getElementById('sv-card'), media = d.getElementById('sv-media'), bars = [...d.querySelectorAll('#sv-bars i')];
+    const placeEl = d.getElementById('sv-place'), live = d.getElementById('sv-live'), pauseBtn = d.getElementById('sv-pause'), closeBtn = d.getElementById('sv-close');
+    const prevBtn = sv.querySelector('.sv-arrow.prev');
+    const vids = {};
+    let cur = 0, userPaused = false, held = false, raf = 0, hideT = 0;
+    const idOf = i => LIST[i].k + LIST[i].n;
+    const getVid = i => {
+      const id = idOf(i);
+      if (!vids[id]) {
+        const v = d.createElement('video');
+        v.muted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'auto'; v.disablePictureInPicture = true;
+        v.setAttribute('aria-hidden', 'true'); v.poster = `img/story-${id}-480.webp`; v.src = `media/story-${id}.mp4`;
+        v.addEventListener('ended', () => { if (idOf(cur) === id) go(1); });
+        media.appendChild(v); vids[id] = v;
+      }
+      return vids[id];
+    };
+    const sync = () => {
+      const v = vids[idOf(cur)]; if (!v) return;
+      (userPaused || held) ? v.pause() : v.play().catch(() => {});
+      pauseBtn.setAttribute('aria-pressed', String(userPaused)); pauseBtn.setAttribute('aria-label', userPaused ? 'Play story' : 'Pause story');
+    };
+    const show = i => {
+      cur = i; const s = LIST[i];
+      Object.values(vids).forEach(v => { v.classList.remove('cur'); v.pause(); });
+      const v = getVid(i); try { v.currentTime = 0; } catch (e) {}
+      v.classList.add('cur'); sync();
+      if (LIST[i + 1]) getVid(i + 1);
+      placeEl.textContent = s.place;
+      bars.forEach((b, j) => b.style.setProperty('--p', j < s.n - 1 ? 1 : 0));
+      live.textContent = `${s.place}, story ${s.n} of 2`;
+      prevBtn.disabled = i === 0;
+    };
+    const tick = () => {
+      const v = vids[idOf(cur)];
+      if (v && v.duration) bars[LIST[cur].n - 1].style.setProperty('--p', Math.min(1, v.currentTime / v.duration).toFixed(4));
+      raf = requestAnimationFrame(tick);
+    };
+    const go = dir => { const n = cur + dir; if (n >= LIST.length) close(); else if (n < 0) { const v = vids[idOf(cur)]; v.currentTime = 0; sync(); } else show(n); };
+    let lastFocus = null;
+    const open = (i, from) => {
+      clearTimeout(hideT); lastFocus = from; userPaused = false; held = false;
+      previews.forEach(v => v.pause());
+      sv.hidden = false; root.classList.add('sv-lock'); show(i);
+      requestAnimationFrame(() => sv.classList.add('open'));
+      cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); closeBtn.focus();
+    };
+    const close = () => {
+      sv.classList.remove('open', 'held', 'swiping'); cancelAnimationFrame(raf);
+      Object.values(vids).forEach(v => v.pause()); root.classList.remove('sv-lock');
+      hideT = setTimeout(() => { sv.hidden = true; cards.resume && cards.resume(); }, rm.matches ? 0 : 250);
+      if (lastFocus) lastFocus.focus();
+    };
+
+    // tap right = next, tap left = previous, press and hold = pause, swipe down = close (touch)
+    let pd = null, holdT = 0;
+    const setHeld = h => { held = h; sv.classList.toggle('held', h); sync(); };
+    card.addEventListener('pointerdown', e => {
+      if (e.button || e.target.closest('button')) return;
+      pd = { x: e.clientX, y: e.clientY, swipe: false, touch: e.pointerType === 'touch' };
+      if (!sv.contains(d.activeElement) || d.activeElement === d.body) card.focus({ preventScroll: true });
+      card.setPointerCapture(e.pointerId);
+      holdT = setTimeout(() => setHeld(true), 200);
+    });
+    card.addEventListener('pointermove', e => {
+      if (!pd) return; const dx = e.clientX - pd.x, dy = e.clientY - pd.y;
+      if (!pd.swipe && pd.touch && dy > 12 && dy > Math.abs(dx)) { pd.swipe = true; clearTimeout(holdT); sv.classList.add('swiping'); held = true; sync(); }
+      if (pd.swipe) { const y = Math.max(0, dy); card.style.setProperty('--dy', y + 'px'); card.style.setProperty('--sc', (1 - Math.min(y / 2000, .1)).toFixed(3)); }
+    });
+    const up = e => {
+      if (!pd) return; clearTimeout(holdT); const p = pd; pd = null;
+      if (p.swipe) {
+        sv.classList.remove('swiping'); card.style.removeProperty('--dy'); card.style.removeProperty('--sc'); held = false;
+        if (e.clientY - p.y > 110) close(); else sync(); return;
+      }
+      if (held) { setHeld(false); return; }
+      if (e.type === 'pointercancel') return;
+      const r = card.getBoundingClientRect(); go(e.clientX - r.left < r.width * .3 ? -1 : 1);
+    };
+    card.addEventListener('pointerup', up); card.addEventListener('pointercancel', up);
+    card.addEventListener('contextmenu', e => e.preventDefault());
+    sv.querySelectorAll('.sv-arrow').forEach(b => b.addEventListener('click', () => go(+b.dataset.go)));
+    pauseBtn.addEventListener('click', () => { userPaused = !userPaused; sync(); });
+    closeBtn.addEventListener('click', close);
+    sv.addEventListener('click', e => { if (e.target === sv) close(); });
+    d.addEventListener('keydown', e => {
+      if (sv.hidden) return;
+      if (e.key === 'Escape') { e.preventDefault(); close(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+      else if (e.key === ' ' && !e.target.closest('button')) { e.preventDefault(); userPaused = !userPaused; sync(); }
+      else if (e.key === 'Tab') {
+        const f = [...sv.querySelectorAll('button')].filter(b => !b.disabled && b.offsetParent !== null);
+        const i = f.indexOf(d.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+    d.addEventListener('visibilitychange', () => { if (!sv.hidden) { held = d.hidden; sync(); } });
+  }
 })();
