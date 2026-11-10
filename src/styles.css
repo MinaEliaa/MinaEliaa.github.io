@@ -704,3 +704,12 @@ html.sv-lock{overflow:hidden}
 .web-scroll img{display:block;width:100%;height:auto}
 .web-scroll:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
 @media (max-width:809.98px){.web-scroll{height:min(480px,62vh)}.web-frame{border-radius:16px}}
+/* user flow rows (coded, no devices) */
+.uf{display:grid;gap:12px}
+.uf-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:center}
+.uf-num{font-size:28px;line-height:32px;font-weight:600;color:var(--ink-2)}
+.uf-wrap{padding:24px}
+.sm-n.dec{border-radius:10px;background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink);font-weight:600}
+.uf-tag{position:relative;z-index:1;margin-right:8px;padding:2px 8px;border-radius:6px;font-size:11px;line-height:16px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.uf-tag.y{background:var(--ink);color:#fff;box-shadow:none}
+@media (max-width:809.98px){.uf-row{grid-template-columns:minmax(0,1fr);gap:6px}.uf-num{font-size:20px;line-height:24px}.uf-wrap{padding:20px 16px}}

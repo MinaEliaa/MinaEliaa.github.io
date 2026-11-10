@@ -96,17 +96,34 @@ const DETAILS = {
     ],
   },
   wish: {
-    title: 'Wish: a social wishlist for gifting friends',
-    client: 'Wish', year: '2024', industry: 'Social · E-commerce', platform: 'Mobile application (iOS & Android)',
-    links: [{ type: 'appstore', href: 'https://www.apple.com/app-store/' }, { type: 'play', href: 'https://play.google.com/store' }],
-    overview: 'Wish lets people share what they really want and lets friends reserve and gift it, with badges that reward generous givers.',
-    problem: ['Make wishlists fun to browse and share.', 'Stop two friends buying the same gift.', 'Reward people who give.'],
-    did: ['Product strategy', 'User research', 'User flows', 'UI design', 'Gamification design'],
-    extra: { title: 'Gamification', items: ['Badges for granted wishes', 'Progress towards the next badge', 'Leaderboard of top givers'] },
-    keywords: ['Playful', 'Social', 'Generous', 'Friendly'],
+    title: 'Wish: connect, share and save your dream wishes with friends',
+    client: 'Wish mobile app · Algorithma, KSA', year: '2026', industry: 'Social networking', platform: 'Mobile application (iOS & Android)',
+    links: [{ type: 'web', href: 'https://www.behance.net/gallery/248422193/Wish-Social-Wishlist-concept-mobile-application', text: 'View case study on Behance' }],
+    overview: 'Wish is the first-of-its-kind social wishlist platform in Saudi Arabia: a mobile app that redefines how people share desires and celebrate each other’s preferences. Its mission is to create a meaningful experience that transforms how people express care, support and celebration through gifting, fostering deeper relationships and removing the stress of choosing the perfect gift.',
+    mission: 'Built for emotionally connected users who enjoy expressing care through giving: young adults and professionals, close-knit friend groups, socially active users who gift for birthdays, Eid and anniversaries, and digital-first people looking for seamless, meaningful gifting.',
+    problem: [
+      'Most people only tell friends what they want in conversation (60%), so gifts are a guess.',
+      'Half of gift givers ask directly, and 30% guess based on interests, which often means duplicate or unwanted presents.',
+      'Goal: blend social interaction with personalised wish sharing, so users can create public or private wishlists, post updates and engage with their circles.',
+      'Let friends reserve a wish and earn achievement badges, so there is no more guessing, no more duplicate presents, and gifting becomes intentional, emotional and fun.',
+    ],
+    did: ['User interviews', 'Competitive analysis', 'Sitemap & user flows', 'UI screens', 'Design system', 'Prototype', 'Developer handover'],
+    extra: { title: 'Research questionnaires', stats: [['60%', 'tell friends what they want directly in conversation'], ['50%', 'choose a gift by asking the friend directly; 30% guess from interests'], ['40%', 'gift friends on birthdays only; 30% on holidays and birthdays']] },
+    sections: [
+      { type: 'userflow', title: 'User flow', heading: 'Register and onboarding.', rows: [
+        ['Install app', [['Guest Mode home page', [['Modal bottom sheet', [['Continue with Email'], ['Google'], ['Apple']]]]]]],
+        ['Continue with Email', [['Enter OTP code', [['Enter your password', [['?First time', [['Complete profile (onboarding)', [['Home page']], 'Yes'], ['Home page', null, 'No']]]]]]]]],
+        ['Continue with Apple', [['?First time', [['Complete profile (onboarding)', [['Home page']], 'Yes'], ['Home page', null, 'No']]]]],
+        ['Continue with Google', [['?First time', [['Complete profile (onboarding)', [['Home page']], 'Yes'], ['Home page', null, 'No']]]]],
+      ] },
+    ],
+    keywords: ['Social media', 'UI/UX', 'UI design', 'User interface', 'Mobile app', 'Design system', 'Information architecture', 'Ecommerce', 'Instagram', 'Bento', 'Figma'],
     flows: [
-      { name: 'Onboarding', kind: 'phone', imgs: ['p-wish-1', 'p-wish-2', 'p-wish-3'] },
-      { name: 'Grant a wish', kind: 'phone', imgs: ['p-wish-2', 'p-wish-3', 'p-wish-1'] },
+      { name: 'Onboarding', kind: 'phone', imgs: ['fw-onb-1', 'fw-onb-2', 'fw-onb-3'] },
+      { name: 'Create a post', kind: 'phone', imgs: ['fw-post-1', 'fw-post-2', 'fw-post-3'] },
+      { name: 'Comments & replies', kind: 'phone', imgs: ['fw-comments-1', 'fw-comments-2', 'fw-comments-3'] },
+      { name: 'Profile & interests', kind: 'phone', imgs: ['fw-profile-1', 'fw-profile-2', 'fw-profile-3'] },
+      { name: 'Suggest a wish', kind: 'phone', imgs: ['fw-suggest-1', 'fw-suggest-2', 'fw-suggest-3', 'fw-suggest-4'] },
     ],
   },
   eyas: {
@@ -143,6 +160,11 @@ function renderSection(s) {
     const steps = s.steps.map(([txt, mood, exit], i) => `<li class="jr-step${exit ? ' exit' : ''}" style="--h:${Math.round(140 - (140 * i) / (n - 1))}"><span class="jr-num">${String(i + 1).padStart(2, '0')}${exit ? '<em>Exit</em>' : ''}</span><p>${esc(txt)}</p>${mood ? `<span class="jr-mood">${esc(mood)}</span>` : ''}</li>`).join('');
     const exits = s.exits.map((x, i) => `<li style="--i:${i}"><span>Exit ${i + 1}</span>${esc(x)}</li>`).join('');
     return `<section class="pd-sec pd-wide">${head}<div class="pd-block"><p class="pd-lead">${esc(s.heading)}</p><p class="jr-persona"><b>${esc(s.persona[0])}</b>${esc(s.persona[1])}</p><ol class="jr-steps">${steps}</ol><div class="jr-mood-bar" aria-hidden="true"><span>Curious</span><i></i><span>Gone</span></div><ol class="jr-exits">${exits}</ol><p class="pd-note">${esc(s.note)}</p></div></section>`;
+  }
+  if (s.type === 'userflow') {
+    const uf = ([label, kids, tag]) => { const dec = label.startsWith('?'); const txt = dec ? label.slice(1) + '?' : label; return `<li>${tag ? `<span class="uf-tag ${tag === 'Yes' ? 'y' : 'n'}">${esc(tag)}</span>` : ''}<span class="sm-n${dec ? ' dec' : ''}${kids ? '' : ' leaf'}">${esc(txt)}</span>${kids ? `<ul>${kids.map(uf).join('')}</ul>` : ''}</li>`; };
+    const rows = s.rows.map((r, i) => `<li class="uf-row"><span class="uf-num">${String(i + 1).padStart(2, '0')}</span><div class="sm-wrap uf-wrap" tabindex="0" role="region" aria-label="User flow ${i + 1}"><ul class="sm">${uf(r)}</ul></div></li>`).join('');
+    return `<section class="pd-sec pd-wide">${head}<div class="pd-block"><p class="pd-lead">${esc(s.heading)}</p><ol class="uf">${rows}</ol></div></section>`;
   }
   if (s.type === 'pairs') {
     const rows = s.pairs.map(([pr, so], i) => `<li><div class="ps-p"><span>${String(i + 1).padStart(2, '0')} Problem</span><p>${esc(pr)}</p></div><div class="ps-s"><span>${String(i + 1).padStart(2, '0')} Solution</span><p>${esc(so)}</p></div></li>`).join('');
