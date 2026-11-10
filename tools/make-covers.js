@@ -2,7 +2,7 @@
 const fs = require('fs'), sharp = require('sharp');
 const P = '/home/claude/assets-src/proj', IMG = '/home/claude/site/img', MF = '/home/claude/tools/img-manifest.json';
 const M = JSON.parse(fs.readFileSync(MF, 'utf8'));
-const covers = { 'pc-axispay': 'axis-cover.png', 'pc-d360': 'd360-cover.png' };
+const covers = { 'pc-axispay': 'axis-cover.png', 'pc-d360': 'd360-cover.png', 'pc-wish': 'wish-cover.png' };
 (async () => {
   for (const [name, file] of Object.entries(covers)) {
     const src = `${P}/${file}`, meta = await sharp(src).metadata(), widths = [720, 1080, 1600, 2144].filter(w => w <= meta.width).concat(meta.width < 2144 && meta.width > 1080 ? [meta.width] : []).filter((w, i, a) => a.indexOf(w) === i);

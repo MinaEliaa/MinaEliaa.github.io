@@ -96,9 +96,10 @@ const DETAILS = {
     ],
   },
   wish: {
+    cover: 'pc-wish', coverPos: '50% 0%',
     title: 'Wish: connect, share and save your dream wishes with friends',
     client: 'Wish mobile app · Algorithma, KSA', year: '2026', industry: 'Social networking', platform: 'Mobile application (iOS & Android)',
-    links: [{ type: 'web', href: 'https://www.behance.net/gallery/248422193/Wish-Social-Wishlist-concept-mobile-application', text: 'View case study on Behance' }],
+    links: [{ type: 'web', href: 'https://www.behance.net/gallery/248422193/Wish-Social-Wishlist-concept-mobile-application', text: 'View case study on Behance' }, { type: 'appstore', href: 'https://apps.apple.com/us/app/wish/id1555856634' }],
     overview: 'Wish is the first-of-its-kind social wishlist platform in Saudi Arabia: a mobile app that redefines how people share desires and celebrate each other’s preferences. Its mission is to create a meaningful experience that transforms how people express care, support and celebration through gifting, fostering deeper relationships and removing the stress of choosing the perfect gift.',
     mission: 'Built for emotionally connected users who enjoy expressing care through giving: young adults and professionals, close-knit friend groups, socially active users who gift for birthdays, Eid and anniversaries, and digital-first people looking for seamless, meaningful gifting.',
     problem: [
@@ -110,6 +111,7 @@ const DETAILS = {
     did: ['User interviews', 'Competitive analysis', 'Sitemap & user flows', 'UI screens', 'Design system', 'Prototype', 'Developer handover'],
     extra: { title: 'Research questionnaires', stats: [['60%', 'tell friends what they want directly in conversation'], ['50%', 'choose a gift by asking the friend directly; 30% guess from interests'], ['40%', 'gift friends on birthdays only; 30% on holidays and birthdays']] },
     sections: [
+      { type: 'shots', title: 'Preview Screenshots', imgs: ['ws-wish-1', 'ws-wish-2', 'ws-wish-3', 'ws-wish-4', 'ws-wish-5', 'ws-wish-6'], alts: ['Reserve a wish, surprise a friend', 'Make your personal feed', 'Friends can reserve your wish', 'Dark and light mode', 'Wish reserved notification', 'Earn badge rewards'] },
       { type: 'userflow', title: 'User flow', heading: 'Register and onboarding.', rows: [
         ['Install app', [['Guest Mode home page', [['Modal bottom sheet', [['Continue with Email'], ['Google'], ['Apple']]]]]]],
         ['Continue with Email', [['Enter OTP code', [['Enter your password', [['?First time', [['Complete profile (onboarding)', [['Home page']], 'Yes'], ['Home page', null, 'No']]]]]]]]],
@@ -153,13 +155,17 @@ const linkBtn = l => {
 };
 
 const icoIdeas = ['<path d="M5 9h14M5 15h14M10 4 8 20M16 4l-2 16"/>', '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>', '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>', '<path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5a1.5 1.5 0 0 1 3 0V12m0-1a1.5 1.5 0 0 1 3 0v4a6 6 0 0 1-6 6h-.5a6 6 0 0 1-4.8-2.4L5 15.5a1.5 1.5 0 0 1 2.3-1.9L9 15"/>', '<path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/>'];
-function renderSection(s) {
+function renderSection(s, pic) {
   const head = `<h3>${esc(s.title)}</h3>`;
   if (s.type === 'journey') {
     const n = s.steps.length;
     const steps = s.steps.map(([txt, mood, exit], i) => `<li class="jr-step${exit ? ' exit' : ''}" style="--h:${Math.round(140 - (140 * i) / (n - 1))}"><span class="jr-num">${String(i + 1).padStart(2, '0')}${exit ? '<em>Exit</em>' : ''}</span><p>${esc(txt)}</p>${mood ? `<span class="jr-mood">${esc(mood)}</span>` : ''}</li>`).join('');
     const exits = s.exits.map((x, i) => `<li style="--i:${i}"><span>Exit ${i + 1}</span>${esc(x)}</li>`).join('');
     return `<section class="pd-sec pd-wide">${head}<div class="pd-block"><p class="pd-lead">${esc(s.heading)}</p><p class="jr-persona"><b>${esc(s.persona[0])}</b>${esc(s.persona[1])}</p><ol class="jr-steps">${steps}</ol><div class="jr-mood-bar" aria-hidden="true"><span>Curious</span><i></i><span>Gone</span></div><ol class="jr-exits">${exits}</ol><p class="pd-note">${esc(s.note)}</p></div></section>`;
+  }
+  if (s.type === 'shots') {
+    const items = s.imgs.map((n, i) => `<li>${pic(n, { alt: s.alts[i], w: 240, h: 520, sizes: '(max-width: 809px) 180px, 240px' })}</li>`).join('');
+    return `<section class="pd-sec pd-wide">${head}<div class="shots-row" tabindex="0" role="region" aria-label="${esc(s.title)}"><ul>${items}</ul></div></section>`;
   }
   if (s.type === 'userflow') {
     const uf = ([label, kids, tag]) => { const dec = label.startsWith('?'); const txt = dec ? label.slice(1) + '?' : label; return `<li>${tag ? `<span class="uf-tag ${tag === 'Yes' ? 'y' : 'n'}">${esc(tag)}</span>` : ''}<span class="sm-n${dec ? ' dec' : ''}${kids ? '' : ' leaf'}">${esc(txt)}</span>${kids ? `<ul>${kids.map(uf).join('')}</ul>` : ''}</li>`; };
@@ -198,7 +204,7 @@ ${d.links.length ? `<div class="pd-links">${d.links.map(linkBtn).join('')}</div>
 <section class="pd-sec"><h3>Overview</h3><div class="pd-txt"><p>${esc(d.overview)}</p>${d.mission ? `<p class="pd-mission"><b>Mission</b>${esc(d.mission)}</p>` : ''}</div></section>
 <section class="pd-sec"><h3>Problem / Goal</h3><ul class="pd-list">${d.problem.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
 <section class="pd-sec"><h3>What I did</h3><ul class="pd-chips">${d.did.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
-${d.extra ? `<section class="pd-sec"><h3>${esc(d.extra.title)}</h3>${extra}</section>` : ''}${(d.sections || []).map(renderSection).join('')}
+${d.extra ? `<section class="pd-sec"><h3>${esc(d.extra.title)}</h3>${extra}</section>` : ''}${(d.sections || []).map(x => renderSection(x, pic)).join('')}
 <section class="pd-sec"><h3>Keywords</h3><ul class="pd-chips soft">${d.keywords.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
 ${sitemap}
 ${d.website ? `<section class="pd-sec pd-wide"><h3>Website</h3><div class="pd-block"><p class="pd-hint">${esc(d.website.name)}. Scroll inside the frame to see the whole page.</p><div class="web-frame"><div class="web-bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(d.website.url)}</span></div><div class="web-scroll" tabindex="0" role="region" aria-label="${esc(p.name)} landing page, scrollable">${pic(d.website.img, { alt: `${p.name} landing page, full length`, w: 1000, h: 7136, sizes: '(max-width: 1119px) calc(100vw - 32px), 1000px' })}</div></div></div></section>` : !(d.flows || []).length ? '' : `<section class="pd-sec pd-flows"><h3>Flows</h3><p class="pd-hint" id="${id}-hint">Tap a flow to spread its screens, tap again to stack them.</p>${flows}</section>`}
