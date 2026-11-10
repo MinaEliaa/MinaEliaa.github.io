@@ -3,8 +3,8 @@
    what I did, one variable section, keywords, flows.
    NOTE: content below is placeholder copy until Mina sends the real details per project. */
 
-const PHONE = { w: 194, h: 420 };   // expanded phone screen (display px)
-const WEB = { w: 360, h: 225 };     // expanded website section (16:10)
+const PHONE = { w: 170, h: 368 };   // expanded phone screen (display px)
+const WEB = { w: 320, h: 200 };     // expanded website section (16:10)
 
 const DETAILS = {
   d360: {
