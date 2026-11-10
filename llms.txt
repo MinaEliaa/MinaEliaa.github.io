@@ -65,9 +65,16 @@ Yes. I build your website with no-code tools like Framer, Lovable or Claude, and
 
 Yes. I use vibe coding with Lovable and Claude Code, with Supabase integration, to take products from design to a working launch.
 
+## Site sections
+
+- [Services](https://minaeliaa.github.io/#services): what Mina designs and builds
+- [Projects](https://minaeliaa.github.io/#projects): recent product work
+- [Case studies](https://minaeliaa.github.io/#case-studies): a closer look at each product
+- [Tools](https://minaeliaa.github.io/#tools): the tools behind the process
+
 ## Links
 
-- Portfolio: https://minaeliaa.github.io/
-- LinkedIn: https://www.linkedin.com/in/mina-elia-1223421a4/
-- Behance: https://www.behance.net/MinaElia29
-- Dribbble: https://dribbble.com/Mina_Elia
+- [Portfolio](https://minaeliaa.github.io/): portfolio home page
+- [LinkedIn](https://www.linkedin.com/in/mina-elia-1223421a4/): professional profile and experience
+- [Behance](https://www.behance.net/MinaElia29): full case studies and UI work
+- [Dribbble](https://dribbble.com/Mina_Elia): UI shots and explorations
