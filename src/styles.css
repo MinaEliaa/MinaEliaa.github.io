@@ -64,9 +64,9 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .nav.compact .nav-ic:hover{background:var(--bg)}
 .nav-ic svg{width:22px;height:22px}
 .nav-cta{height:37px;border-radius:8px;padding:0 16px;background:var(--ink);color:#fff;font-size:14px;line-height:21px;font-weight:500}
-.nav-arrow i{width:37px;height:37px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;background:var(--ink);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 1px 2px rgba(19,32,43,.2);transition:box-shadow .2s ease,background-color .3s ease,color .3s ease}
+.nav-arrow i{width:37px;height:37px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--ink);background:transparent;box-shadow:none;transition:box-shadow .2s ease,background-color .3s ease,color .3s ease}
 .nav-arrow svg{width:20px;height:20px;transition:transform .45s cubic-bezier(.22,1,.36,1)}
-.nav-arrow:hover i{box-shadow:0 0 0 2px var(--ring)}
+.nav-arrow:hover i{background:var(--bg);box-shadow:none}
 .nav-arrow:focus-visible{outline:0}.nav-arrow:focus-visible i{outline:2px solid var(--ring);outline-offset:1px}
 .nav-arrow svg{position:absolute;transition:opacity .25s ease,transform .45s cubic-bezier(.22,1,.36,1)}
 .nav-arrow i{position:relative}
@@ -174,6 +174,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .s-live{background:var(--live-bg);color:var(--live)}
 .s-soon{background:var(--soon-bg);color:var(--soon)}
 .s-ws{background:var(--ws-bg);color:var(--ws)}
+.s-cat{background:var(--live-bg);color:var(--live);white-space:nowrap}
 
 /* ===== Case studies (bento boards): 2-column grid like Projects ===== */
 .cases{padding:128px 20px;content-visibility:auto;contain-intrinsic-size:auto 1707px}
@@ -184,7 +185,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .case-frame img{display:block;width:100%;height:auto;aspect-ratio:2048/1622;border-radius:16px;background:var(--fill)}
 .case-meta{margin-top:20px;padding:0 12px;height:35px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .case-meta h3{font-size:18px;line-height:21.6px;font-weight:500;color:var(--ink-2)}
-.case-meta span{font-size:16px;line-height:24px;color:var(--ink-2)}
+
 .tools{content-visibility:auto;contain-intrinsic-size:auto 737px}
 
 /* ===== Plans ===== */
