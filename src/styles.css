@@ -595,7 +595,7 @@ html.sv-lock{overflow:hidden}
 .flow.web{--w:320px;--h:200px;--r:10px}
 .flow h4{font-size:18px;line-height:26px;font-weight:600;display:flex;flex-direction:column}
 .flow h4 span{font-size:14px;line-height:20px;font-weight:400;color:var(--ink-2)}
-.flow-stage{position:relative;height:calc(var(--h) * .66 + var(--pad) * 2);transition:height .6s cubic-bezier(.32,.72,0,1);overflow:hidden;border-radius:20px;background:var(--bg);cursor:pointer;-webkit-tap-highlight-color:transparent;scrollbar-width:thin}
+.flow-stage{position:relative;height:calc(var(--h) * .66 + var(--pad) * 2);transition:height .6s cubic-bezier(.32,.72,0,1);overflow:hidden;border-radius:32px;background:var(--bg);cursor:pointer;-webkit-tap-highlight-color:transparent;scrollbar-width:thin}
 .flow-stage[aria-expanded=true]{height:calc(var(--h) + var(--pad) * 2);overflow-x:auto;overscroll-behavior-x:contain}
 .flow-track{position:relative;height:100%;width:100%;transition:width .6s cubic-bezier(.32,.72,0,1)}
 .flow-stage[aria-expanded=true] .flow-track{width:calc(var(--pad) * 2 + var(--n) * var(--w) + (var(--n) - 1) * var(--gap))}
