@@ -307,4 +307,62 @@
     });
     d.addEventListener('visibilitychange', () => { if (!sv.hidden) { held = d.hidden; sync(); } });
   }
+  /* ---------- Featured Projects: bottom sheet with project details + stacked flows ---------- */
+  const ps = d.getElementById('ps');
+  if (ps) {
+    const panel = d.getElementById('ps-panel'), scroller = d.getElementById('ps-scroll'), closeX = d.getElementById('ps-close');
+    let current = null, opener = null, hideTimer = 0;
+    const show = (key, from) => {
+      const art = d.getElementById('project-' + key); if (!art) return;
+      clearTimeout(hideTimer); opener = from || d.activeElement;
+      ps.querySelectorAll('.pd').forEach(a => { a.hidden = a !== art; });
+      current = key; ps.setAttribute('aria-labelledby', art.getAttribute('aria-labelledby')); ps.removeAttribute('aria-label');
+      ps.hidden = false; root.classList.add('sv-lock'); scroller.scrollTop = 0;
+      requestAnimationFrame(() => requestAnimationFrame(() => ps.classList.add('open')));
+      closeX.focus({ preventScroll: true });
+      if (location.hash !== '#project-' + key) history.replaceState(null, '', '#project-' + key);
+    };
+    const hide = () => {
+      if (ps.hidden) return;
+      ps.classList.remove('open', 'drag'); panel.style.removeProperty('--dy'); root.classList.remove('sv-lock');
+      hideTimer = setTimeout(() => { ps.hidden = true; }, rm.matches ? 0 : 450);
+      if (location.hash.startsWith('#project-')) history.replaceState(null, '', location.pathname + location.search);
+      if (opener && opener.focus) opener.focus({ preventScroll: true });
+      current = null;
+    };
+    d.querySelectorAll('.proj-card').forEach(a => a.addEventListener('click', e => { e.preventDefault(); show(a.getAttribute('href').slice(9), a); }));
+    closeX.addEventListener('click', hide);
+    ps.addEventListener('click', e => { if (e.target === ps) hide(); });
+    d.addEventListener('keydown', e => {
+      if (ps.hidden) return;
+      if (e.key === 'Escape') { e.preventDefault(); hide(); return; }
+      if (e.key === 'Tab') {
+        const art = d.getElementById('project-' + current);
+        const f = [closeX, ...art.querySelectorAll('a[href], [tabindex="0"]')].filter(el => el.offsetParent !== null);
+        const i = f.indexOf(d.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+    const fromHash = () => { const m = location.hash.match(/^#project-([a-z0-9-]+)$/); if (m && d.getElementById('project-' + m[1])) show(m[1]); };
+    addEventListener('hashchange', fromHash); fromHash();
+
+    // phones: drag the grab bar down to dismiss
+    const grab = ps.querySelector('.ps-grab'); let g = null;
+    grab.addEventListener('pointerdown', e => { g = { y: e.clientY }; grab.setPointerCapture(e.pointerId); ps.classList.add('drag'); });
+    grab.addEventListener('pointermove', e => { if (g) panel.style.setProperty('--dy', Math.max(0, e.clientY - g.y) + 'px'); });
+    const gEnd = e => { if (!g) return; const dy = e.clientY - g.y; g = null; ps.classList.remove('drag'); if (dy > 120) hide(); else panel.style.removeProperty('--dy'); };
+    grab.addEventListener('pointerup', gEnd); grab.addEventListener('pointercancel', gEnd);
+
+    // flows: tap to spread the stacked screens side by side, tap again to stack them
+    ps.querySelectorAll('.flow-stage').forEach(st => {
+      const toggle = () => {
+        const open = st.getAttribute('aria-expanded') !== 'true';
+        if (!open) st.scrollTo({ left: 0, behavior: rm.matches ? 'auto' : 'smooth' });
+        st.setAttribute('aria-expanded', String(open));
+      };
+      st.addEventListener('click', toggle);
+      st.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    });
+  }
 })();
