@@ -16,22 +16,51 @@ const DETAILS = {
       { type: 'web', href: 'https://www.behance.net/gallery/258090105/D360-Bank-Website-Conversion-Rate-UX-Audit-Redesign', text: 'View case study on Behance' },
     ],
     overview: 'D360 Bank is a Saudi digital bank that lets people open an account in 2 minutes, then pay, save and send money abroad, all fully Shariah-compliant. This conversion-rate UX audit and redesign turns the website into a simple, trustworthy route to the app: real stats, genuine trust signals and one clear next step.',
+    mission: 'Making the D360 website a simple, trustworthy route to the app: real stats, genuine trust signals, and one clear next step.',
     problem: [
-      'The only sign-up button, “Start your journey”, showed a bare QR code on desktop and jumped straight to Google Play on Android.',
-      'Claims like “best rate” or “no hidden fees” were slogans with no numbers behind them.',
-      'Trust broke early: the customer count literally read 3 trillion, and SAMA regulation was buried in the footer.',
-      'The homepage sold travel only; financing, savings and Musaned never appeared, and “Learn More” sent English visitors to the Arabic site.',
-      'Goal: focus the site on one clear action, add genuine trust signals and showcase every product upfront.',
+      'The products are solid, but the website buries them under slogans.',
+      'The new site should focus on one clear action.',
+      'It should include genuine trust signals.',
+      'It should showcase every product upfront.',
     ],
     did: ['UX audit', 'First-time visitor journey', 'Conversion-rate analysis', 'Problems & solutions mapping', 'Information architecture', 'UI redesign', 'Arabic RTL & English', 'Responsive web', 'Front-end build'],
-    extra: { title: 'Audit & approach',
-      stats: [['10 steps', 'from a TikTok ad to closing the tab, mapped for a first-time visitor'], ['4 exits', 'found: empty mobile scroll, wrong-language links, no exchange rate, broken protection link'], ['6 fixes', 'one problem, one solution, from the sign-up button to the mobile hero']],
-      items: ['Numbers, not slogans: 2 minutes, SAR 0 fees, 4.49% APR and up to 3% profit.', 'Arabic first: built right to left, with a full English version and a one-tap language switch.', 'Personal and playful: a card colour picker and the Pink Card campaign for Saudi women.', 'One clear action: a single “Get the App” button, repeated through the page with store badges.', 'Trust where you decide: the 4.8 rating, 41.5K reviews and 3M+ customers right next to the button.'] },
-    keywords: ['Conversion rate', 'Trust signals', 'Arabic first', 'One clear action', 'Shariah-compliant'],
-    flows: [
-      { name: 'Home page', kind: 'web', imgs: ['f-d360-1', 'f-d360-2', 'f-d360-3', 'f-d360-4'] },
-      { name: 'Cards & sign-up', kind: 'web', imgs: ['f-d360-5', 'f-d360-6', 'f-d360-2'] },
+    sections: [
+      { type: 'journey', title: 'First-time visitor', heading: 'Ten steps from a TikTok ad to closing the tab.',
+        persona: ['29', 'Saudi professional · Android · came from a TikTok ad about cheap transfers'],
+        steps: [
+          ['A cookie banner blurs the whole page.', 'Mildly annoying'],
+          ['“TRAVELERS BEST BANK” doesn’t match the ad, and the button is half cut off.', ''],
+          ['“+3,000,000 million customers.”', 'First crack in trust'],
+          ['A long empty scroll, and the logo is gone. The page looks broken.', 'Biggest exit risk', true],
+          ['“Best exchange rate?” but no actual rate.', 'Wants to compare elsewhere'],
+          ['“Learn More” switches the page to Arabic.', 'Second exit risk', true],
+          ['The transfers page shows no rate; countries are hidden in an FAQ.', ''],
+          ['“Transfer now” jumps straight to Google Play.', 'Feels pushy'],
+          ['The financing calculator shows zeros.', 'Looks broken'],
+          ['The Customer Protection link is broken.', 'Leaves', true],
+        ],
+        exits: ['The empty scrolling section on mobile', '“Learn More” switches them to Arabic', 'No actual exchange rate to be found', 'The broken Customer Protection link'],
+        note: 'The products are strong, but the site gives visitors no clear way to download the app.' },
+      { type: 'pairs', title: 'Problems & solutions', heading: 'Turning a slogan-led website into a clear path to the app.',
+        pairs: [
+          ['The only sign-up button, “Start your journey”, shows a bare QR code on desktop and jumps straight to Google Play on Android.', 'One clear “Get the App” button, repeated through the page, with App Store and Google Play badges.'],
+          ['Every claim, like “best rate” or “no hidden fees”, is a slogan with no numbers behind it.', 'Benefits with real numbers: 2 minutes, 100% Shariah, SAR 0 fees, 4.49% APR and up to 3% profit.'],
+          ['Trust breaks early: the customer count literally reads 3 trillion, and SAMA regulation is buried in the footer.', 'Trust up front: a 4.8 rating from 41.5K reviews and 3M+ customers right next to the app.'],
+          ['The homepage sells travel only, while financing, savings and Musaned never appear.', 'Every product shown up front: cards, transfers, financing, Sanabil savings and Musaned, each in its own tile.'],
+          ['The three homepage “Learn More” links send English visitors to the Arabic site.', 'Language stays consistent: one EN / العربية switch in the header, and every section exists in both languages.'],
+          ['On mobile the button is cut off, followed by about 1,500px of near-empty scrolling, and the logo disappears.', 'A compact mobile hero: headline, button and cards fit the first screen, and every scroll shows real content.'],
+        ] },
+      { type: 'cards', title: 'Our approach', heading: 'Five ideas shaped the new website.',
+        cards: [
+          ['Numbers, not slogans', 'Every benefit is a real figure: 2 minutes, SAR 0 fees, 4.49% APR, up to 3% profit. Visitors can compare D360 in seconds.'],
+          ['Arabic first', 'Built right to left from the start, with a full English version and a one-tap language switch.'],
+          ['Personal and playful', 'A card colour picker and the Pink Card campaign (for Saudi women) make the bank feel made for you.'],
+          ['One clear action', 'A single “Get the App” button, repeated through the page, with App Store and Google Play badges right under it.'],
+          ['Trust where you decide', 'The 4.8 rating, 41.5K reviews and 3M+ customers sit right next to the button, not buried in the footer.'],
+        ] },
     ],
+    keywords: ['UI/UX', 'UI design', 'UX audit', 'Web design', 'Landing page', 'Website redesign', 'Conversion optimization', 'Fintech', 'Digital banking', 'Bank', 'Credit card', 'D360 Bank', 'mada', 'stc bank', 'Barq', 'Revolut', 'Arabic', 'Saudi Arabia', 'KSA', 'Mobile design', 'Mobile app', 'Motion graphics', 'UI animation', 'Figma'],
+    website: { img: 'w-d360', url: 'minaeliaa.github.io/d360-bank', href: 'https://minaeliaa.github.io/d360-bank/', name: 'Home page (landing page)' },
   },
   axispay: {
     cover: 'pc-axispay',
@@ -107,15 +136,35 @@ const linkBtn = l => {
   return `<a class="pd-btn web" href="${l.href}" target="_blank" rel="noopener">${esc(l.text || 'View website')}${icoWeb}</a>`;
 };
 
+const icoIdeas = ['<path d="M5 9h14M5 15h14M10 4 8 20M16 4l-2 16"/>', '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>', '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>', '<path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5a1.5 1.5 0 0 1 3 0V12m0-1a1.5 1.5 0 0 1 3 0v4a6 6 0 0 1-6 6h-.5a6 6 0 0 1-4.8-2.4L5 15.5a1.5 1.5 0 0 1 2.3-1.9L9 15"/>', '<path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/>'];
+function renderSection(s) {
+  const head = `<h3>${esc(s.title)}</h3>`;
+  if (s.type === 'journey') {
+    const n = s.steps.length;
+    const steps = s.steps.map(([txt, mood, exit], i) => `<li class="jr-step${exit ? ' exit' : ''}" style="--h:${Math.round(140 - (140 * i) / (n - 1))}"><span class="jr-num">${String(i + 1).padStart(2, '0')}${exit ? '<em>Exit</em>' : ''}</span><p>${esc(txt)}</p>${mood ? `<span class="jr-mood">${esc(mood)}</span>` : ''}</li>`).join('');
+    const exits = s.exits.map((x, i) => `<li style="--i:${i}"><span>Exit ${i + 1}</span>${esc(x)}</li>`).join('');
+    return `<section class="pd-sec pd-wide">${head}<div class="pd-block"><p class="pd-lead">${esc(s.heading)}</p><p class="jr-persona"><b>${esc(s.persona[0])}</b>${esc(s.persona[1])}</p><ol class="jr-steps">${steps}</ol><div class="jr-mood-bar" aria-hidden="true"><span>Curious</span><i></i><span>Gone</span></div><ol class="jr-exits">${exits}</ol><p class="pd-note">${esc(s.note)}</p></div></section>`;
+  }
+  if (s.type === 'pairs') {
+    const rows = s.pairs.map(([pr, so], i) => `<li><div class="ps-p"><span>${String(i + 1).padStart(2, '0')} Problem</span><p>${esc(pr)}</p></div><div class="ps-s"><span>${String(i + 1).padStart(2, '0')} Solution</span><p>${esc(so)}</p></div></li>`).join('');
+    return `<section class="pd-sec pd-wide">${head}<div class="pd-block"><p class="pd-lead">${esc(s.heading)}</p><ol class="pairs">${rows}</ol></div></section>`;
+  }
+  if (s.type === 'cards') {
+    const cards = s.cards.map(([h, txt], i) => `<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${icoIdeas[i % icoIdeas.length]}</svg><h4>${esc(h)}</h4><p>${esc(txt)}</p></li>`).join('');
+    return `<section class="pd-sec pd-wide">${head}<div class="pd-block"><p class="pd-lead">${esc(s.heading)}</p><ul class="idea-cards">${cards}</ul></div></section>`;
+  }
+  return '';
+}
+
 function renderDetail(key, p, pic, cover) {
   const d = DETAILS[key]; if (!d) return '';
   const id = `project-${key}`;
   const meta = [['Client', d.client], ['Year', d.year], ['Industry', d.industry], ['Platform', d.platform]]
     .map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('');
-  const extra = `<div class="pd-extra">${d.extra.stats ? `<ul class="pd-stats">${d.extra.stats.map(([n, l]) => `<li><b>${esc(n)}</b><span>${esc(l)}</span></li>`).join('')}</ul>` : ''}${d.extra.items ? `<ul class="pd-list">${d.extra.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}</div>`;
+  const extra = !d.extra ? '' : `<div class="pd-extra">${d.extra.stats ? `<ul class="pd-stats">${d.extra.stats.map(([n, l]) => `<li><b>${esc(n)}</b><span>${esc(l)}</span></li>`).join('')}</ul>` : ''}${d.extra.items ? `<ul class="pd-list">${d.extra.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}</div>`;
   const node = ([label, kids], depth) => `<li>${depth === 0 && d.sitemap.rootImg ? `<span class="sm-phone">${pic(d.sitemap.rootImg, { alt: `${label} screen`, w: 120, h: 260, sizes: '120px' })}<span class="sm-n root">${esc(label)}</span></span>` : `<span class="sm-n${depth === 0 ? ' root' : ''}${kids ? '' : ' leaf'}">${esc(label)}</span>`}${kids ? `<ul>${kids.map(k => node(k, depth + 1)).join('')}</ul>` : ''}</li>`;
   const sitemap = d.sitemap ? `<section class="pd-sec pd-map"><h3>Sitemap</h3><p class="pd-hint">${esc(d.sitemap.note)}</p><div class="sm-wrap" tabindex="0" role="region" aria-label="${esc(p.name)} sitemap"><ul class="sm">${node(d.sitemap.tree, 0)}</ul></div></section>` : '';
-  const flows = d.flows.map((f, fi) => {
+  const flows = (d.flows || []).map((f, fi) => {
     const sz = f.kind === 'web' ? WEB : PHONE;
     const shots = f.imgs.map((n, i) => `<span class="fs" style="--i:${i}">${pic(n, { alt: `${f.name}, screen ${i + 1}`, w: sz.w, h: sz.h, sizes: `${sz.w}px` })}</span>`).join('');
     return `<div class="flow ${f.kind}" style="--n:${f.imgs.length}"><h4 id="${id}-f${fi}">${esc(f.name)}<span>${f.imgs.length} screens</span></h4><div class="flow-stage" role="button" tabindex="0" aria-expanded="false" aria-labelledby="${id}-f${fi}" aria-describedby="${id}-hint"><div class="flow-track">${shots}</div></div></div>`;
@@ -125,13 +174,13 @@ ${d.cover ? `<div class="pd-cover img"${d.coverPos ? ` style="--op:${d.coverPos}
 <header class="pd-head"><p class="pd-kicker">${esc(p.name)} <span class="status s-${p.s}">${p.statusText}</span></p><h2 class="pd-title" id="${id}-t">${esc(d.title)}</h2></header>
 <dl class="pd-meta">${meta}</dl>
 ${d.links.length ? `<div class="pd-links">${d.links.map(linkBtn).join('')}</div>` : ''}
-<section class="pd-sec"><h3>Overview</h3><p>${esc(d.overview)}</p></section>
+<section class="pd-sec"><h3>Overview</h3><div class="pd-txt"><p>${esc(d.overview)}</p>${d.mission ? `<p class="pd-mission"><b>Mission</b>${esc(d.mission)}</p>` : ''}</div></section>
 <section class="pd-sec"><h3>Problem / Goal</h3><ul class="pd-list">${d.problem.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
 <section class="pd-sec"><h3>What I did</h3><ul class="pd-chips">${d.did.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
-<section class="pd-sec"><h3>${esc(d.extra.title)}</h3>${extra}</section>
+${d.extra ? `<section class="pd-sec"><h3>${esc(d.extra.title)}</h3>${extra}</section>` : ''}${(d.sections || []).map(renderSection).join('')}
 <section class="pd-sec"><h3>Keywords</h3><ul class="pd-chips soft">${d.keywords.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
 ${sitemap}
-<section class="pd-sec pd-flows"><h3>Flows</h3><p class="pd-hint" id="${id}-hint">Tap a flow to spread its screens, tap again to stack them.</p>${flows}</section>
+${d.website ? `<section class="pd-sec pd-wide"><h3>Website</h3><div class="pd-block"><p class="pd-hint">${esc(d.website.name)}. Scroll inside the frame to see the whole page.</p><div class="web-frame"><div class="web-bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(d.website.url)}</span></div><div class="web-scroll" tabindex="0" role="region" aria-label="${esc(p.name)} landing page, scrollable">${pic(d.website.img, { alt: `${p.name} landing page, full length`, w: 1000, h: 7136, sizes: '(max-width: 1119px) calc(100vw - 32px), 1000px' })}</div></div></div></section>` : `<section class="pd-sec pd-flows"><h3>Flows</h3><p class="pd-hint" id="${id}-hint">Tap a flow to spread its screens, tap again to stack them.</p>${flows}</section>`}
 </article>`;
 }
 
