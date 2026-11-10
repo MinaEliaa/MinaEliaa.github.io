@@ -60,7 +60,6 @@ const DETAILS = {
         ] },
     ],
     keywords: ['UI/UX', 'UI design', 'UX audit', 'Web design', 'Landing page', 'Website redesign', 'Conversion optimization', 'Fintech', 'Digital banking', 'Bank', 'Credit card', 'D360 Bank', 'mada', 'stc bank', 'Barq', 'Revolut', 'Arabic', 'Saudi Arabia', 'KSA', 'Mobile design', 'Mobile app', 'Motion graphics', 'UI animation', 'Figma'],
-    website: { img: 'w-d360', url: 'minaeliaa.github.io/d360-bank', href: 'https://minaeliaa.github.io/d360-bank/', name: 'Home page (landing page)' },
   },
   axispay: {
     cover: 'pc-axispay',
@@ -180,7 +179,7 @@ ${d.links.length ? `<div class="pd-links">${d.links.map(linkBtn).join('')}</div>
 ${d.extra ? `<section class="pd-sec"><h3>${esc(d.extra.title)}</h3>${extra}</section>` : ''}${(d.sections || []).map(renderSection).join('')}
 <section class="pd-sec"><h3>Keywords</h3><ul class="pd-chips soft">${d.keywords.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>
 ${sitemap}
-${d.website ? `<section class="pd-sec pd-wide"><h3>Website</h3><div class="pd-block"><p class="pd-hint">${esc(d.website.name)}. Scroll inside the frame to see the whole page.</p><div class="web-frame"><div class="web-bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(d.website.url)}</span></div><div class="web-scroll" tabindex="0" role="region" aria-label="${esc(p.name)} landing page, scrollable">${pic(d.website.img, { alt: `${p.name} landing page, full length`, w: 1000, h: 7136, sizes: '(max-width: 1119px) calc(100vw - 32px), 1000px' })}</div></div></div></section>` : `<section class="pd-sec pd-flows"><h3>Flows</h3><p class="pd-hint" id="${id}-hint">Tap a flow to spread its screens, tap again to stack them.</p>${flows}</section>`}
+${d.website ? `<section class="pd-sec pd-wide"><h3>Website</h3><div class="pd-block"><p class="pd-hint">${esc(d.website.name)}. Scroll inside the frame to see the whole page.</p><div class="web-frame"><div class="web-bar" aria-hidden="true"><i></i><i></i><i></i><span>${esc(d.website.url)}</span></div><div class="web-scroll" tabindex="0" role="region" aria-label="${esc(p.name)} landing page, scrollable">${pic(d.website.img, { alt: `${p.name} landing page, full length`, w: 1000, h: 7136, sizes: '(max-width: 1119px) calc(100vw - 32px), 1000px' })}</div></div></div></section>` : !(d.flows || []).length ? '' : `<section class="pd-sec pd-flows"><h3>Flows</h3><p class="pd-hint" id="${id}-hint">Tap a flow to spread its screens, tap again to stack them.</p>${flows}</section>`}
 </article>`;
 }
 
