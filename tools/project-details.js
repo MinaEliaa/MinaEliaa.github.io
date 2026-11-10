@@ -22,14 +22,21 @@ const DETAILS = {
     ],
   },
   axispay: {
-    title: 'AxisPay: rewards that turn spending into points',
-    client: 'AxisPay', year: '2025', industry: 'Fintech · Payments', platform: 'Mobile application (iOS & Android)',
-    links: [],
-    overview: 'AxisPay is a wallet app for bills, transfers and QR payments. Every payment earns points that users can redeem for bills, cashback or partner vouchers.',
-    problem: ['Make the points balance visible and motivating.', 'Keep redeeming points to three clear choices.', 'Protect every redemption with a passcode.'],
-    did: ['User flows', 'Wireframes', 'UI & interaction design', 'Design system', 'Prototyping'],
-    extra: { title: 'Design system', items: ['Dark green brand surfaces with glass cards', 'Bottom-sheet pattern for every choice', 'Large numeric keypad for secure entry'] },
-    keywords: ['Rewarding', 'Secure', 'Clear', 'Modern'],
+    cover: 'pc-axispay',
+    title: 'AxisPay: a rewards ecosystem that keeps salary users coming back',
+    client: 'AxisPay', year: '2026', industry: 'Fintech · Digital wallet', platform: 'Mobile application (iOS & Android)',
+    links: [{ type: 'web', href: 'https://www.behance.net/gallery/256471965/Axis-Pay-UIUX-Redesign-Fintech-Mobile-app', text: 'View case study on Behance' }],
+    overview: 'A UI/UX redesign of the AxisPay salary wallet, built around a retention-focused rewards ecosystem. Everyday payments earn points that users redeem for bills, cashback and partner vouchers, turning a pay-day tool into a daily habit.',
+    problem: [
+      'Missing reasons to stay: AxisPay felt like a basic tool, not an exciting financial app.',
+      'Users logged in only to transfer or withdraw their salary, then left right away.',
+      'No emotional connection, hidden features and no daily habits.',
+      'Goal: turn passive users into daily active users with clear reward goals.',
+      'Make everyday actions like paying bills fun, without hurting the company’s profits or letting users game the rewards.',
+    ],
+    did: ['Understanding the challenge', 'Product & community research', 'User insights', 'Competitive analysis', 'Feature exploration', 'Sitemap & UX logic', 'Design system', 'UI revamp', 'Prototype', 'Presentation'],
+    extra: { title: 'Research insights', stats: [['60–70%', 'of users only receive their salary in AxisPay, then stop using it after payday'], ['4', 'pain points: functional-only experience, inconsistent UI, zero rewards visibility, no gamification'], ['3', 'competitors analysed: Telda, Klivvr and Lucky']] },
+    keywords: ['Retention', 'Gamified rewards', 'Daily habits', 'Digital trust', 'Glassmorphism'],
     flows: [
       { name: 'Home & points', kind: 'phone', imgs: ['p-axispay-1', 'p-axispay-2', 'p-axispay-3'] },
       { name: 'Redeem points', kind: 'phone', imgs: ['p-axispay-2', 'p-axispay-3', 'p-axispay-1'] },
@@ -89,7 +96,7 @@ function renderDetail(key, p, pic, cover) {
     return `<div class="flow ${f.kind}" style="--n:${f.imgs.length}"><h4 id="${id}-f${fi}">${esc(f.name)}<span>${f.imgs.length} screens</span></h4><div class="flow-stage" role="button" tabindex="0" aria-expanded="false" aria-labelledby="${id}-f${fi}" aria-describedby="${id}-hint"><div class="flow-track">${shots}</div></div></div>`;
   }).join('');
   return `<article class="pd" id="${id}" aria-labelledby="${id}-t" hidden>
-<div class="pd-cover ${p.k === 1 ? 'web' : 'app'}">${cover}</div>
+${d.cover ? `<div class="pd-cover img">${pic(d.cover, { alt: `${p.name} cover`, w: 1072, h: 804, sizes: '(max-width: 1119px) calc(100vw - 48px), 1072px' })}</div>` : `<div class="pd-cover ${p.k === 1 ? 'web' : 'app'}">${cover}</div>`}
 <header class="pd-head"><p class="pd-kicker">${esc(p.name)} <span class="status s-${p.s}">${p.statusText}</span></p><h2 class="pd-title" id="${id}-t">${esc(d.title)}</h2></header>
 <dl class="pd-meta">${meta}</dl>
 ${d.links.length ? `<div class="pd-links">${d.links.map(linkBtn).join('')}</div>` : ''}

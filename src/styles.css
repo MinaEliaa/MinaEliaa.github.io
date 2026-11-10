@@ -620,3 +620,5 @@ html.sv-lock{overflow:hidden}
   .flow.web{--w:250px;--h:156px}
 }
 @media (prefers-reduced-motion:reduce){.ps,.ps-panel,.fs,.flow-track,.proj-card .shot,.proj-card .shot img{transition:none}}
+.pd-cover.img{padding:0;aspect-ratio:auto;background:#fff;display:block}
+.pd-cover.img img{display:block;width:100%;height:auto}
