@@ -3,31 +3,40 @@
   const rm = matchMedia('(prefers-reduced-motion: reduce)');
   if (rm.matches) root.classList.add('rm');
 
-  /* ---------- Navbar: full row at top; after 180px a pill that is expanded by default.
-     Left arrow collapses it to logo + right arrow; right arrow expands it again. ---------- */
-  const nav = d.querySelector('.nav'), arrow = nav && nav.querySelector('.nav-arrow');
+  /* ---------- Navbar: full row at top, compact pill after 180px.
+     The plus button opens the "more about Mina" panel (avatar + title + the two story highlights). ---------- */
+  const nav = d.querySelector('.nav'), arrow = nav && nav.querySelector('.nav-arrow'), more = d.getElementById('nav-more');
+  const svEl = d.getElementById('sv');
+  const panelShown = () => nav.classList.contains('more') || nav.classList.contains('menu');
+  const syncPanel = () => { if (more) more.inert = !panelShown(); };
+  const setMore = (o, focus) => {
+    nav.classList.toggle('more', o); arrow.setAttribute('aria-expanded', String(o));
+    arrow.setAttribute('aria-label', o ? 'Close more about Mina' : 'More about Mina'); syncPanel();
+    if (focus) arrow.focus();
+  };
   if (nav && arrow) {
-    let collapsed = false;
-    const sync = () => { const open = nav.classList.contains('compact') && !collapsed; nav.classList.toggle('open', open); arrow.setAttribute('aria-expanded', String(open)); arrow.setAttribute('aria-label', open ? 'Collapse menu' : 'Expand menu'); };
-    const onScroll = () => { const c = scrollY > 180; if (c !== nav.classList.contains('compact')) { nav.classList.toggle('compact', c); if (!c) collapsed = false; sync(); } };
+    const onScroll = () => { const c = scrollY > 180; if (c !== nav.classList.contains('compact')) { nav.classList.toggle('compact', c); nav.classList.toggle('open', c); } };
     addEventListener('scroll', onScroll, { passive: true }); onScroll();
-    arrow.addEventListener('click', () => { collapsed = !collapsed; sync(); });
+    arrow.addEventListener('click', () => setMore(!nav.classList.contains('more')));
+    d.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('more') && (!svEl || svEl.hidden)) setMore(false, true); });
+    d.addEventListener('pointerdown', e => { if (nav.classList.contains('more') && !nav.contains(e.target) && (!svEl || svEl.hidden)) setMore(false); });
   }
-  /* ---------- Mobile menu (<810px): hamburger opens a sheet with LinkedIn, Behance, Start Project ---------- */
+  /* ---------- Mobile menu (<810px): hamburger opens a sheet with LinkedIn, Behance, Start Project + the panel ---------- */
   const burger = nav && nav.querySelector('.burger'), sheet = d.getElementById('nav-sheet');
   if (burger && sheet) {
     const links = () => [...sheet.querySelectorAll('a')];
     const setMenu = (o, focus) => {
       nav.classList.toggle('menu', o); burger.setAttribute('aria-expanded', String(o)); burger.setAttribute('aria-label', o ? 'Close menu' : 'Open menu');
       links().forEach(a => o ? a.removeAttribute('tabindex') : a.setAttribute('tabindex', '-1'));
+      syncPanel();
       if (focus) (o ? links()[0] : burger).focus();
     };
     setMenu(false);
     burger.addEventListener('click', () => setMenu(!nav.classList.contains('menu')));
     links().forEach(a => a.addEventListener('click', () => setMenu(false)));
-    d.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('menu')) setMenu(false, true); });
-    d.addEventListener('pointerdown', e => { if (nav.classList.contains('menu') && !nav.contains(e.target)) setMenu(false); });
-    matchMedia('(min-width: 810px)').addEventListener('change', e => e.matches && setMenu(false));
+    d.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('menu') && (!svEl || svEl.hidden)) setMenu(false, true); });
+    d.addEventListener('pointerdown', e => { if (nav.classList.contains('menu') && !nav.contains(e.target) && (!svEl || svEl.hidden)) setMenu(false); });
+    matchMedia('(min-width: 810px)').addEventListener('change', e => { if (e.matches) setMenu(false); else if (arrow) setMore(false); });
   }
 
   /* ---------- Scroll reveal (fade up once on entering viewport) ---------- */
@@ -137,7 +146,7 @@
     ans.hidden = !open;
     if (!rm.matches && box.animate) box.animate([{ height: from + 'px' }, { height: box.offsetHeight + 'px' }], { duration: 200, easing: 'ease-out' });
   }));
-  /* ---------- Hero story cards: drag anywhere + Instagram-style story viewer ---------- */
+  /* ---------- Story highlights (navbar panel) + Instagram-style story viewer ---------- */
   const hero = d.querySelector('.hero'), cards = [...d.querySelectorAll('.story')], sv = d.getElementById('sv');
   if (hero && cards.length && sv) {
     const LIST = [];
@@ -179,40 +188,8 @@
       d.querySelectorAll('.pause-btn').forEach(b => b.addEventListener('click', () => root.classList.contains('paused') ? previews.forEach(v => v.pause()) : cards.resume()));
     }
 
-    /* drag: mouse/pen drag at once; touch drags after a short press so the page still scrolls */
-    cards.forEach(c => {
-      let ox = 0, oy = 0, bx = 0, by = 0, sx = 0, sy = 0, down = false, moved = false, armT = 0, armed = false;
-      const clamp = (nx, ny) => {
-        const hr = hero.getBoundingClientRect(), r = c.getBoundingClientRect(), L = r.left - ox, T = r.top - oy;
-        return [Math.min(Math.max(nx, hr.left + 8 - L), hr.right - 8 - r.width - L), Math.min(Math.max(ny, hr.top + 88 - T), hr.bottom - 8 - r.height - T)];
-      };
-      const moveTo = (nx, ny) => { [ox, oy] = clamp(nx, ny); c.style.translate = `${ox}px ${oy}px`; };
-      const begin = (x, y) => { down = true; moved = false; sx = x; sy = y; bx = ox; by = oy; };
-      const drag = (x, y) => { if (!moved && Math.hypot(x - sx, y - sy) > 6) { moved = true; c.classList.add('dragging'); } if (moved) moveTo(bx + x - sx, by + y - sy); };
-      const finish = () => { down = false; armed = false; c.classList.remove('dragging'); };
-      c.addEventListener('pointerdown', e => { if (e.pointerType === 'touch' || e.button) return; begin(e.clientX, e.clientY); c.setPointerCapture(e.pointerId); });
-      c.addEventListener('pointermove', e => { if (down && e.pointerType !== 'touch') drag(e.clientX, e.clientY); });
-      c.addEventListener('pointerup', e => { if (e.pointerType !== 'touch') finish(); });
-      c.addEventListener('lostpointercapture', e => { if (e.pointerType !== 'touch' && down) finish(); });
-      c.addEventListener('touchstart', e => {
-        if (e.touches.length > 1) return;
-        const t = e.touches[0]; begin(t.clientX, t.clientY);
-        armT = setTimeout(() => { armed = true; moved = true; c.classList.add('dragging'); if (navigator.vibrate) navigator.vibrate(8); }, 220);
-      }, { passive: true });
-      c.addEventListener('touchmove', e => {
-        const t = e.touches[0];
-        if (armed) { e.preventDefault(); moveTo(bx + t.clientX - sx, by + t.clientY - sy); }
-        else if (Math.hypot(t.clientX - sx, t.clientY - sy) > 8) { clearTimeout(armT); down = false; moved = true; }
-      }, { passive: false });
-      const tEnd = () => { clearTimeout(armT); if (armed) finish(); else down = false; };
-      c.addEventListener('touchend', tEnd); c.addEventListener('touchcancel', tEnd);
-      c.addEventListener('contextmenu', e => e.preventDefault());
-      c.addEventListener('click', e => { if (moved) { e.preventDefault(); moved = false; return; } open(LIST.findIndex(s => s.k === c.dataset.k), c); });
-      c.addEventListener('keydown', e => {
-        const m = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
-        if (!m) return; e.preventDefault(); const s = e.shiftKey ? 48 : 16; moveTo(ox + m[0] * s, oy + m[1] * s);
-      });
-    });
+    /* tap a highlight to open the story viewer */
+    cards.forEach(c => c.addEventListener('click', () => open(LIST.findIndex(s => s.k === c.dataset.k), c)));
 
     /* viewer */
     const card = d.getElementById('sv-card'), media = d.getElementById('sv-media');
