@@ -529,8 +529,8 @@ html.sv-lock{overflow:hidden}
 .proj-card .shot img{transition:transform .9s cubic-bezier(.22,1,.36,1)}
 .proj-card:focus-visible{outline:2px solid var(--ink);outline-offset:6px}
 @media (hover:hover) and (pointer:fine){
-  .proj-card:hover .shot,.proj-card:focus-visible .shot{transform:translate3d(0,-6px,0)}
-  .proj-card:hover .shot img,.proj-card:focus-visible .shot img{transform:scale(1.04)}
+  a.proj-card:hover .shot,a.proj-card:focus-visible .shot{transform:translate3d(0,-6px,0)}
+  a.proj-card:hover .shot img,a.proj-card:focus-visible .shot img{transform:scale(1.04)}
 }
 
 /* ===== Project sheet ===== */
@@ -720,3 +720,4 @@ html.sv-lock{overflow:hidden}
 .shots-row img{display:block;width:100%;height:auto;border-radius:20px;box-shadow:0 12px 28px -14px rgba(19,32,43,.35)}
 .shots-row:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 @media (max-width:809.98px){.shots-row{padding:20px 0;border-radius:24px;scroll-padding-inline:20px}.shots-row li{width:150px}.shots-row ul{gap:12px;padding:0 20px}}
+.proj-card.static{cursor:default}

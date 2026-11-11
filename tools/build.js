@@ -116,7 +116,7 @@ const svcCards = [
 
 const projects = [
   ['D360 Bank', 'live', 'D360 Bank Website', 1, 'd360'], ['AxisPay', 'ws', 'AxisPay Mobile application', 3, 'axispay'],
-  ['Wish', 'live', 'Wish Mobile application', 3], ['Eyas', 'live', 'Eyas Mobile application', 3],
+  ['Wish', 'live', 'Wish Mobile application', 3], ['ShoowPay', 'soon', 'ShoowPay Mobile application', 3, 'shoowpay'],
 ];
 const statusText = { live: 'Live', soon: 'Soon', ws: 'Workshop' };
 const cases = [
@@ -135,7 +135,10 @@ const projShots = (key, label, k, big) => k === 3
   : pic(`p-${key}`, { alt: big ? '' : `Screen for ${label}`, w: 280, h: 288, sizes: big ? '(max-width: 809px) 80vw, 420px' : '(max-width: 809px) 194px, (max-width: 1199px) 225px, 280px' });
 const projHtml = projects.map(([n, s, label, k, slug]) => {
   const key = slug || n.toLowerCase();
-  return `<li class="rv"><a class="proj-card" href="#project-${key}" aria-haspopup="dialog"><div class="shot${k === 1 ? ' single' : ''}">${projShots(key, label, k)}</div><div class="proj-meta"><h3>${n}</h3><span class="status s-${s}">${statusText[s]}</span></div></a></li>`;
+  const inner = `<div class="shot${k === 1 ? ' single' : ''}">${projShots(key, label, k)}</div><div class="proj-meta"><h3>${n}</h3><span class="status s-${s}">${statusText[s]}</span></div>`;
+  return require('./project-details').DETAILS[key]
+    ? `<li class="rv"><a class="proj-card" href="#project-${key}" aria-haspopup="dialog">${inner}</a></li>`
+    : `<li class="rv"><div class="proj-card static">${inner}</div></li>`;
 }).join('');
 const sheetHtml = `<div class="ps" id="ps" role="dialog" aria-modal="true" aria-label="Project details" hidden><div class="ps-panel" id="ps-panel"><div class="ps-grab" aria-hidden="true"></div><button class="ps-close" id="ps-close" type="button" aria-label="Close project">${icoX}</button><div class="ps-scroll" id="ps-scroll">${projects.map(([n, s, label, k, slug]) => { const key = slug || n.toLowerCase(); return renderDetail(key, { name: n, s, statusText: statusText[s], k }, pic, projShots(key, label, k, true)); }).join('')}</div></div></div>`;
 
