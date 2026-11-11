@@ -15,7 +15,7 @@ fs.mkdirSync(`${SITE}/media`, { recursive: true });
     M[name] = { ratio: 9 / 16, widths, fallback: `${name}-240.jpg`, fbw: 240 };
     fs.copyFileSync(`${IG}/${k}.mp4`, `${SITE}/media/${name}.mp4`);
   }
-  for (const k of ['a1', 'b1', 'm1']) fs.copyFileSync(`${IG}/${k}-prev.mp4`, `${SITE}/media/story-${k}-prev.mp4`);
+  for (const k of ['a1', 'b1', 'm2']) fs.copyFileSync(`${IG}/${k}-prev.mp4`, `${SITE}/media/story-${k}-prev.mp4`);
   fs.writeFileSync(MF, JSON.stringify(M));
   console.log(fs.readdirSync(`${SITE}/media`).map(f => f + ' ' + fs.statSync(`${SITE}/media/${f}`).size).join('\n'));
 })();

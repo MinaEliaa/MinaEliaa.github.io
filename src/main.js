@@ -218,7 +218,7 @@
     const card = d.getElementById('sv-card'), media = d.getElementById('sv-media');
     const titleEl = d.getElementById('sv-title'), soundBtn = d.getElementById('sv-sound'), barsEl = d.getElementById('sv-bars');
     let bars = [], barsK = '', audio = null, audioSrc = '', soundOff = false;
-    const avEl = d.getElementById('sv-av'), intro = d.getElementById('sv-intro'), introImg = intro.querySelector('img'), introName = intro.querySelector('b');
+    const avEl = d.getElementById('sv-av'), intro = d.getElementById('sv-intro'), introName = intro.querySelector('b');
     const placeEl = d.getElementById('sv-place'), live = d.getElementById('sv-live'), pauseBtn = d.getElementById('sv-pause'), closeBtn = d.getElementById('sv-close');
     const prevBtn = sv.querySelector('.sv-arrow.prev');
     const vids = {};
@@ -260,7 +260,7 @@
         barsK = s.k; barsEl.innerHTML = '<i></i>'.repeat(SETS[s.k].count); bars = [...barsEl.children];
         const src = `img/story-${SETS[s.k].cover}-240.webp`; avEl.src = src;
         // Instagram-highlight intro: cover + name over a soft overlay, then fade away
-        introImg.src = src; introName.textContent = s.title;
+        introName.textContent = s.title;
         intro.classList.remove('on'); void intro.offsetWidth; if (!rm.matches) intro.classList.add('on');
       }
       titleEl.textContent = s.title;
