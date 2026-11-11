@@ -217,7 +217,38 @@
     /* viewer */
     const card = d.getElementById('sv-card'), media = d.getElementById('sv-media');
     const titleEl = d.getElementById('sv-title'), soundBtn = d.getElementById('sv-sound'), barsEl = d.getElementById('sv-bars');
-    let bars = [], barsK = '', audio = null, audioSrc = '', soundOff = false;
+    let bars = [], barsK = '', soundOff = false;
+    /* Highlight music: Web Audio buffer with loop = seamless, endless loop on every browser (incl. iOS Safari).
+       Falls back to an <audio loop> element where Web Audio is missing. */
+    const music = (() => {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      let ctx = null, gain = null, node = null, cur = '', want = '', playing = false, muted = false, el = null;
+      const bufs = {};
+      const load = src => bufs[src] || (bufs[src] = fetch(src).then(r => r.arrayBuffer()).then(a => new Promise((ok, ko) => ctx.decodeAudioData(a, ok, ko))));
+      const stopNode = () => { if (node) { try { node.stop(); } catch (e) {} node.disconnect(); node = null; } cur = ''; };
+      const apply = () => {
+        if (el) { el.muted = muted; playing ? el.play().catch(() => {}) : el.pause(); return; }
+        if (!ctx) return;
+        gain.gain.value = muted ? 0 : 1;
+        playing ? ctx.resume().catch(() => {}) : ctx.suspend().catch(() => {});
+      };
+      const start = src => load(src).then(buf => {
+        if (want !== src || cur === src) return;
+        stopNode(); node = ctx.createBufferSource(); node.buffer = buf; node.loop = true; node.connect(gain); node.start(0); cur = src; apply();
+      }).catch(() => { useEl(src); });
+      const useEl = src => { if (el && el.dataset.src === src) return apply(); if (el) el.pause(); el = new Audio(src); el.dataset.src = src; el.loop = true; el.addEventListener('ended', () => { el.currentTime = 0; if (playing) el.play().catch(() => {}); }); apply(); };
+      return {
+        set(src, play, mute) {
+          want = src; playing = !!src && play; muted = mute;
+          if (!src) { stopNode(); if (el) { el.pause(); el = null; } if (ctx) ctx.suspend().catch(() => {}); return; }
+          if (!AC) return useEl(src);
+          if (!ctx) { try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {} ctx = new AC(); gain = ctx.createGain(); gain.connect(ctx.destination); }
+          if (el && !AC) return useEl(src);
+          if (cur !== src) start(src);
+          apply();
+        },
+      };
+    })();
     const avEl = d.getElementById('sv-av'), intro = d.getElementById('sv-intro'), introName = intro.querySelector('b');
     const placeEl = d.getElementById('sv-place'), live = d.getElementById('sv-live'), pauseBtn = d.getElementById('sv-pause'), closeBtn = d.getElementById('sv-close');
     const prevBtn = sv.querySelector('.sv-arrow.prev');
@@ -242,11 +273,7 @@
     const syncAudio = () => {
       // each highlight has its own soundtrack; it loops until you move to the other highlight or close
       const s = LIST[cur], src = s && SETS[s.k].audio, want = !sv.hidden && !!src;
-      if (audio && audioSrc !== src) { audio.pause(); audio = null; audioSrc = ''; }
-      if (want && !audio) { audio = new Audio(src); audioSrc = src; audio.loop = true; audio.preload = 'auto'; audio.addEventListener('ended', () => { audio.currentTime = 0; if (!sv.hidden) audio.play().catch(() => {}); }); }
-      if (!audio) return;
-      audio.muted = soundOff;
-      (want && !userPaused && !held) ? audio.play().catch(() => {}) : audio.pause();
+      music.set(want ? src : '', want && !userPaused && !held, soundOff);
     };
     const sync = () => {
       const v = vids[idOf(cur)]; if (!v) return;
@@ -290,7 +317,7 @@
     };
     const close = () => {
       sv.classList.remove('open', 'held', 'swiping'); cancelAnimationFrame(raf);
-      Object.values(vids).forEach(v => v.pause()); if (audio) { audio.pause(); audio = null; audioSrc = ''; } barsK = ''; root.classList.remove('sv-lock');
+      Object.values(vids).forEach(v => v.pause()); music.set('', false, soundOff); barsK = ''; root.classList.remove('sv-lock');
       hideT = setTimeout(() => { sv.hidden = true; cards.resume && cards.resume(); }, rm.matches ? 0 : 250);
       if (lastFocus) lastFocus.focus();
     };
