@@ -217,8 +217,7 @@
     /* viewer */
     const card = d.getElementById('sv-card'), media = d.getElementById('sv-media');
     const titleEl = d.getElementById('sv-title'), soundBtn = d.getElementById('sv-sound'), barsEl = d.getElementById('sv-bars');
-    let bars = [], barsK = '', audio = null, soundOff = false;
-    const MUSIC = (Object.values(SETS).find(x => x.audio) || {}).audio;
+    let bars = [], barsK = '', audio = null, audioSrc = '', soundOff = false;
     const avEl = d.getElementById('sv-av'), intro = d.getElementById('sv-intro'), introImg = intro.querySelector('img'), introName = intro.querySelector('b');
     const placeEl = d.getElementById('sv-place'), live = d.getElementById('sv-live'), pauseBtn = d.getElementById('sv-pause'), closeBtn = d.getElementById('sv-close');
     const prevBtn = sv.querySelector('.sv-arrow.prev');
@@ -237,9 +236,10 @@
       return vids[id];
     };
     const syncAudio = () => {
-      // one soundtrack for the whole viewer session: loops until the stories are closed
-      const want = !sv.hidden;
-      if (want && !audio && MUSIC) { audio = new Audio(MUSIC); audio.loop = true; audio.preload = 'auto'; audio.addEventListener('ended', () => { audio.currentTime = 0; if (!sv.hidden) audio.play().catch(() => {}); }); }
+      // each highlight has its own soundtrack; it loops until you move to the other highlight or close
+      const s = LIST[cur], src = s && SETS[s.k].audio, want = !sv.hidden && !!src;
+      if (audio && audioSrc !== src) { audio.pause(); audio = null; audioSrc = ''; }
+      if (want && !audio) { audio = new Audio(src); audioSrc = src; audio.loop = true; audio.preload = 'auto'; audio.addEventListener('ended', () => { audio.currentTime = 0; if (!sv.hidden) audio.play().catch(() => {}); }); }
       if (!audio) return;
       audio.muted = soundOff;
       (want && !userPaused && !held) ? audio.play().catch(() => {}) : audio.pause();
@@ -265,7 +265,7 @@
       }
       titleEl.textContent = s.title;
       placeEl.innerHTML = s.label ? `<span>${s.label}</span>${FLAGS[s.flag] ? `<svg class="flag" viewBox="0 0 18 12" aria-hidden="true" focusable="false">${FLAGS[s.flag]}</svg>` : ''}` : '';
-      soundBtn.hidden = !MUSIC;
+      soundBtn.hidden = !SETS[s.k].audio;
       bars.forEach((b, j) => b.style.setProperty('--p', j < s.n - 1 ? 1 : 0));
       live.textContent = `${s.title}${s.label ? ', ' + s.label : ''}, story ${s.n} of ${SETS[s.k].count}`;
       prevBtn.disabled = i === 0;
@@ -286,7 +286,7 @@
     };
     const close = () => {
       sv.classList.remove('open', 'held', 'swiping'); cancelAnimationFrame(raf);
-      Object.values(vids).forEach(v => v.pause()); if (audio) { audio.pause(); audio = null; } barsK = ''; root.classList.remove('sv-lock');
+      Object.values(vids).forEach(v => v.pause()); if (audio) { audio.pause(); audio = null; audioSrc = ''; } barsK = ''; root.classList.remove('sv-lock');
       hideT = setTimeout(() => { sv.hidden = true; cards.resume && cards.resume(); }, rm.matches ? 0 : 250);
       if (lastFocus) lastFocus.focus();
     };

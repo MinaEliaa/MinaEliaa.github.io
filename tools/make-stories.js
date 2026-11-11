@@ -4,7 +4,7 @@ const IG = '/home/claude/assets-src/video/ig', SITE = '/home/claude/site';
 const MF = '/home/claude/tools/img-manifest.json', M = JSON.parse(fs.readFileSync(MF, 'utf8'));
 fs.mkdirSync(`${SITE}/media`, { recursive: true });
 (async () => {
-  for (const k of ['a1', 'a2', 'b1', 'b2', 'p2', 'p3']) {
+  for (const k of ['a1', 'a2', 'b1', 'b2', 'p2', 'p3', 'm1', 'm2', 'm3', 'm4', 'm5']) {
     const name = `story-${k}`, widths = [240, 480];
     for (const w of widths) {
       const s = () => sharp(`${IG}/${k}-poster.png`).resize(w, Math.round(w * 16 / 9), { fit: 'cover' });
@@ -15,7 +15,7 @@ fs.mkdirSync(`${SITE}/media`, { recursive: true });
     M[name] = { ratio: 9 / 16, widths, fallback: `${name}-240.jpg`, fbw: 240 };
     fs.copyFileSync(`${IG}/${k}.mp4`, `${SITE}/media/${name}.mp4`);
   }
-  for (const k of ['a1', 'b1']) fs.copyFileSync(`${IG}/${k}-prev.mp4`, `${SITE}/media/story-${k}-prev.mp4`);
+  for (const k of ['a1', 'b1', 'm1']) fs.copyFileSync(`${IG}/${k}-prev.mp4`, `${SITE}/media/story-${k}-prev.mp4`);
   fs.writeFileSync(MF, JSON.stringify(M));
   console.log(fs.readdirSync(`${SITE}/media`).map(f => f + ' ' + fs.statSync(`${SITE}/media/${f}`).size).join('\n'));
 })();
