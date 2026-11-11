@@ -230,7 +230,11 @@
         const v = d.createElement('video');
         v.muted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'auto'; v.disablePictureInPicture = true;
         v.setAttribute('aria-hidden', 'true'); v.poster = `img/story-${id}-480.webp`; v.src = `media/story-${id}.mp4`;
-        v.addEventListener('ended', () => { if (idOf(cur) === id) go(1); });
+        v.addEventListener('ended', () => {
+          if (idOf(cur) !== id) return;
+          // auto-advance stays inside the open highlight: after its last story it starts again, so its music keeps looping
+          const s = LIST[cur]; if (LIST[cur + 1] && LIST[cur + 1].k === s.k) go(1); else show(LIST.findIndex(x => x.k === s.k));
+        });
         media.appendChild(v); vids[id] = v;
       }
       return vids[id];
