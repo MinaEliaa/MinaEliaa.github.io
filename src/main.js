@@ -428,3 +428,56 @@
     });
   }
 })();
+
+// hero: green "Neural Noise" glow around the mouse cursor (WebGL, behind content).
+// Built lazily on the first mouse move over the hero and only animates while the glow is visible.
+(() => {
+  const d = document, hero = d.querySelector('#hero-1');
+  if (!hero || matchMedia('(prefers-reduced-motion: reduce)').matches || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  const P = { x: .5, y: .45, tx: .5, ty: .45, on: false };
+  let kick = null, dead = false;
+  const start = () => {
+    const c = d.createElement('canvas'); c.className = 'nfx'; c.setAttribute('aria-hidden', 'true');
+    const gl = c.getContext('webgl', { antialias: false, failIfMajorPerformanceCaveat: true });
+    if (!gl) return false;
+    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    if (dbg && /swiftshader|llvmpipe|software/i.test(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL))) return false;
+    const vs = 'precision mediump float;attribute vec2 a;varying vec2 v;void main(){v=.5*(a+1.);gl_Position=vec4(a,0.,1.);}';
+    const fs = 'precision mediump float;varying vec2 v;uniform float T,R,H;uniform vec2 P;' +
+      'vec2 rot(vec2 u,float t){return mat2(cos(t),sin(t),-sin(t),cos(t))*u;}' +
+      'float nz(vec2 u,float t,float p){vec2 c=vec2(0.),r=vec2(0.);float s=8.;for(int j=0;j<15;j++){u=rot(u,1.);c=rot(c,1.);vec2 l=u*s+float(j)+c-t;c+=sin(l)+2.4*p;r+=(.5+.5*cos(l))/s;s*=1.2;}return r.x+r.y;}' +
+      'void main(){vec2 u=.5*v;u.x*=R;vec2 q=v-P;q.x*=R;float dd=clamp(length(q),0.,1.);float p=.5*pow(1.-dd,2.)*H;' +
+      'float n=nz(u,.001*T,p);n=1.2*pow(n,3.);n+=pow(n,10.);n=max(0.,n-.5);n*=(1.-length(v-.5));' +
+      'float al=clamp(n*1.7,0.,.95)*smoothstep(.7,0.,dd)*H;vec3 col=mix(vec3(.01,.62,.31),vec3(.02,.89,.45),clamp(n,0.,1.));gl_FragColor=vec4(col*al,al);}';
+    const sh = (t, src) => { const s = gl.createShader(t); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+    const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(pr);
+    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return false;
+    gl.useProgram(pr);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    const U = n => gl.getUniformLocation(pr, n), uT = U('T'), uR = U('R'), uH = U('H'), uP = U('P');
+    hero.prepend(c);
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);
+    const size = () => { c.width = hero.clientWidth * dpr; c.height = hero.clientHeight * dpr; gl.viewport(0, 0, c.width, c.height); };
+    new ResizeObserver(size).observe(hero); size();
+    let hv = 0, id = 0;
+    const f = t => {
+      id = 0;
+      P.x += (P.tx - P.x) * .2; P.y += (P.ty - P.y) * .2;
+      hv += ((P.on && !d.hidden ? 1 : 0) - hv) * .06;
+      gl.uniform1f(uT, t); gl.uniform1f(uR, c.width / c.height); gl.uniform1f(uH, hv); gl.uniform2f(uP, P.x, 1 - P.y);
+      gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      if (hv > .003 || P.on) id = requestAnimationFrame(f);   // idle: stop the loop entirely
+    };
+    kick = () => { if (!id) id = requestAnimationFrame(f); };
+    c.classList.add('on');
+    return true;
+  };
+  hero.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse' || dead) return;
+    const r = hero.getBoundingClientRect(); P.tx = (e.clientX - r.left) / r.width; P.ty = (e.clientY - r.top) / r.height; P.on = true;
+    if (!kick) { P.x = P.tx; P.y = P.ty; if (!start()) { dead = true; return; } }
+    kick();
+  });
+  hero.addEventListener('pointerleave', () => { P.on = false; });
+})();
