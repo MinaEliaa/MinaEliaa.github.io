@@ -721,3 +721,16 @@ html.sv-lock{overflow:hidden}
 .shots-row:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 @media (max-width:809.98px){.shots-row{padding:20px 0;border-radius:24px;scroll-padding-inline:20px}.shots-row li{width:150px}.shots-row ul{gap:12px;padding:0 20px}}
 .proj-card.static{cursor:default}
+/* story header: placeholder avatar, place tag with flag, sound toggle */
+.who-av.ph{display:grid;place-items:center;background:#c9d1d8;overflow:hidden}
+.who-av.ph svg{width:20px;height:20px;fill:#fff;margin-top:4px}
+.story .who b{overflow:hidden;text-overflow:ellipsis}
+.sv-head .who{flex:1;min-width:0}
+.sv-tag{display:inline-flex;align-items:center;gap:6px;margin-left:auto;min-width:0;font-weight:500}
+.sv-tag:empty{display:none}
+.sv-tag span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:1!important}
+.sv-tag .flag{flex:none;width:18px;height:12px;border-radius:2px;box-shadow:0 0 0 .5px rgba(0,0,0,.25)}
+.sv-btn[hidden]{display:none}
+.sv-btn .i-off,.sv-btn[aria-pressed=true] .i-on{display:none}
+.sv-btn[aria-pressed=true] .i-off{display:block}
+#sv-sound{margin-right:-4px}

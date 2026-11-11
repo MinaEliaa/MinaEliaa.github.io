@@ -141,7 +141,15 @@
   const hero = d.querySelector('.hero'), cards = [...d.querySelectorAll('.story')], sv = d.getElementById('sv');
   if (hero && cards.length && sv) {
     const LIST = [];
-    cards.forEach(c => { const place = c.querySelector('.who span').textContent; [1, 2].forEach(n => LIST.push({ k: c.dataset.k, n, place })); });
+    const SETS = {};
+    cards.forEach(c => { let items = []; try { items = JSON.parse(c.dataset.items); } catch (e) {}
+      SETS[c.dataset.k] = { title: c.dataset.title, audio: c.dataset.audio, count: items.length };
+      items.forEach((it, j) => LIST.push({ k: c.dataset.k, n: j + 1, id: it.id, label: it.label || '', flag: it.flag || '', title: c.dataset.title })); });
+    const FLAGS = {
+      fi: '<rect width="18" height="12" fill="#fff"/><path d="M0 4.5h18v3H0zM5 0h3v12H5z" fill="#002f6c"/>',
+      es: '<rect width="18" height="12" fill="#aa151b"/><rect y="3" width="18" height="6" fill="#f1bf00"/>',
+      ps: '<rect width="18" height="4" fill="#000"/><rect y="4" width="18" height="4" fill="#fff"/><rect y="8" width="18" height="4" fill="#007a3d"/><path d="M0 0l7 6-7 6z" fill="#ce1126"/>',
+    };
 
     /* muted preview loops: only after load, only on screen, never with reduced motion / data saver */
     const previews = cards.map(c => c.querySelector('video'));
@@ -207,12 +215,14 @@
     });
 
     /* viewer */
-    const card = d.getElementById('sv-card'), media = d.getElementById('sv-media'), bars = [...d.querySelectorAll('#sv-bars i')];
+    const card = d.getElementById('sv-card'), media = d.getElementById('sv-media');
+    const titleEl = d.getElementById('sv-title'), soundBtn = d.getElementById('sv-sound'), barsEl = d.getElementById('sv-bars');
+    let bars = [], barsK = '', audio = null, audioK = '', soundOff = false;
     const placeEl = d.getElementById('sv-place'), live = d.getElementById('sv-live'), pauseBtn = d.getElementById('sv-pause'), closeBtn = d.getElementById('sv-close');
     const prevBtn = sv.querySelector('.sv-arrow.prev');
     const vids = {};
     let cur = 0, userPaused = false, held = false, raf = 0, hideT = 0;
-    const idOf = i => LIST[i].k + LIST[i].n;
+    const idOf = i => LIST[i].id;
     const getVid = i => {
       const id = idOf(i);
       if (!vids[id]) {
@@ -224,9 +234,17 @@
       }
       return vids[id];
     };
+    const syncAudio = () => {
+      const s = LIST[cur], set = s && SETS[s.k], want = !!(set && set.audio && !sv.hidden);
+      if (want && audioK !== s.k) { if (audio) audio.pause(); audio = new Audio(set.audio); audio.loop = true; audio.preload = 'auto'; audioK = s.k; }
+      if (!audio) return;
+      audio.muted = soundOff;
+      (want && audioK === s.k && !userPaused && !held) ? audio.play().catch(() => {}) : audio.pause();
+    };
     const sync = () => {
       const v = vids[idOf(cur)]; if (!v) return;
       (userPaused || held) ? v.pause() : v.play().catch(() => {});
+      syncAudio();
       pauseBtn.setAttribute('aria-pressed', String(userPaused)); pauseBtn.setAttribute('aria-label', userPaused ? 'Play story' : 'Pause story');
     };
     const show = i => {
@@ -235,9 +253,12 @@
       const v = getVid(i); try { v.currentTime = 0; } catch (e) {}
       v.classList.add('cur'); sync();
       if (LIST[i + 1]) getVid(i + 1);
-      placeEl.textContent = s.place;
+      if (barsK !== s.k) { barsK = s.k; barsEl.innerHTML = '<i></i>'.repeat(SETS[s.k].count); bars = [...barsEl.children]; }
+      titleEl.textContent = s.title;
+      placeEl.innerHTML = s.label ? `<span>${s.label}</span>${FLAGS[s.flag] ? `<svg class="flag" viewBox="0 0 18 12" aria-hidden="true" focusable="false">${FLAGS[s.flag]}</svg>` : ''}` : '';
+      soundBtn.hidden = !SETS[s.k].audio;
       bars.forEach((b, j) => b.style.setProperty('--p', j < s.n - 1 ? 1 : 0));
-      live.textContent = `${s.place}, story ${s.n} of 2`;
+      live.textContent = `${s.title}${s.label ? ', ' + s.label : ''}, story ${s.n} of ${SETS[s.k].count}`;
       prevBtn.disabled = i === 0;
     };
     const tick = () => {
@@ -256,7 +277,7 @@
     };
     const close = () => {
       sv.classList.remove('open', 'held', 'swiping'); cancelAnimationFrame(raf);
-      Object.values(vids).forEach(v => v.pause()); root.classList.remove('sv-lock');
+      Object.values(vids).forEach(v => v.pause()); if (audio) { audio.pause(); audio = null; audioK = ''; } root.classList.remove('sv-lock');
       hideT = setTimeout(() => { sv.hidden = true; cards.resume && cards.resume(); }, rm.matches ? 0 : 250);
       if (lastFocus) lastFocus.focus();
     };
@@ -290,6 +311,7 @@
     card.addEventListener('contextmenu', e => e.preventDefault());
     sv.querySelectorAll('.sv-arrow').forEach(b => b.addEventListener('click', () => go(+b.dataset.go)));
     pauseBtn.addEventListener('click', () => { userPaused = !userPaused; sync(); });
+    soundBtn.addEventListener('click', () => { soundOff = !soundOff; soundBtn.setAttribute('aria-pressed', String(soundOff)); soundBtn.setAttribute('aria-label', soundOff ? 'Play music' : 'Mute music'); syncAudio(); });
     closeBtn.addEventListener('click', close);
     sv.addEventListener('click', e => { if (e.target === sv) close(); });
     d.addEventListener('keydown', e => {

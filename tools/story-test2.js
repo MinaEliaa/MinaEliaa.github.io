@@ -1,0 +1,13 @@
+const p=require('puppeteer-core');const S='/tmp/claude-0/-home-claude/971ee09d-bc15-5d04-b952-6202658d2556/scratchpad/';
+(async()=>{const b=await p.launch({executablePath:'/usr/bin/google-chrome',args:['--no-sandbox','--autoplay-policy=no-user-gesture-required']});
+for (const [w,h] of [[1440,900],[390,844]]) {const pg=await b.newPage();const errs=[];pg.on('pageerror',e=>errs.push(e.message));
+await pg.setViewport({width:w,height:h,isMobile:w<500,hasTouch:w<500});await pg.goto('http://localhost:8090/',{waitUntil:'networkidle0'});await new Promise(r=>setTimeout(r,2500));
+await pg.screenshot({path:S+`st2-${w}.png`});
+await (await pg.$('.story.a')).click();await new Promise(r=>setTimeout(r,1200));
+const st=()=>pg.evaluate(()=>({live:document.getElementById('sv-live').textContent,bars:document.querySelectorAll('#sv-bars i').length,sound:!document.getElementById('sv-sound').hidden,cur:(document.querySelector('#sv-media video.cur')||{}).src?.split('/').pop()}));
+const r={a1:await st()};await pg.screenshot({path:S+`st2-${w}-v1.png`});
+await pg.keyboard.press('ArrowRight');await new Promise(r=>setTimeout(r,800));r.a2=await st();await pg.screenshot({path:S+`st2-${w}-v2.png`});
+await pg.keyboard.press('ArrowRight');await new Promise(r=>setTimeout(r,800));r.a3=await st();await pg.screenshot({path:S+`st2-${w}-v3.png`});
+await pg.keyboard.press('ArrowRight');await new Promise(r=>setTimeout(r,800));r.b1=await st();
+await pg.keyboard.press('Escape');await new Promise(r=>setTimeout(r,500));
+console.log(w,JSON.stringify(r),errs);await pg.close();}await b.close()})();

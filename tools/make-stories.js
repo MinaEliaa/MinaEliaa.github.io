@@ -4,7 +4,7 @@ const IG = '/home/claude/assets-src/video/ig', SITE = '/home/claude/site';
 const MF = '/home/claude/tools/img-manifest.json', M = JSON.parse(fs.readFileSync(MF, 'utf8'));
 fs.mkdirSync(`${SITE}/media`, { recursive: true });
 (async () => {
-  for (const k of ['a1', 'a2', 'b1', 'b2']) {
+  for (const k of ['a1', 'a2', 'b1', 'b2', 'p2', 'p3']) {
     const name = `story-${k}`, widths = [240, 480];
     for (const w of widths) {
       const s = () => sharp(`${IG}/${k}-poster.png`).resize(w, Math.round(w * 16 / 9), { fit: 'cover' });
