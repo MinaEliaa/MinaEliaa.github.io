@@ -734,3 +734,12 @@ html.sv-lock{overflow:hidden}
 .sv-btn .i-off,.sv-btn[aria-pressed=true] .i-on{display:none}
 .sv-btn[aria-pressed=true] .i-off{display:block}
 #sv-sound{margin-right:-4px}
+/* story highlight cover avatar + Instagram-style highlight intro */
+.who-av{object-fit:cover;background:#2a3540}
+.sv-intro{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(0,0,0,.42);color:#fff;opacity:0;visibility:hidden;pointer-events:none}
+.sv-intro img{width:72px;height:72px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px #fff}
+.sv-intro b{font-size:22px;line-height:28px;font-weight:600;text-shadow:0 1px 6px rgba(0,0,0,.35)}
+.sv-intro.on{animation:svIntro 1.6s ease both}
+@keyframes svIntro{0%{opacity:0;visibility:visible}12%{opacity:1}68%{opacity:1}100%{opacity:0;visibility:hidden}}
+.sv-intro.on img,.sv-intro.on b{animation:svIntroPop 1.6s cubic-bezier(.22,1,.36,1) both}
+@keyframes svIntroPop{0%{transform:scale(.9)}18%{transform:scale(1)}100%{transform:scale(1)}}
