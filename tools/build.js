@@ -73,7 +73,7 @@ function pic(name, { alt = '', w, h, sizes, eager = false, high = false, cls = '
 
 /* ---------- Hero story cards + Instagram-style viewer ---------- */
 const STORY_SETS = [
-  { k: 'a', title: 'Places to Go', cover: 'b1', audio: 'media/places.m4a?v=3', items: [{ id: 'b1', label: 'Aurora', flag: 'fi' }, { id: 'p2', label: 'Santiago Bernabéu', flag: 'es' }, { id: 'p3', label: 'The Church of the Holy Sepulchre', flag: 'ps' }] },
+  { k: 'a', title: 'Places to Go', cover: 'b1', audio: 'media/places.m4a?v=4', items: [{ id: 'b1', label: 'Aurora', flag: 'fi' }, { id: 'p2', label: 'Santiago Bernabéu', flag: 'es' }, { id: 'p3', label: 'The Church of the Holy Sepulchre', flag: 'ps' }] },
   { k: 'b', title: 'Memories ❤️', cover: 'm2', audio: 'media/memories.m4a?v=3', items: [{ id: 'm2' }, { id: 'm3' }, { id: 'm4' }, { id: 'm5' }, { id: 'm1' }] },
 ];
 const icoPlay = '<svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 1.5v9l7.5-4.5z"/></svg>';
