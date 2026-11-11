@@ -447,7 +447,7 @@
       'vec2 rot(vec2 u,float t){return mat2(cos(t),sin(t),-sin(t),cos(t))*u;}' +
       'float nz(vec2 u,float t,float p){vec2 c=vec2(0.),r=vec2(0.);float s=8.;for(int j=0;j<15;j++){u=rot(u,1.);c=rot(c,1.);vec2 l=u*s+float(j)+c-t;c+=sin(l)+2.4*p;r+=(.5+.5*cos(l))/s;s*=1.2;}return r.x+r.y;}' +
       'void main(){vec2 u=.5*v;u.x*=R;vec2 q=v-P;q.x*=R;float dd=clamp(length(q),0.,1.);float p=.5*pow(1.-dd,2.)*H;' +
-      'float n=nz(u,.001*T,p);n=1.2*pow(n,3.);n+=pow(n,10.);n=max(0.,n-.5);n*=(1.-length(v-.5));' +
+      'float n=nz(u,.001*T,p);n=1.2*pow(n,3.);n+=pow(n,10.);n=max(0.,n-.5);n*=(1.-.55*length(v-.5));' +
       'float al=clamp(n*1.7,0.,.95)*smoothstep(.7,0.,dd)*H;vec3 col=mix(vec3(.01,.62,.31),vec3(.02,.89,.45),clamp(n,0.,1.));gl_FragColor=vec4(col*al,al);}';
     const sh = (t, src) => { const s = gl.createShader(t); gl.shaderSource(s, src); gl.compileShader(s); return s; };
     const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(pr);
@@ -456,10 +456,10 @@
     gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
     const loc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
     const U = n => gl.getUniformLocation(pr, n), uT = U('T'), uR = U('R'), uH = U('H'), uP = U('P');
-    hero.prepend(c);
+    d.body.prepend(c);
     const dpr = Math.min(devicePixelRatio || 1, 1.5);
-    const size = () => { c.width = hero.clientWidth * dpr; c.height = hero.clientHeight * dpr; gl.viewport(0, 0, c.width, c.height); };
-    new ResizeObserver(size).observe(hero); size();
+    const size = () => { c.width = innerWidth * dpr; c.height = innerHeight * dpr; gl.viewport(0, 0, c.width, c.height); };
+    addEventListener('resize', size); size();
     let hv = 0, id = 0;
     const f = t => {
       id = 0;
@@ -473,11 +473,18 @@
     c.classList.add('on');
     return true;
   };
-  hero.addEventListener('pointermove', e => {
+  // full-viewport canvas: glow follows the mouse anywhere on screen while the hero is in view
+  let inHero = false, heroVis = true, mx = -1, my = -1;
+  new IntersectionObserver(e => { heroVis = e[0].isIntersecting; upd(); }).observe(hero);
+  const upd = () => { P.on = inHero || (heroVis && mx >= 0 && my < hero.getBoundingClientRect().bottom + innerHeight * .25); if (P.on && kick) kick(); };
+  hero.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') inHero = true; });
+  hero.addEventListener('pointerleave', () => { inHero = false; });
+  addEventListener('pointermove', e => {
     if (e.pointerType !== 'mouse' || dead) return;
-    const r = hero.getBoundingClientRect(); P.tx = (e.clientX - r.left) / r.width; P.ty = (e.clientY - r.top) / r.height; P.on = true;
-    if (!kick) { P.x = P.tx; P.y = P.ty; if (!start()) { dead = true; return; } }
-    kick();
-  });
-  hero.addEventListener('pointerleave', () => { P.on = false; });
+    mx = e.clientX; my = e.clientY; P.tx = mx / innerWidth; P.ty = my / innerHeight;
+    if (!kick) { if (!inHero) return; P.x = P.tx; P.y = P.ty; if (!start()) { dead = true; return; } }
+    upd();
+  }, { passive: true });
+  addEventListener('scroll', () => { if (kick) upd(); }, { passive: true });
+  d.documentElement.addEventListener('pointerleave', () => { mx = my = -1; inHero = false; upd(); });
 })();
