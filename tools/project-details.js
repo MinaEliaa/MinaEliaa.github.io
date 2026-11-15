@@ -12,7 +12,7 @@ const DETAILS = {
     title: 'D360 Bank: turning a slogan-led website into a clear path to the app',
     client: 'D360 Bank', year: '2026', industry: 'Digital banking · Riyadh, Saudi Arabia', platform: 'Marketing website (English & Arabic)',
     links: [
-      { type: 'web', href: 'https://minaeliaa.github.io/d360-bank/', text: 'View website' },
+      { type: 'web', href: 'https://claude.ai/artifact/UnitCwUKpFQzWeLHCzV7m7', text: 'View website' },
       { type: 'web', href: 'https://www.behance.net/gallery/258090105/D360-Bank-Website-Conversion-Rate-UX-Audit-Redesign', text: 'View case study on Behance' },
     ],
     overview: 'D360 Bank is a Saudi digital bank that lets people open an account in 2 minutes, then pay, save and send money abroad, all fully Shariah-compliant. This conversion-rate UX audit and redesign turns the website into a simple, trustworthy route to the app: real stats, genuine trust signals and one clear next step.',
