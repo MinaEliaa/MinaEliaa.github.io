@@ -1,0 +1,50 @@
+# Gutty
+
+> Gutty is a healthy-food kitchen in Egypt. It cooks sourdough burgers, chicken and beef bowls, breakfast, salads and sugar-free sweets, sized to each customer's calorie target and delivered daily. Slogan: "Your Key to Gut Comfort".
+
+## Key facts
+- Website: https://minaeliaa.github.io/gutty/
+- Delivery areas: Greater Cairo, Giza, 6th of October and Hadayek October, Sheikh Zayed, New Cairo, Alexandria (up to Agami)
+- Ordering: WhatsApp +20 106 530 2770, or the Talabat, Breadfast and Rabbit delivery apps
+- Instagram: https://www.instagram.com/gutty.eg/
+- Plans: 5 days a week x 4 weeks, 7 days a week x 4 weeks, or 7 days (one week). Chicken bowl from EGP 278 per meal, beef bowl from EGP 317 per meal (7-day, 4-week plan).
+- Add-ons: daily breakfast and dinner; sugar-free dessert.
+- Portions: 120 g protein and 200 g carbs per bowl; 3 toppings and a sauce of your choice.
+- Freeze: up to 14 days a month with a day's notice. Refunds: only within the first 2 weeks.
+- Calorie target: calculated with the Mifflin-St Jeor equation, adjusted for activity and weight-loss pace.
+
+## Menu (per serving)
+- Sourdough beef burger (Burgers): 415 calories, 31g, 39g, 15g
+- Sourdough chicken burger (Burgers): 400 calories, 34g, 39g, 12g
+- Chicken Alfredo bowl (Chicken bowls): 818 calories, 64.4g, 63.1g, 34.1g
+- Chicken and rice bowl (Chicken bowls): 492 calories, 43.25g, 70g, 4.25g
+- Shrimp and rice bowl (Seafood bowls): 397 calories, 24.25g, 70g, 1.95g
+- Whole-grain shrimp ranch pizza (Pizza): 1,049 calories, 63g, 109g, 40g
+- Sourdough beef hawawshi (Hawawshi): 609.2 calories, 33.6g, 51.2g, 30g
+- Beef tallow fries with minced beef (Beef bowls): 631 calories, 31g, 57g, 31g
+- Beef tallow potato box (Breakfast and dinner): 419 calories, 5g, 57g, 19g
+- Egg box (Breakfast and dinner): 219 calories, 19g, 2g, 15g
+- Baked falafel box (Breakfast and dinner): 286 calories, 12g, 28g, 14g
+- Chicken Caesar salad (Salads): 288.8 calories, 25.4g, 16.2g
+- BBQ beef burger salad (Salads): 187 calories, 17.1g, 14.8g
+- Whole-grain caramel waffle (Sugar-free sweets): 499 calories, 17g, 65g, 19g
+
+## FAQ
+- Q: How big are the portions?
+  A: Standard portions are 120 g protein (8 pieces of shrimp) and 200 g carbs. Less carbs is free; more is priced by Gutty.
+- Q: Where do you deliver?
+  A: Greater Cairo, Giza, 6th of October and Hadayek October, Sheikh Zayed, New Cairo and Alexandria up to Agami. For other areas, message Gutty before subscribing.
+- Q: Can I pause my plan?
+  A: Yes. Freeze up to 14 days a month with a day's notice, and your subscription extends by the same number of days.
+- Q: How much is delivery?
+  A: Delivery fees depend on your area and are confirmed by Gutty.
+- Q: Can I get a refund?
+  A: Refunds are possible only within the first 2 weeks.
+- Q: How is my calorie target set?
+  A: From your sex, age, height, weight, activity level (desk job, training 2 to 4 times a week, or 5 or more) and pace: slow, moderate or hard.
+- Q: What do I need to subscribe?
+  A: Your full name, WhatsApp number, full address, area and preferred start date, plus any allergies or dislikes. Email is optional.
+- Q: How do I pay?
+  A: Online by Visa, Mastercard, wallet, Fawry or InstaPay. Your subscription is tied to your registered name and address.
+
+Last updated: 2026-11-23

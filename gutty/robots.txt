@@ -1,0 +1,28 @@
+# Gutty — https://minaeliaa.github.io/gutty/
+# Note: GitHub Pages serves robots.txt only from the domain root; mirror these rules in https://minaeliaa.github.io/robots.txt
+User-agent: *
+Allow: /gutty/
+Disallow: /gutty/img/*.bin
+
+User-agent: GPTBot
+Allow: /gutty/
+User-agent: ClaudeBot
+Allow: /gutty/
+User-agent: PerplexityBot
+Allow: /gutty/
+User-agent: Google-Extended
+Allow: /gutty/
+
+# scraping-only crawlers
+User-agent: Bytespider
+Disallow: /
+User-agent: AhrefsBot
+Disallow: /
+User-agent: SemrushBot
+Disallow: /
+User-agent: MJ12bot
+Disallow: /
+User-agent: DotBot
+Disallow: /
+
+Sitemap: https://minaeliaa.github.io/gutty/sitemap.xml
