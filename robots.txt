@@ -52,3 +52,4 @@ User-agent: img2dataset
 Disallow: /
 
 Sitemap: https://minaeliaa.github.io/sitemap.xml
+Sitemap: https://minaeliaa.github.io/gutty/sitemap.xml
